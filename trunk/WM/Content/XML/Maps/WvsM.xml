@@ -1,32 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="System.Collections.Generic.List[XMLContentShared.Tile]">
-    <Item>
-      <Position>0 0</Position>
-      <Rotation>0</Rotation>
-      <Scale>.1 .1</Scale>
-      <TextureAsset>crate</TextureAsset>
-    </Item>
-
-    <Item>
-      <Position>100 0</Position>
-      <Rotation>0</Rotation>
-      <Scale>.1 .1</Scale>
-      <TextureAsset>crate</TextureAsset>
-    </Item>
-
-    <Item>
-      <Position>200 0</Position>
-      <Rotation>0</Rotation>
-      <Scale>.1 .1</Scale>
-      <TextureAsset>crate</TextureAsset>
-    </Item>
-
-    <Item>
-      <Position>300 0</Position>
-      <Rotation>0</Rotation>
-      <Scale>.1 .1</Scale>
-      <TextureAsset>crate</TextureAsset>
-    </Item>    
+  <Asset Type="XMLContentShared.Level">
+    <Name>Our First Level</Name>
+    <LayerList>
+      <Item>
+        <Name>ground</Name>
+        <TextureAsset>Textures\\terrain\\ground</TextureAsset>
+        <TileList>
+          <Item>
+            <Position>0 0</Position>
+            <Rotation>0</Rotation>
+            <Scale>.1 .1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+        </TileList>
+      </Item>
+    </LayerList>
   </Asset>
 </XnaContent>

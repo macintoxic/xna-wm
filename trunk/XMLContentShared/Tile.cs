@@ -7,12 +7,21 @@ namespace XMLContentShared
 {
     public class Tile
     {
-        Vector2 position;
-        float rotation;
-        Vector2 scale;
+        //<Position>0 0</Position>
+        //<Rotation>0</Rotation>
+        //<Scale>.1 .1</Scale>
+        //<Offset>0 0</Offset>
+        //<Size>100 100</Size>
 
-        string textureAsset;
-        Texture2D texture;
+        private Vector2 position;
+
+        private float rotation;
+
+        private Vector2 scale;
+
+        private Vector2 offset;
+
+        private Vector2 size;
 
         public Vector2 Position
         {
@@ -31,36 +40,29 @@ namespace XMLContentShared
             get { return scale; }
             set { scale = value; }
         }
-
-        public string TextureAsset
+        public Vector2 Offset
         {
-            get { return textureAsset; }
-            set { textureAsset = value; }
+            get { return offset; }
+            set { offset = value; }
         }
-
-        [ContentSerializerIgnore]
-        public Texture2D Texture
+        public Vector2 Size
         {
-            get { return texture; }
-        }
-
-        public void Load(ContentManager content)
-        {
-            texture = content.Load<Texture2D>(textureAsset);
+            get { return size; }
+            set { size = value; }
         }
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(
-                texture,
-                position,
-                null,
-                Color.White,
-                rotation,
-                Vector2.Zero,
-                scale,
-                SpriteEffects.None,
-                0f);
+            //batch.Draw(
+            //    texture,
+            //    position,
+            //    null,
+            //    Color.White,
+            //    rotation,
+            //    Vector2.Zero,
+            //    scale,
+            //    SpriteEffects.None,
+            //    0f);
         }
     }
 }
