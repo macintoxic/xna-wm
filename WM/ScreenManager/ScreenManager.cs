@@ -30,6 +30,8 @@ namespace WM
 
         bool traceEnabled;
 
+        GameInfo gameInfo;
+
         #endregion
 
         #region Properties
@@ -66,6 +68,12 @@ namespace WM
             set { traceEnabled = value; }
         }
 
+        public GameInfo GameInfo
+        {
+            get { return gameInfo; }
+            set { gameInfo = value; }
+        }
+
 
         #endregion
 
@@ -75,9 +83,10 @@ namespace WM
         /// <summary>
         /// Constructs a new screen manager component.
         /// </summary>
-        public ScreenManager(Game game)
+        public ScreenManager(Game game, GameInfo gameInfo)
             : base(game)
         {
+            this.gameInfo = gameInfo;
         }
 
 
