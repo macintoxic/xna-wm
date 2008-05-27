@@ -27,6 +27,8 @@ namespace WM
         /// </summary>
         private ScreenManager screenManager;
 
+        private GameInfo gameInfo;
+
         /// <summary>
         /// Initializes a new instance of this class.
         /// </summary>
@@ -38,13 +40,25 @@ namespace WM
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
 
+            gameInfo = new GameInfo(this);
+
             // Create the screen manager component.
-            screenManager = new ScreenManager(this);
+            screenManager = new ScreenManager(this, gameInfo);
             Components.Add(screenManager);
 
             // Activate the first screens.
             screenManager.AddScreen(new BackgroundScreen());
             screenManager.AddScreen(new MainMenuScreen());
+        }
+
+        public GameInfo GameInfo
+        {
+            get { return gameInfo; }
+        }
+
+        public ScreenManager ScreenManager
+        {
+            get { return screenManager; }
         }
 
         /// <summary>
