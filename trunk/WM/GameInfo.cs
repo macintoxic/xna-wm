@@ -2,7 +2,10 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using WM.Units;
+using SpriteSheetRuntime;
 using XMLContentShared;
+using System.Collections.Generic;
 using System.Collections.Generic;
 
 namespace WM
@@ -17,8 +20,12 @@ namespace WM
 
         private SpriteSheet groundSheet;
         private SpriteSheet cloudSheet;
+        private SpriteBatch spriteBatch;
+        private SpriteSheetBase spriteSheetUnit;
         private SpriteSheet waterSheet;
         private SpriteSheet dirtSheet;
+
+        private List<UnitBase> UnitsOnMap;
 
         private TileGrid rockLayer;
         private TileGrid groundLayer;
@@ -51,6 +58,8 @@ namespace WM
         {
             this.game = game;
             this.rand = new Random();
+
+            this.UnitsOnMap = new List<UnitBase>();
         }
 
         private SpriteSheet LoadCloudTiles(Texture2D texture)
@@ -253,6 +262,10 @@ namespace WM
             rockLayer = LoadRockLayer(numDetailTiles);
             cloudLayer = LoadCloudLayer(numCloudTiles);
 
+            spriteBatch = new SpriteBatch(game.ScreenManager.GraphicsDevice);
+            //spriteSheetUnit = content.Load<SpriteSheetBase>("XML\\Units\\SpriteSheetUnit");
+            GenerateUnitsOnMapList();
+
             camera = new Camera2D();
             ResetToInitialPositions();
         }
@@ -277,7 +290,8 @@ namespace WM
         public void Draw(GameTime gameTime)
         {
             GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
-            SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
+            //SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
+            float time = (float)gameTime.TotalGameTime.TotalSeconds;
 
             //since we're drawing in order from back to front,
             //depth buffer is disabled
@@ -291,6 +305,36 @@ namespace WM
             detailLayer.Draw(spriteBatch);
             rockLayer.Draw(spriteBatch);
             cloudLayer.Draw(spriteBatch);
+
+            spriteBatch.Begin();
+            //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
+            //spriteBatch.DrawString(gameFont, "Insert Gameplay Here", enemyPosition, Color.DarkRed);
+
+            for (int i = 0; i < UnitsOnMap.Count; i++)
+            {
+                UnitsOnMap[i].Draw(spriteBatch, time);
+                // Draw a spinning cat sprite, looking it up from the sprite sheet by name.
+                //spriteBatch.Draw(spriteSheetUnit.Texture, new Vector2(200, 250),
+                //                 spriteSheetUnit.SourceRectangle("cat"), Color.White,
+                //                 time, new Vector2(50, 50), 1, SpriteEffects.None, 0);
+
+                //// Draw an animating glow effect, by rapidly cycling
+                //// through 7 slightly different sprite images.
+                //const int animationFramesPerSecond = 20;
+                //const int animationFrameCount = 7;
+
+                //// Look up the index of the first glow sprite.
+                //int glowIndex = spriteSheetUnit.GetIndex("glow1");
+
+                //// Modify the index to select the current frame of the animation.
+                //glowIndex += (int)(time * animationFramesPerSecond) % animationFrameCount;
+
+                //// Draw the current glow sprite.
+                //spriteBatch.Draw(spriteSheetUnit.Texture, new Rectangle(100, 150, 200, 200),
+                //                 spriteSheetUnit.SourceRectangle(glowIndex), Color.White);
+            }
+
+            spriteBatch.End();
         }
 
         /// <summary>
@@ -338,6 +382,22 @@ namespace WM
             //changes have been accounted for, reset the changed value so that this
             //function is not called unnecessarily
             camera.ResetChanged();
+        }
+   
+        public void GenerateUnitsOnMapList()
+        {
+            HumanOid NewUnit = new HumanOid(new Vector2(100, 100), 0, new Vector2(1, 1), 10, 1, "XML\\Units\\SpriteSheetUnit");
+            NewUnit.Load(content);
+            UnitsOnMap.Add( NewUnit );
+
+            NewUnit = new HumanOid(new Vector2(200, 200), 0, new Vector2(1, 1), 10, 1, "XML\\Units\\SpriteSheetUnit");
+            NewUnit.Load(content);
+            UnitsOnMap.Add( NewUnit );
+
+            NewUnit = new HumanOid(new Vector2(300, 300), 0, new Vector2(1, 1), 10, 1, "XML\\Units\\SpriteSheetUnit");
+            NewUnit.Load(content);
+            UnitsOnMap.Add( NewUnit );
+
         }
     }
 }

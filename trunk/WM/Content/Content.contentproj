@@ -60,6 +60,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SpriteSheetPipeline\SpriteSheetPipeline.csproj">
+      <Project>{288693A4-E777-4A32-A658-3AB8B48C8511}</Project>
+      <Name>SpriteSheetPipeline</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\XMLContentExtension\XMLContentExtension.csproj">
       <Project>{D1B95280-C86B-4350-8C8E-B29E16548439}</Project>
       <Name>XMLContentExtension</Name>
@@ -107,6 +111,57 @@
   <ItemGroup>
     <Compile Include="Textures\Units\Units.png">
       <Name>Units</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="XML\Units\SpriteSheetUnit.xml">
+      <Name>SpriteSheetUnit</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>SpriteSheetProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Units\cat.tga">
+      <Name>cat</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Units\glow1.png">
+      <Name>glow1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Units\glow2.png">
+      <Name>glow2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Units\glow3.png">
+      <Name>glow3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Units\glow4.png">
+      <Name>glow4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Units\glow5.png">
+      <Name>glow5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Units\glow6.png">
+      <Name>glow6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Units\glow7.png">
+      <Name>glow7</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
