@@ -12,16 +12,21 @@ namespace WM.Units
         Vector2 position;
         float rotation;
         Vector2 scale;
+        float targetradius;
+        float speed;
 
         string textureAsset;
         Texture2D texture;
 
-        public UnitBase(Vector2 position, float rotation, Vector2 scale, string textureAsset)
+        public UnitBase(Vector2 position, float rotation, Vector2 scale, float targetRadius, float Speed, string textureAsset)
         {
             Position = position;
             Rotation = rotation;
             Scale = scale;
+            targetradius = targetRadius;
+            speed = Speed;
             TextureAsset = textureAsset;
+            
         }
 
         public Vector2 Position
@@ -40,6 +45,18 @@ namespace WM.Units
         {
             get { return scale; }
             set { scale = value; }
+        }
+
+        public float TargetRadius
+        {
+            get { return TargetRadius; }
+            set { TargetRadius = value; }
+        }
+
+        public float Speed
+        {
+            get { return speed; }
+            set { speed = value; }
         }
 
         public string TextureAsset
@@ -74,8 +91,6 @@ namespace WM.Units
         }
 
 
-        public virtual void Update(GameTime gameTime)
-        {
-        }
+        public virtual void Update(GameTime gameTime)   {}
     }
 }
