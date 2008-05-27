@@ -71,7 +71,8 @@ namespace WM.Units
         }
 
 
-        public virtual void Update(GameTime gameTime);
-
+        public virtual void Update(GameTime gameTime)
+        {
+        }
     }
 }

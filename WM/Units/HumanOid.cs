@@ -1,20 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace WM.Units
 {
-    class HumanOid : Microsoft.Xna.Framework.Game
+    class HumanOid : UnitBase
     {
         public HumanOid()
-        {
-            
+        {            
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            
         }
-
     }
 }
