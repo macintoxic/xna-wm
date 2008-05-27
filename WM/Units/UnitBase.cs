@@ -16,9 +16,12 @@ namespace WM.Units
         string textureAsset;
         Texture2D texture;
 
-        public UnitBase()
+        public UnitBase(Vector2 position, float rotation, Vector2 scale, string textureAsset)
         {
-            
+            Position = position;
+            Rotation = rotation;
+            Scale = scale;
+            TextureAsset = textureAsset;
         }
 
         public Vector2 Position
