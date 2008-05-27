@@ -64,37 +64,23 @@ namespace WM
             Texture2D groundTexture = content.Load<Texture2D>("Textures\\Terrain\\ground");
             Texture2D cloudTexture = content.Load<Texture2D>("Textures\\Terrain\\clouds");
 
-
             cloudSheet = new SpriteSheet(cloudTexture);
-            cloudSheet.AddSourceSprite((int)TileName.Clouds,
-                new Rectangle(0, 0, 1024, 1024));
+            cloudSheet.AddSourceSprite((int)TileName.Clouds, new Rectangle(0, 0, 1024, 1024));
+
             groundSheet = new SpriteSheet(groundTexture);
-            groundSheet.AddSourceSprite((int)TileName.Base,
-                new Rectangle(0, 0, 510, 510));
-            groundSheet.AddSourceSprite((int)TileName.Detail1,
-                new Rectangle(514, 0, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Detail2,
-                new Rectangle(769, 0, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Detail3,
-                new Rectangle(514, 256, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Detail4,
-                new Rectangle(769, 256, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.SoftDetail1,
-                new Rectangle(514, 514, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.SoftDetail2,
-                new Rectangle(769, 514, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.SoftDetail3,
-                new Rectangle(514, 769, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.SoftDetail4,
-                new Rectangle(769, 769, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Rocks1,
-                new Rectangle(0, 514, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Rocks2,
-                new Rectangle(256, 514, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Rocks3,
-                new Rectangle(0, 769, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Rocks4,
-                new Rectangle(256, 769, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.Base, new Rectangle(0, 0, 510, 510));
+            groundSheet.AddSourceSprite((int)TileName.Detail1, new Rectangle(514, 0, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.Detail2, new Rectangle(769, 0, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.Detail3, new Rectangle(514, 256, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.Detail4, new Rectangle(769, 256, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.SoftDetail1, new Rectangle(514, 514, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.SoftDetail2, new Rectangle(769, 514, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.SoftDetail3, new Rectangle(514, 769, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.SoftDetail4, new Rectangle(769, 769, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.Rocks1, new Rectangle(0, 514, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.Rocks2, new Rectangle(256, 514, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.Rocks3, new Rectangle(0, 769, 255, 255));
+            groundSheet.AddSourceSprite((int)TileName.Rocks4, new Rectangle(256, 769, 255, 255));
 
             //calculate the number of detial tiles, which are 
             //half the size of the base tiles, so there are
