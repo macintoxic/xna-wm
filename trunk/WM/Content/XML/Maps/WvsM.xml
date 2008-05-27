@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="System.Collections.Generic.List[XmlContentShared.Tile]">
+  <Asset Type="System.Collections.Generic.List[XMLContentShared.Tile]">
     <Item>
       <Position>0 0</Position>
       <Rotation>0</Rotation>
