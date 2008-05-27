@@ -2,6 +2,8 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using XMLContentShared;
+using System.Collections.Generic;
 
 namespace WM
 {
@@ -15,6 +17,8 @@ namespace WM
 
         private SpriteSheet groundSheet;
         private SpriteSheet cloudSheet;
+        private SpriteSheet waterSheet;
+        private SpriteSheet dirtSheet;
 
         private TileGrid rockLayer;
         private TileGrid groundLayer;
@@ -49,61 +53,88 @@ namespace WM
             this.rand = new Random();
         }
 
-        public void LoadContent()
+        private SpriteSheet LoadCloudTiles(Texture2D texture)
         {
-            if (content == null)
-                content = new ContentManager(game.Services, "Content");
+            SpriteSheet sheet = new SpriteSheet(texture);
+            sheet.AddSourceSprite((int)TileName.Clouds, new Rectangle(0, 0, 1024, 1024));
+            return sheet;
+        }
 
-            //When the backbuffer resolution changes, this part of the
-            //LoadContent calback is used to reset the screen center
-            screenCenter = new Vector2(
-                (float)game.ScreenManager.GraphicsDevice.Viewport.Width / 2f,
-                (float)game.ScreenManager.GraphicsDevice.Viewport.Height / 2f);
+        private SpriteSheet LoadGroundTiles(Texture2D texture)
+        {
+            SpriteSheet sheet = new SpriteSheet(texture);
+            sheet.AddSourceSprite((int)TileName.Base, new Rectangle(0, 0, 510, 510));
+            sheet.AddSourceSprite((int)TileName.Detail1, new Rectangle(514, 0, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Detail2, new Rectangle(769, 0, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Detail3, new Rectangle(514, 256, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Detail4, new Rectangle(769, 256, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail1, new Rectangle(514, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail2, new Rectangle(769, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail3, new Rectangle(514, 769, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail4, new Rectangle(769, 769, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks1, new Rectangle(0, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks2, new Rectangle(256, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks3, new Rectangle(0, 769, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks4, new Rectangle(256, 769, 255, 255));
+            return sheet;
+        }
 
+        private SpriteSheet LoadWaterTiles(Texture2D texture)
+        {
+            SpriteSheet sheet = new SpriteSheet(texture);
+            sheet.AddSourceSprite((int)TileName.Base, new Rectangle(0, 0, 510, 510));
+            sheet.AddSourceSprite((int)TileName.Detail1, new Rectangle(514, 0, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Detail2, new Rectangle(769, 0, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Detail3, new Rectangle(514, 256, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Detail4, new Rectangle(769, 256, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail1, new Rectangle(514, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail2, new Rectangle(769, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail3, new Rectangle(514, 769, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail4, new Rectangle(769, 769, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks1, new Rectangle(0, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks2, new Rectangle(256, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks3, new Rectangle(0, 769, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks4, new Rectangle(256, 769, 255, 255));
+            return sheet;
+        }
 
-            Texture2D groundTexture = content.Load<Texture2D>("Textures\\Terrain\\ground");
-            Texture2D cloudTexture = content.Load<Texture2D>("Textures\\Terrain\\clouds");
+        private SpriteSheet LoadDirtTiles(Texture2D texture)
+        {
+            SpriteSheet sheet = new SpriteSheet(texture);
+            sheet.AddSourceSprite((int)TileName.Base, new Rectangle(0, 0, 510, 510));
+            sheet.AddSourceSprite((int)TileName.Detail1, new Rectangle(514, 0, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Detail2, new Rectangle(769, 0, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Detail3, new Rectangle(514, 256, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Detail4, new Rectangle(769, 256, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail1, new Rectangle(514, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail2, new Rectangle(769, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail3, new Rectangle(514, 769, 255, 255));
+            sheet.AddSourceSprite((int)TileName.SoftDetail4, new Rectangle(769, 769, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks1, new Rectangle(0, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks2, new Rectangle(256, 514, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks3, new Rectangle(0, 769, 255, 255));
+            sheet.AddSourceSprite((int)TileName.Rocks4, new Rectangle(256, 769, 255, 255));
+            return sheet;
+        }
 
-            cloudSheet = new SpriteSheet(cloudTexture);
-            cloudSheet.AddSourceSprite((int)TileName.Clouds, new Rectangle(0, 0, 1024, 1024));
+        private TileGrid LoadGroundLayer()
+        {
+            TileGrid grid = new TileGrid(510, 510, numTiles, numTiles, Vector2.Zero, groundSheet, game.ScreenManager.GraphicsDevice);
 
-            groundSheet = new SpriteSheet(groundTexture);
-            groundSheet.AddSourceSprite((int)TileName.Base, new Rectangle(0, 0, 510, 510));
-            groundSheet.AddSourceSprite((int)TileName.Detail1, new Rectangle(514, 0, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Detail2, new Rectangle(769, 0, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Detail3, new Rectangle(514, 256, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Detail4, new Rectangle(769, 256, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.SoftDetail1, new Rectangle(514, 514, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.SoftDetail2, new Rectangle(769, 514, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.SoftDetail3, new Rectangle(514, 769, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.SoftDetail4, new Rectangle(769, 769, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Rocks1, new Rectangle(0, 514, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Rocks2, new Rectangle(256, 514, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Rocks3, new Rectangle(0, 769, 255, 255));
-            groundSheet.AddSourceSprite((int)TileName.Rocks4, new Rectangle(256, 769, 255, 255));
-
-            //calculate the number of detial tiles, which are 
-            //half the size of the base tiles, so there are
-            //twice as many (minus one since they are being offset)
-            int numDetailTiles = (numTiles * 2 - 1);
-            //add an offset to break up the pattern
-            int numCloudTiles = numTiles / 6 + 1;
-
-            //Create the ground layer tile
-            groundLayer = new TileGrid(510, 510, numTiles, numTiles, Vector2.Zero, groundSheet, game.ScreenManager.GraphicsDevice);
-            detailLayer = new TileGrid(255, 255, numDetailTiles, numDetailTiles, new Vector2(127, 127), groundSheet, game.ScreenManager.GraphicsDevice);
-            rockLayer = new TileGrid(255, 255, numDetailTiles, numDetailTiles, new Vector2(0, 0), groundSheet, game.ScreenManager.GraphicsDevice);
-            cloudLayer = new TileGrid(1024, 1024, numCloudTiles, numCloudTiles, Vector2.Zero, cloudSheet, game.ScreenManager.GraphicsDevice);
-
-            //These loops fill the datas with some appropriate data.  
-            //The clouds and ground clutter have been randomized.
             for (int i = 0; i < numTiles; i++)
             {
                 for (int j = 0; j < numTiles; j++)
                 {
-                    groundLayer.SetTile(i, j, 1);
+                    grid.SetTile(i, j, 1);
                 }
             }
+
+            return grid;
+        }
+
+        private TileGrid LoadDetailLayer(int numDetailTiles)
+        {
+            TileGrid grid = new TileGrid(255, 255, numDetailTiles, numDetailTiles, new Vector2(127, 127), groundSheet, game.ScreenManager.GraphicsDevice);
 
             for (int i = 0; i < numDetailTiles; i++)
             {
@@ -112,36 +143,44 @@ namespace WM
                     switch (rand.Next(20))
                     {
                         case 0:
-                            detailLayer.SetTile(i, j, (int)TileName.Detail1);
+                            grid.SetTile(i, j, (int)TileName.Detail1);
                             break;
                         case 1:
-                            detailLayer.SetTile(i, j, (int)TileName.Detail2);
+                            grid.SetTile(i, j, (int)TileName.Detail2);
                             break;
                         case 2:
-                            detailLayer.SetTile(i, j, (int)TileName.Detail3);
+                            grid.SetTile(i, j, (int)TileName.Detail3);
                             break;
                         case 3:
-                            detailLayer.SetTile(i, j, (int)TileName.Detail4);
+                            grid.SetTile(i, j, (int)TileName.Detail4);
                             break;
                         case 4:
                         case 5:
-                            detailLayer.SetTile(i, j, (int)TileName.SoftDetail1);
+                            grid.SetTile(i, j, (int)TileName.SoftDetail1);
                             break;
                         case 6:
                         case 7:
-                            detailLayer.SetTile(i, j, (int)TileName.SoftDetail2);
+                            grid.SetTile(i, j, (int)TileName.SoftDetail2);
                             break;
                         case 8:
                         case 9:
-                            detailLayer.SetTile(i, j, (int)TileName.SoftDetail3);
+                            grid.SetTile(i, j, (int)TileName.SoftDetail3);
                             break;
                         case 10:
                         case 11:
-                            detailLayer.SetTile(i, j, (int)TileName.SoftDetail4);
+                            grid.SetTile(i, j, (int)TileName.SoftDetail4);
                             break;
                     }
                 }
             }
+
+            return grid;
+        }
+
+        private TileGrid LoadRockLayer(int numDetailTiles)
+        {
+            TileGrid grid = new TileGrid(255, 255, numDetailTiles, numDetailTiles, new Vector2(0, 0), groundSheet, game.ScreenManager.GraphicsDevice);
+
             for (int i = 0; i < numDetailTiles; i++)
             {
                 for (int j = 0; j < numDetailTiles; j++)
@@ -149,34 +188,72 @@ namespace WM
                     switch (rand.Next(25))
                     {
                         case 0:
-                            rockLayer.SetTile(i, j, (int)TileName.Rocks1);
+                            grid.SetTile(i, j, (int)TileName.Rocks1);
                             break;
                         case 1:
-                            rockLayer.SetTile(i, j, (int)TileName.Rocks2);
+                            grid.SetTile(i, j, (int)TileName.Rocks2);
                             break;
                         case 2:
-                            rockLayer.SetTile(i, j, (int)TileName.Rocks3);
+                            grid.SetTile(i, j, (int)TileName.Rocks3);
                             break;
                         case 3:
                         case 4:
-                            rockLayer.SetTile(i, j, (int)TileName.Rocks4);
+                            grid.SetTile(i, j, (int)TileName.Rocks4);
                             break;
                     }
                 }
             }
+
+            return grid;
+        }
+
+        private TileGrid LoadCloudLayer(int numCloudTiles)
+        {
+            TileGrid grid = new TileGrid(1024, 1024, numCloudTiles, numCloudTiles, Vector2.Zero, cloudSheet, game.ScreenManager.GraphicsDevice);
 
             for (int i = 0; i < numCloudTiles; i++)
             {
                 for (int j = 0; j < numCloudTiles; j++)
                 {
 
-                    cloudLayer.SetTile(i, j, (int)TileName.Clouds);
+                    grid.SetTile(i, j, (int)TileName.Clouds);
 
                 }
             }
 
-            camera = new Camera2D();
+            return grid;
+        }
 
+        public void LoadContent()
+        {
+            if (content == null)
+                content = new ContentManager(game.Services, "Content");
+
+            screenCenter = new Vector2(
+                (float)game.ScreenManager.GraphicsDevice.Viewport.Width / 2f,
+                (float)game.ScreenManager.GraphicsDevice.Viewport.Height / 2f);
+
+            Level level = content.Load<Level>(@"XML\Maps\WvsM");
+            //List<Tile> tileList = content.Load<List<Tile>>("XML\\Maps\\WvsM");
+            Texture2D groundTexture = content.Load<Texture2D>("Textures\\Terrain\\ground");
+            Texture2D cloudTexture = content.Load<Texture2D>("Textures\\Terrain\\clouds");
+            //Texture2D waterTexture = content.Load<Texture2D>("Textures\\Terrain\\water");
+            //Texture2D dirtTexture = content.Load<Texture2D>("Textures\\Terrain\\dirt");
+
+            groundSheet = LoadGroundTiles(groundTexture);
+            cloudSheet = LoadCloudTiles(cloudTexture);
+            //waterSheet = LoadWaterTiles(waterTexture);
+            //dirtSheet = LoadDirtTiles(dirtTexture);
+
+            int numDetailTiles = (numTiles * 2 - 1);
+            int numCloudTiles = numTiles / 6 + 1;
+
+            groundLayer = LoadGroundLayer();
+            detailLayer = LoadDetailLayer(numDetailTiles);
+            rockLayer = LoadRockLayer(numDetailTiles);
+            cloudLayer = LoadCloudLayer(numCloudTiles);
+
+            camera = new Camera2D();
             ResetToInitialPositions();
         }
 
@@ -213,14 +290,7 @@ namespace WM
             groundLayer.Draw(spriteBatch);
             detailLayer.Draw(spriteBatch);
             rockLayer.Draw(spriteBatch);
-
-            //draw the clouds
             cloudLayer.Draw(spriteBatch);
-
-            //spriteBatch.Begin();
-            //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
-            //spriteBatch.DrawString(gameFont, "Insert Gameplay Here", enemyPosition, Color.DarkRed);
-            //spriteBatch.End();
         }
 
         /// <summary>
@@ -229,14 +299,10 @@ namespace WM
         /// </summary>
         private void ResetToInitialPositions()
         {
-            //set up the 2D camera
-            //set the initial position to the center of the
-            //tile field
             camera.Position = new Vector2(numTiles * 255);
             camera.Rotation = 0f;
             camera.Zoom = 1f;
             camera.MoveUsingScreenAxis = true;
-
 
             CameraChanged();
         }
@@ -250,25 +316,24 @@ namespace WM
             //set rotation
             groundLayer.CameraRotation = camera.Rotation;
             detailLayer.CameraRotation = camera.Rotation;
-            cloudLayer.CameraRotation = camera.Rotation;
             rockLayer.CameraRotation = camera.Rotation;
+            cloudLayer.CameraRotation = camera.Rotation;
 
             //set zoom
-            groundLayer.CameraZoom = detailLayer.CameraZoom =
+            groundLayer.CameraZoom = camera.Zoom;
+            detailLayer.CameraZoom = camera.Zoom; 
             rockLayer.CameraZoom = camera.Zoom;
             cloudLayer.CameraZoom = camera.Zoom + 1.0f;
 
             //For an extra special effect, the camera zoom is figured into the cloud
             //alpha. The clouds will appear to fade out as camera zooms in.
-            cloudLayer.Color = new Color(new Vector4(
-                    1.0f, 1.0f, 1.0f, 2 / (2f * camera.Zoom + 1.0f)));
+            cloudLayer.Color = new Color(new Vector4(1.0f, 1.0f, 1.0f, 2 / (2f * camera.Zoom + 1.0f)));
 
             //set position
             groundLayer.CameraPosition = camera.Position;
             detailLayer.CameraPosition = camera.Position;
             rockLayer.CameraPosition = camera.Position;
-            //to acheive a paralax effect, scale down cloud movement
-            cloudLayer.CameraPosition = camera.Position / 3.0f;
+            cloudLayer.CameraPosition = camera.Position / 3.0f; // to acheive a paralax effect, scale down cloud movement
 
             //changes have been accounted for, reset the changed value so that this
             //function is not called unnecessarily
