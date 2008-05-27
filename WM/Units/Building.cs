@@ -19,9 +19,9 @@ namespace WM.Units
             base.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch batch)
+        public void Draw(SpriteBatch batch, float time)
         {
-            base.Draw(batch);
+            base.Draw(batch, time);
         }
     }
 }

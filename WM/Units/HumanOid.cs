@@ -8,7 +8,7 @@ namespace WM.Units
     {
         public HumanOid(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset)
             : base(position, rotation, scale, targetRadius, speed, textureAsset)
-        {            
+        {   
         }
 
         public override void Update(GameTime gameTime)
@@ -16,9 +16,29 @@ namespace WM.Units
             base.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch batch)
+        public override void Draw(SpriteBatch batch, float time)
         {
-            base.Draw(batch);
+            // Draw a spinning cat sprite, looking it up from the sprite sheet by name.
+            batch.Draw(spriteSheetUnit.Texture, Position,
+                             spriteSheetUnit.SourceRectangle("cat"), Color.White,
+                             time, new Vector2(50, 50), Scale.X, SpriteEffects.None, 0);
+
+            // Draw an animating glow effect, by rapidly cycling
+            // through 7 slightly different sprite images.
+            const int animationFramesPerSecond = 20;
+            const int animationFrameCount = 7;
+
+            // Look up the index of the first glow sprite.
+            int glowIndex = spriteSheetUnit.GetIndex("glow1");
+
+            // Modify the index to select the current frame of the animation.
+            glowIndex += (int)(time * animationFramesPerSecond) % animationFrameCount;
+
+            // Draw the current glow sprite.
+            batch.Draw(spriteSheetUnit.Texture, new Rectangle(100, 150, 200, 200),
+                             spriteSheetUnit.SourceRectangle(glowIndex), Color.White);
+
+            base.Draw(batch, time);
         }
 
         public void Move(GameTime gameTime)

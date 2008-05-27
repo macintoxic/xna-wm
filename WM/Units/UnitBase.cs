@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using SpriteSheetRuntime;
 
 namespace WM.Units
 {
@@ -11,22 +12,22 @@ namespace WM.Units
     {
         Vector2 position;
         float rotation;
-        Vector2 scale;
+        Vector2 scale;  // we only use the X for now
         float targetradius;
         float speed;
 
         string textureAsset;
-        Texture2D texture;
+        Texture2D texture; // not used
+        protected SpriteSheetBase spriteSheetUnit;
 
-        public UnitBase(Vector2 position, float rotation, Vector2 scale, float targetRadius, float Speed, string textureAsset)
+        public UnitBase(Vector2 position, float rotation, Vector2 scale, float targetRadius, float Speed, string TextureAsset)
         {
             Position = position;
             Rotation = rotation;
             Scale = scale;
             targetradius = targetRadius;
             speed = Speed;
-            TextureAsset = textureAsset;
-            
+            textureAsset = TextureAsset;           
         }
 
         public Vector2 Position
@@ -59,25 +60,28 @@ namespace WM.Units
             set { speed = value; }
         }
 
-        public string TextureAsset
-        {
-            get { return textureAsset; }
-            set { textureAsset = value; }
-        }
+        //public string TextureAsset
+        //{
+        //    get { return textureAsset; }
+        //    set { textureAsset = value; }
+        //}
 
-        [ContentSerializerIgnore]
-        public Texture2D Texture
-        {
-            get { return texture; }
-        }
+        //[ContentSerializerIgnore]
+        //public Texture2D Texture
+        //{
+        //    get { return texture; }
+        //}
 
         public void Load(ContentManager content)
         {
-            texture = content.Load<Texture2D>(textureAsset);
+            //texture = content.Load<Texture2D>(textureAsset);                        
+            //spriteSheetUnit = content.Load<SpriteSheetBase>("XML\\Units\\SpriteSheetUnit");
+            spriteSheetUnit = content.Load<SpriteSheetBase>(textureAsset);
         }
 
-        public void Draw(SpriteBatch batch)
+        public virtual void Draw(SpriteBatch batch, float time)
         {
+            /*
             batch.Draw(
                 texture,
                 position,
@@ -88,6 +92,7 @@ namespace WM.Units
                 scale,
                 SpriteEffects.None,
                 0f);
+             */
         }
 
 
