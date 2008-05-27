@@ -12,7 +12,7 @@ namespace WM
     {
         #region Fields
         private int[][] grid;
-        private GraphicsDeviceManager graphics;
+        private GraphicsDevice graphics;
         private SpriteSheet sheet;
         private int width;
         private int height;
@@ -35,7 +35,7 @@ namespace WM
         #region Initialization
         public TileGrid(int tileWidth, int tileHeight, int numXTiles, int numYTiles,
             Vector2 offset, SpriteSheet tileSheet,
-            GraphicsDeviceManager graphicsComponent)
+            GraphicsDevice graphicsComponent)
         {
             if (graphicsComponent == null)
             {
@@ -74,10 +74,10 @@ namespace WM
         void OnGraphicsComponentDeviceReset(object sender, EventArgs e)
         {
             displaySize.X =
-                graphics.GraphicsDevice.PresentationParameters.BackBufferWidth;
+                graphics.PresentationParameters.BackBufferWidth;
 
             displaySize.Y =
-                graphics.GraphicsDevice.PresentationParameters.BackBufferHeight;
+                graphics.PresentationParameters.BackBufferHeight;
 
             visibilityChanged = true;
         }
