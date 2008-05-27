@@ -74,6 +74,7 @@
     <Compile Include="Screens\PauseMenuScreen.cs" />
     <Compile Include="SpriteSheet.cs" />
     <Compile Include="TileGrid.cs" />
+    <Compile Include="Units\UnitBase.cs" />
     <Compile Include="WMGame.cs" />
   </ItemGroup>
   <ItemGroup>
