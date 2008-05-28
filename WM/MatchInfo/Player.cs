@@ -103,6 +103,7 @@ namespace WM.MatchInfo
         public void ClearSelections()
         {
             selectedUnitList.Clear();
+            selectedUnitInHud = null;
             selectedBuildingOnMap = null;
             selectedBuildingInHud = null;
         }
@@ -168,9 +169,7 @@ namespace WM.MatchInfo
                 unitBuildingList[i].DrawingPosition = position + new Vector2(400, 300);
                 unitBuildingList[i].DrawingScale = scale;
                 unitBuildingList[i].screenCenter = matchInfo.GameInfo.ScreenCenter;
-            }
-
-            
+            }            
         }
 
         public int CreditAmount
