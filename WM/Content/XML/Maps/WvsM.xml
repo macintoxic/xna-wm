@@ -7,6 +7,10 @@
         <Name>ground</Name>
         <Depth>0.0</Depth>
         <Color>100</Color>
+        <Offset>0 0</Offset>
+        <CameraPosition>0 0</CameraPosition>
+        <CameraRotation>0</CameraRotation>
+        <CameraZoom>1</CameraZoom>
         <TextureAsset>Textures\\terrain\\ground</TextureAsset>
         <TileList>
           <Item>
@@ -29,6 +33,10 @@
         <Name>water</Name>
         <Depth>0.0</Depth>
         <Color>0</Color>
+        <Offset>0 0</Offset>
+        <CameraPosition>0 0</CameraPosition>
+        <CameraRotation>0</CameraRotation>
+        <CameraZoom>1</CameraZoom>
         <TextureAsset>Textures\\terrain\\water</TextureAsset>
         <TileList>
           <Item>

@@ -15,9 +15,12 @@ namespace XMLContentShared
 
         private Vector2 position;
 
+        private Vector2 drawingPosition;
+
         private float rotation;
 
         private Vector2 scale;
+        private Vector2 drawingScale;
 
         private Vector2 offset;
 
@@ -27,6 +30,20 @@ namespace XMLContentShared
         {
             get { return position; }
             set { position = value; }
+        }
+
+        [ContentSerializerIgnore]
+        public Vector2 DrawingPosition
+        {
+            get { return drawingPosition; }
+            set { drawingPosition = value; }
+        }
+
+        [ContentSerializerIgnore]
+        public Vector2 DrawingScale
+        {
+            get { return drawingScale; }
+            set { drawingScale = value; }
         }
 
         public float Rotation
