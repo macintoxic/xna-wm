@@ -51,6 +51,16 @@ namespace WM
             screenManager.AddScreen(new MainMenuScreen());
         }
 
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            // Set this to true to make the mouse cursor visible.
+            // Use the default (false) if you are drawing your own
+            // cursor or don't want a cursor.
+            this.IsMouseVisible = true;
+        }
+
         public GameInfo GameInfo
         {
             get { return gameInfo; }

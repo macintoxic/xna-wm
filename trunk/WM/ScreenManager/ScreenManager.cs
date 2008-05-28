@@ -211,14 +211,14 @@ namespace WM
         /// Tells each screen to draw itself.
         /// </summary>
         public override void Draw(GameTime gameTime)
-        {
+        {            
             foreach (GameScreen screen in screens)
             {
                 if (screen.ScreenState == ScreenState.Hidden)
                     continue;
 
                 screen.Draw(gameTime);
-            }
+            }             
         }
 
 
