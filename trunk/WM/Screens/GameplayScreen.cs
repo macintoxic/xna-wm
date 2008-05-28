@@ -63,7 +63,7 @@ namespace WM.Screens
         /// Lets the game respond to player input. Unlike the Update method,
         /// this will only be called when the gameplay screen is active.
         /// </summary>
-        public override void HandleInput(InputState input)
+        public override void HandleInput(GameTime gameTime, InputState input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -75,7 +75,7 @@ namespace WM.Screens
             }
             else
             {
-                ScreenManager.GameInfo.HandleInput(input);
+                ScreenManager.GameInfo.HandleInput(gameTime, input);
             }
         }
 

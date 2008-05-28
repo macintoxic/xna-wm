@@ -24,6 +24,28 @@ namespace XMLContentShared
         private Color color = Color.LightGray;
 
         /// <summary>
+        /// An optional offset to the world.
+        /// </summary>
+        private Vector2 offset;
+
+        private Vector2 screenCenter;
+
+        /// <summary>
+        /// The position of the camera on this layer.
+        /// </summary>
+        private Vector2 cameraPosition;
+
+        /// <summary>
+        /// The rotation of the camera on this layer.
+        /// </summary>
+        private float cameraRotation;
+
+        /// <summary>
+        /// The zoom of the camera on this layer.
+        /// </summary>
+        private float cameraZoom;
+
+        /// <summary>
         /// The name of the texture that this layer uses.
         /// </summary>
         private string textureAsset;
@@ -63,6 +85,43 @@ namespace XMLContentShared
         {
             get { return color; }
             set { color = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the optional offset to the rest of the world.
+        /// </summary>
+        public Vector2 Offset
+        {
+            get { return offset; }
+            set { offset = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the optional offset to the rest of the world.
+        /// </summary>
+        [ContentSerializerIgnore]
+        public Vector2 ScreenCenter
+        {
+            get { return screenCenter; }
+            set { screenCenter = value; }
+        }
+
+        public Vector2 CameraPosition
+        {
+            get { return cameraPosition; }
+            set { cameraPosition = value; }
+        }
+
+        public float CameraRotation
+        {
+            get { return cameraRotation; }
+            set { cameraRotation = value; }
+        }
+
+        public float CameraZoom
+        {
+            get { return cameraZoom; }
+            set { cameraZoom = value; }
         }
 
         /// <summary>
@@ -109,22 +168,26 @@ namespace XMLContentShared
 
             foreach (Tile tile in tileList)
             {
-                Rectangle sourceRectangle = new Rectangle(
+                Rectangle sourceRect = new Rectangle(
                     (int)tile.Offset.X,
                     (int)tile.Offset.Y,
                     (int)tile.Size.X,
                     (int)tile.Size.Y);
 
-                spriteBatch.Draw(
-                    texture, 
-                    tile.Position,
-                    sourceRectangle,
-                    color, 
-                    tile.Rotation, 
-                    new Vector2(tile.Size.X / 2, tile.Size.Y / 2),
-                    tile.Scale, 
-                    SpriteEffects.None, 
-                    depth);
+                //spriteBatch.Draw(
+                //    texture, 
+                //    tile.DrawingPosition,
+                //    sourceRectangle,
+                //    color, 
+                //    tile.Rotation, 
+                //    new Vector2(tile.Size.X / 2, tile.Size.Y / 2),
+                //    tile.Scale, 
+                //    SpriteEffects.None, 
+                //    depth);
+
+                spriteBatch.Draw(texture, screenCenter, sourceRect, color,
+                    cameraRotation, tile.DrawingPosition, tile.DrawingScale, 
+                    SpriteEffects.None, 0.0f);
             }
 
             spriteBatch.End();
