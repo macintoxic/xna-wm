@@ -34,6 +34,24 @@ namespace XMLContentShared
             buildingList = new List<BuildingItem>();
         }
 
+        public void LoadContent(ContentManager content)
+        {
+            foreach (UnitItem unitItem in humanOidList)
+                unitItem.LoadContent(content);
+
+            foreach (UnitItem unitItem in vehicleList)
+                unitItem.LoadContent(content);
+
+            foreach (BuildingItem buildingItem in buildingList)
+                buildingItem.LoadContent(content);
+        }
+
+        public void UnloadContent(ContentManager content)
+        {
+            //foreach (TileLayer layer in layerList)
+            //    layer.UnloadContent(content);
+        }
+
         /// <summary>
         /// Gets or sets the name of this level.
         /// </summary>

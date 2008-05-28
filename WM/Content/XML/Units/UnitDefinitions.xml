@@ -5,10 +5,10 @@
     <HumanOidList>
       <Item>        
         <Name>Soldier</Name>
-        <TextureAsset>Textures\\terrain\\ground</TextureAsset>
+        <TextureAsset>Textures\\terrain\\dirt</TextureAsset>
         <Position>0 0</Position>
         <Rotation>0</Rotation>
-        <Scale>.1 .1</Scale>
+        <Scale>1 1</Scale>
         <Offset>0 0</Offset>
         <Size>100 100</Size>
         <Speed>2</Speed>
@@ -16,15 +16,16 @@
         <AttackPower>10</AttackPower>
         <AttackRadius>10</AttackRadius>
         <DefenseRadius>20</DefenseRadius>
+        <CreditsCost>25</CreditsCost>
       </Item>
-     </HumanOidList>
-     <VehicleList>    
+    </HumanOidList>
+    <VehicleList>
       <Item>
         <Name>Tank</Name>
-        <TextureAsset>Textures\\terrain\\ground</TextureAsset>
+        <TextureAsset>Textures\\terrain\\dirt</TextureAsset>
         <Position>0 0</Position>
         <Rotation>0</Rotation>
-        <Scale>.1 .1</Scale>
+        <Scale>1 1</Scale>
         <Offset>0 0</Offset>
         <Size>100 100</Size>
         <Speed>4</Speed>
@@ -32,16 +33,17 @@
         <AttackPower>40</AttackPower>
         <AttackRadius>20</AttackRadius>
         <DefenseRadius>30</DefenseRadius>
+        <CreditsCost>100</CreditsCost>
       </Item>      
     </VehicleList>    
 
     <BuildingList>
       <Item>
-        <Name>HeadQuarters</Name>
-        <TextureAsset>Textures\\terrain\\ground</TextureAsset>
+        <Name>HeadQuarter</Name>
+        <TextureAsset>Textures\\Units\\Buildings</TextureAsset>
         <Position>0 0</Position>
         <Rotation>0</Rotation>
-        <Scale>.1 .1</Scale>
+        <Scale>1 1</Scale>
         <Offset>0 0</Offset>
         <Size>100 100</Size>
         <Speed>0</Speed>
@@ -49,7 +51,41 @@
         <AttackPower>0</AttackPower>
         <AttackRadius>0</AttackRadius>
         <DefenseRadius>0</DefenseRadius>
+        <CreditsCost>1000</CreditsCost>
+        <ProductionUnit>null</ProductionUnit>
       </Item>
+      <Item>
+        <Name>Barrack</Name>
+        <TextureAsset>Textures\\Units\\Buildings</TextureAsset>
+        <Position>0 0</Position>
+        <Rotation>0</Rotation>
+        <Scale>1 1</Scale>
+        <Offset>64 0</Offset>
+        <Size>100 100</Size>
+        <Speed>0</Speed>
+        <Health>1000</Health>
+        <AttackPower>0</AttackPower>
+        <AttackRadius>0</AttackRadius>
+        <DefenseRadius>0</DefenseRadius>
+        <CreditsCost>200</CreditsCost>
+        <ProductionUnit>HumanOid</ProductionUnit>
+      </Item>
+      <Item>
+        <Name>WarFactory</Name>
+        <TextureAsset>Textures\\Units\\Buildings</TextureAsset>
+        <Position>0 0</Position>
+        <Rotation>0</Rotation>
+        <Scale>1 1</Scale>
+        <Offset>128 0</Offset>
+        <Size>100 100</Size>
+        <Speed>0</Speed>
+        <Health>1000</Health>
+        <AttackPower>0</AttackPower>
+        <AttackRadius>0</AttackRadius>
+        <DefenseRadius>0</DefenseRadius>
+        <CreditsCost>500</CreditsCost>
+        <ProductionUnit>Vehicle</ProductionUnit>
+      </Item>      
     </BuildingList>  
     
   </Asset>

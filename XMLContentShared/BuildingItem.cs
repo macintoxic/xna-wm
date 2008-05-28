@@ -34,6 +34,8 @@ namespace XMLContentShared
         private float attackPower;
         private float attackRadius;
         private float defenseRadius;
+        private int creditsCost;
+        private string productionUnit;
 
         /// <summary>
         /// Gets or sets the name of this tile layer.
@@ -118,10 +120,32 @@ namespace XMLContentShared
             get { return defenseRadius; }
             set { defenseRadius = value; }
         }
-       
+
+        public int CreditsCost
+        {
+            get { return creditsCost; }
+            set { creditsCost = value; }
+        }
+
+        public string ProductionUnit
+        {
+            get { return productionUnit; }
+            set { productionUnit = value; }
+        }
+
         public void Load(ContentManager content)
         {
             texture = content.Load<Texture2D>(textureAsset);
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            Load(content);
+        }
+
+        public void UnLoadContent(ContentManager content)
+        {
+
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 
@@ -14,19 +15,45 @@ namespace WM.MatchInfo
         private string startTime;       // The time the game started
         private int SyncTimeMs;         // used to determine after how many time we need to sync
 
-        public MatchInfo(GameInfo info)
+        public MatchInfo(GameInfo gameInfoObj)
         {
-            gameInfo = info;
-
             players = new List<Player>();
             Map = "WvsM";       // or WvsM.xml depends on the loading style.
             startTime = "0";
             SyncTimeMs = 6000;
+
+            gameInfo = gameInfoObj;
         }
 
         public void AddPlayer(Player player)
         {
             players.Add(player);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, float gameTime)
+        {
+            for (int i = 0; i < players.Count; i++ )
+            {
+                players[i].Draw(spriteBatch, gameTime);
+            }
+        }
+        /*
+        public void UpdateUnitPositions()
+        {
+            gameInfo.MyPlayer.UpdateUnitPositions();
+        }
+
+        public void UpdateBuildingPositions()
+        {
+            gameInfo.MyPlayer.UpdateBuildingPositions();
+        }
+         */
+
+
+        public GameInfo GameInfo
+        {
+            get { return gameInfo; }
+            set { gameInfo = value; }
         }
 
     }

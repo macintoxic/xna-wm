@@ -7,8 +7,8 @@ namespace WM.Units
 {
     public class HumanOid : UnitBase
     {
-        public HumanOid(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset)
-            : base(position, rotation, scale, targetRadius, speed, textureAsset)
+        public HumanOid(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 Offset)
+            : base(position, rotation, scale, targetRadius, speed, textureAsset, Offset)
         {   
         }
 

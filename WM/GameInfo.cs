@@ -46,6 +46,7 @@ namespace WM
         private Random rand;
 
         private Level currentLevel;
+        private XMLContentShared.Units unitList;
 
         public GameInfo(WMGame game)
         {
@@ -55,7 +56,7 @@ namespace WM
             mouseControl = new MouseControl(this);
 
             matchInfo = new MatchInfo.MatchInfo(this);
-            myPlayer = new MatchInfo.Player(this);
+            myPlayer = new MatchInfo.Player(matchInfo);
             matchInfo.AddPlayer(myPlayer);
 
             this.UnitsOnMap = new List<UnitBase>();
@@ -116,7 +117,7 @@ namespace WM
         {
             int gamerIndex = NetworkSession.AllGamers.IndexOf(e.Gamer);
 
-            e.Gamer.Tag = new MatchInfo.Player(this);
+            e.Gamer.Tag = new MatchInfo.Player(matchInfo);
         }
 
         /// <summary>
@@ -144,8 +145,10 @@ namespace WM
             currentLevel = content.Load<Level>(@"XML\Maps\WvsM");
             currentLevel.LoadContent(content);
 
-            XMLContentShared.Units unitList = content.Load<XMLContentShared.Units>("XML\\Units\\UnitDefinitions");
-            GenerateUnitsOnMapList();
+            unitList = content.Load<XMLContentShared.Units>("XML\\Units\\UnitDefinitions");
+            unitList.LoadContent(content);
+
+            //GenerateUnitsOnMapList();
 
             camera = new Camera2D();
             ResetToInitialPositions();
@@ -160,19 +163,94 @@ namespace WM
             switch (element)
             {
                 case HudElementType.BuildBarrack:
+                    {
+                        for (int i = 0; i < unitList.BuildingList.Count; i++)
+                            if (unitList.BuildingList[i].Name == "Barrack")
+                            {
+                                Building newBuilding = new Building(unitList.BuildingList[i].Position,
+                                    unitList.BuildingList[i].Rotation,
+                                    unitList.BuildingList[i].Scale,
+                                    unitList.BuildingList[i].AttackRadius,
+                                    unitList.BuildingList[i].Speed,
+                                    unitList.BuildingList[i].TextureAsset,
+                                    unitList.BuildingList[i].Offset);
+                                MyPlayer.SelectedBuildingInHud = newBuilding;
+                                break;
+                            }
+                    }                   
                     break;
 
                 case HudElementType.BuildHQ:
+                    {
+                        for (int i = 0; i < unitList.BuildingList.Count; i++)
+                            if (unitList.BuildingList[i].Name == "HeadQuarter")
+                            {
+                                Building newBuilding = new Building(unitList.BuildingList[i].Position,
+                                    unitList.BuildingList[i].Rotation,
+                                    unitList.BuildingList[i].Scale,
+                                    unitList.BuildingList[i].AttackRadius,
+                                    unitList.BuildingList[i].Speed,
+                                    unitList.BuildingList[i].TextureAsset,
+                                    unitList.BuildingList[i].Offset);
+                                MyPlayer.SelectedBuildingInHud = newBuilding;
+                                break;
+                            }
+                    }        
+                    break;
+                case HudElementType.BuildWarFactory:
+                    {
+                        for (int i = 0; i < unitList.BuildingList.Count; i++)
+                            if (unitList.BuildingList[i].Name == "WarFactory")
+                            {
+                                Building newBuilding = new Building(unitList.BuildingList[i].Position,
+                                    unitList.BuildingList[i].Rotation,
+                                    unitList.BuildingList[i].Scale,
+                                    unitList.BuildingList[i].AttackRadius,
+                                    unitList.BuildingList[i].Speed,
+                                    unitList.BuildingList[i].TextureAsset,
+                                    unitList.BuildingList[i].Offset);
+                                MyPlayer.SelectedBuildingInHud = newBuilding;
+                                break;
+                            }
+                    }
                     break;
 
                 case HudElementType.BuildSoldier:
+                    {
+                        for (int i = 0; i < unitList.HumanOidList.Count; i++)
+                            if (unitList.HumanOidList[i].Name == "Soldier")
+                            {
+                                HumanOid newSoldier = new HumanOid(unitList.HumanOidList[i].Position,
+                                    unitList.HumanOidList[i].Rotation,
+                                    unitList.HumanOidList[i].Scale,
+                                    unitList.HumanOidList[i].AttackRadius,
+                                    unitList.HumanOidList[i].Speed,
+                                    unitList.HumanOidList[i].TextureAsset,
+                                    unitList.HumanOidList[i].Offset);
+                                MyPlayer.SelectedUnitInHud = newSoldier;
+                                break;
+                            }
+                    }
                     break;
 
                 case HudElementType.BuildTank:
+                    {
+                        for (int i = 0; i < unitList.VehicleList.Count; i++)
+                            if (unitList.VehicleList[i].Name == "Tank")
+                            {
+                                HumanOid newVehicle = new HumanOid(unitList.VehicleList[i].Position,
+                                    unitList.VehicleList[i].Rotation,
+                                    unitList.VehicleList[i].Scale,
+                                    unitList.VehicleList[i].AttackRadius,
+                                    unitList.VehicleList[i].Speed,
+                                    unitList.VehicleList[i].TextureAsset,
+                                    unitList.VehicleList[i].Offset);
+                                MyPlayer.SelectedUnitInHud = newVehicle;
+                                break;
+                            }
+                    }
                     break;
 
-                case HudElementType.BuildWarFactory:
-                    break;
             }
         }
 
@@ -281,6 +359,8 @@ namespace WM
                 currentLevel.Update(gameTime);
                 hud.Update(gameTime, graphics);
             }
+
+            mouseControl.Update();
         }
 
         private void UpdateTiles()
@@ -316,6 +396,11 @@ namespace WM
                     tile.DrawingScale = scale;
                 }
             }
+
+            //matchInfo.UpdateUnitPositions();
+            //matchInfo.UpdateBuildingPositions();
+            MyPlayer.UpdateUnitPositions();
+            MyPlayer.UpdateBuildingPositions();
         }
 
         public void HandleInput(GameTime gameTime, InputState input)
@@ -369,9 +454,12 @@ namespace WM
             {
                 //SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
                 float time = (float)gameTime.TotalGameTime.TotalSeconds;
-
+                //Draw level
                 currentLevel.Draw(gameTime, spriteBatch);
                 hud.Draw(gameTime, graphics, spriteBatch);
+
+                //Draw Units/Buildings on Map
+                matchInfo.Draw(spriteBatch, time);
 
                 spriteBatch.Begin();
                 for (int i = 0; i < UnitsOnMap.Count; i++)
@@ -379,6 +467,7 @@ namespace WM
                     UnitsOnMap[i].Draw(spriteBatch, time);
                 }
                 spriteBatch.End();
+
             }
         }
 
@@ -414,8 +503,9 @@ namespace WM
             camera.ResetChanged();
         }
    
-        public void GenerateUnitsOnMapList()
+        public void GenerateUnitsOnMapList() // test function can be removed anytime
         {
+            /*
             HumanOid NewUnit = new HumanOid(new Vector2(100, 100), 0, new Vector2(0.5f, 0.5f), 10, 1, "XML\\Units\\SpriteSheetUnit");
             NewUnit.Load(content);
             UnitsOnMap.Add( NewUnit );
@@ -427,7 +517,7 @@ namespace WM
             NewUnit = new HumanOid(new Vector2(300, 300), 0, new Vector2(0.5f, 0.5f), 10, 1, "XML\\Units\\SpriteSheetUnit");
             NewUnit.Load(content);
             UnitsOnMap.Add( NewUnit );
-
+            */
         }
 
         public MatchInfo.Player MyPlayer
@@ -440,6 +530,18 @@ namespace WM
         {
             get { return camera; }
             set { camera = value; }
+        }
+
+        public ContentManager Content
+        {
+            get { return content; }
+            set { content = value; }
+        }
+
+        public Vector2 ScreenCenter
+        {
+            get { return screenCenter; }
+            set { screenCenter = value; }
         }
 
     }

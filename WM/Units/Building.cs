@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Net;
 
 namespace WM.Units
 {
     public class Building : UnitBase
     {
-        public Building(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset)
-            : base(position, rotation, scale, targetRadius, speed, textureAsset)
+        private UnitBase productionUnit;
+
+        public Building(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 Offset)
+            : base(position, rotation, scale, targetRadius, speed, textureAsset, Offset)
         {
             targetRadius = 0;
             speed = 0;
@@ -26,15 +29,27 @@ namespace WM.Units
         }
 
         public UnitBase GetProductionUnit()
-        {
-            // todo return unit to produce
-            return null;
+        {            
+            return productionUnit;
         }
 
         public Vector2 GetUnitSpawnPosition()
         {
             // todo update to correct location, maybe set by xml or always default right bottom ???
             return Position;
+        }
+
+        public override void Load(ContentManager content)
+        {
+            //texture = content.Load<Texture2D>(textureAsset);
+            //spriteSheetUnit = content.Load<SpriteSheetBase>("XML\\Units\\SpriteSheetUnit");
+            texture = content.Load<Texture2D>(TextureAsset);
+        }
+
+        public UnitBase ProductionUnit
+        {
+            get { return productionUnit; }
+            set { productionUnit = value; }
         }
 
         public override void UpdateNetworkReader(PacketReader reader)
