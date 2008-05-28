@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace XMLContentShared
 {
@@ -11,6 +12,16 @@ namespace XMLContentShared
         /// The name of this layer.
         /// </summary>
         private string name;
+
+        /// <summary>
+        /// The depth of this layer.
+        /// </summary>
+        private float depth = 0.0f;
+
+        /// <summary>
+        /// The color of this layer.
+        /// </summary>
+        private Color color = Color.LightGray;
 
         /// <summary>
         /// The name of the texture that this layer uses.
@@ -37,6 +48,24 @@ namespace XMLContentShared
         }
 
         /// <summary>
+        /// Gets or sets the depth of this layer.
+        /// </summary>
+        public float Depth
+        {
+            get { return depth; }
+            set { depth = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the color of this layer.
+        /// </summary>
+        public Color Color
+        {
+            get { return color; }
+            set { color = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the texture that is used by this tile layer.
         /// </summary>
         public string TextureAsset
@@ -60,9 +89,53 @@ namespace XMLContentShared
             set { tileList = value; }
         }
 
-        public void Load(ContentManager content)
+        public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>(textureAsset);
+        }
+
+
+        public void UnloadContent(ContentManager content)
+        {
+        }
+
+        public void Update(GameTime gameTime)
+        {
+        }
+
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+
+            foreach (Tile tile in tileList)
+            {
+                Rectangle sourceRectangle = new Rectangle(
+                    (int)tile.Offset.X,
+                    (int)tile.Offset.Y,
+                    (int)tile.Size.X,
+                    (int)tile.Size.Y);
+
+                spriteBatch.Draw(
+                    texture, 
+                    tile.Position,
+                    sourceRectangle,
+                    color, 
+                    tile.Rotation, 
+                    new Vector2(tile.Size.X / 2, tile.Size.Y / 2),
+                    tile.Scale, 
+                    SpriteEffects.None, 
+                    depth);
+            }
+
+            spriteBatch.End();
+
+            ////draw the background layers
+            //groundLayer.Color = Color.LightGray;
+
+            //groundLayer.Draw(spriteBatch);
+            //detailLayer.Draw(spriteBatch);
+            //rockLayer.Draw(spriteBatch);
+            //cloudLayer.Draw(spriteBatch);
         }
     }
 }

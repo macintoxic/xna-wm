@@ -26,6 +26,8 @@ namespace XMLContentExtension
 
         private void WriteTileLayer(ContentWriter output, TileLayer layer)
         {
+            //output.Write(layer.Color.ToVector4());
+            output.Write(layer.Depth);
             output.Write(layer.Name);
             output.Write(layer.TextureAsset);
 

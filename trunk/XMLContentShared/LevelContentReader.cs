@@ -32,6 +32,8 @@ namespace XMLContentShared
         {
             TileLayer layer = new TileLayer();
 
+            //layer.Color = new Microsoft.Xna.Framework.Graphics.Color(input.ReadVector4());
+            layer.Depth = input.ReadSingle();
             layer.Name = input.ReadString();
             layer.TextureAsset = input.ReadString();
             layer.TileList = LoadTileList(input);
