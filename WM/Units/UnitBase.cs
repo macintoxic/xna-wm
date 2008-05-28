@@ -8,13 +8,14 @@ using SpriteSheetRuntime;
 
 namespace WM.Units
 {
-    class UnitBase
+    public class UnitBase
     {
         Vector2 position;
         float rotation;
         Vector2 scale;  // we only use the X for now
         float targetradius;
         float speed;
+        int creditsCost;
 
         string textureAsset;
         Texture2D texture; // not used
@@ -27,7 +28,8 @@ namespace WM.Units
             Scale = scale;
             targetradius = targetRadius;
             speed = Speed;
-            textureAsset = TextureAsset;           
+            textureAsset = TextureAsset;
+            creditsCost = 100;
         }
 
         public Vector2 Position
@@ -58,6 +60,12 @@ namespace WM.Units
         {
             get { return speed; }
             set { speed = value; }
+        }
+
+        public int CreditsCost
+        {
+            get { return creditsCost; }
+            set { creditsCost = value; }
         }
 
         //public string TextureAsset
