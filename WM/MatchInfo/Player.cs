@@ -77,7 +77,8 @@ namespace WM.MatchInfo
                 
         public void CreateBuilding(Vector2 Position, Building BuildingType)
         {
-            Building newBuilding = new Building(Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset);
+            string productionUnit = "Soldier";//todo get the correct productionunit here maybe save the string inside Building object??? BuildingType.ProductionUnit
+            Building newBuilding = new Building(Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset, BuildingType.Size, productionUnit);
             newBuilding.Load(matchInfo.GameInfo.Content);
             unitBuildingList.Add(newBuilding);
 
@@ -88,13 +89,13 @@ namespace WM.MatchInfo
         {
             if (UnitType.GetType().Name == "HumanOid")
             {
-                HumanOid newUnit = new HumanOid(Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset);
+                HumanOid newUnit = new HumanOid(Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitHumanOidList.Add(newUnit);                
             }
             else if (UnitType.GetType().Name == "Vehicle")
             {
-                Vehicle newUnit = new Vehicle(Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset);
+                Vehicle newUnit = new Vehicle(Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitVehicleList.Add(newUnit);
             }
@@ -213,6 +214,25 @@ namespace WM.MatchInfo
             get { return selectedUnitInHud; }
             set { selectedUnitInHud = value; }
         }
+
+        public List<Building> UnitBuildingList
+        {
+            get { return unitBuildingList; }
+            set { unitBuildingList = value; }
+        }
+
+        public List<HumanOid> UnitHumanOidList
+        {
+            get { return unitHumanOidList; }
+            set { unitHumanOidList = value; }
+        }
+
+        public List<Vehicle> UnitVehicleList
+        {
+            get { return unitVehicleList; }
+            set { unitVehicleList = value; }
+        }
+
 
     }
 }

@@ -173,7 +173,9 @@ namespace WM
                                     unitList.BuildingList[i].AttackRadius,
                                     unitList.BuildingList[i].Speed,
                                     unitList.BuildingList[i].TextureAsset,
-                                    unitList.BuildingList[i].Offset);
+                                    unitList.BuildingList[i].Offset,
+                                    unitList.BuildingList[i].Size,
+                                    unitList.BuildingList[i].ProductionUnit);
                                 MyPlayer.SelectedBuildingInHud = newBuilding;
                                 break;
                             }
@@ -191,7 +193,9 @@ namespace WM
                                     unitList.BuildingList[i].AttackRadius,
                                     unitList.BuildingList[i].Speed,
                                     unitList.BuildingList[i].TextureAsset,
-                                    unitList.BuildingList[i].Offset);
+                                    unitList.BuildingList[i].Offset,
+                                    unitList.BuildingList[i].Size,
+                                    unitList.BuildingList[i].ProductionUnit);
                                 MyPlayer.SelectedBuildingInHud = newBuilding;
                                 break;
                             }
@@ -208,7 +212,9 @@ namespace WM
                                     unitList.BuildingList[i].AttackRadius,
                                     unitList.BuildingList[i].Speed,
                                     unitList.BuildingList[i].TextureAsset,
-                                    unitList.BuildingList[i].Offset);
+                                    unitList.BuildingList[i].Offset,
+                                    unitList.BuildingList[i].Size,
+                                    unitList.BuildingList[i].ProductionUnit);
                                 MyPlayer.SelectedBuildingInHud = newBuilding;
                                 break;
                             }
@@ -219,15 +225,17 @@ namespace WM
                     {
                         for (int i = 0; i < unitList.HumanOidList.Count; i++)
                             if (unitList.HumanOidList[i].Name == "Soldier")
-                            {
+                            {                                
                                 HumanOid newSoldier = new HumanOid(unitList.HumanOidList[i].Position,
                                     unitList.HumanOidList[i].Rotation,
                                     unitList.HumanOidList[i].Scale,
                                     unitList.HumanOidList[i].AttackRadius,
                                     unitList.HumanOidList[i].Speed,
                                     unitList.HumanOidList[i].TextureAsset,
-                                    unitList.HumanOidList[i].Offset);
+                                    unitList.HumanOidList[i].Offset,
+                                    unitList.HumanOidList[i].Size);
                                 MyPlayer.SelectedUnitInHud = newSoldier;
+                                mouseControl.TryUnitProduction(MyPlayer);
                                 break;
                             }
                     }
@@ -244,7 +252,8 @@ namespace WM
                                     unitList.VehicleList[i].AttackRadius,
                                     unitList.VehicleList[i].Speed,
                                     unitList.VehicleList[i].TextureAsset,
-                                    unitList.VehicleList[i].Offset);
+                                    unitList.VehicleList[i].Offset,
+                                    unitList.VehicleList[i].Size);
                                 MyPlayer.SelectedUnitInHud = newVehicle;
                                 break;
                             }

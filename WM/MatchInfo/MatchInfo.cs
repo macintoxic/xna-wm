@@ -37,18 +37,6 @@ namespace WM.MatchInfo
                 players[i].Draw(spriteBatch, gameTime);
             }
         }
-        /*
-        public void UpdateUnitPositions()
-        {
-            gameInfo.MyPlayer.UpdateUnitPositions();
-        }
-
-        public void UpdateBuildingPositions()
-        {
-            gameInfo.MyPlayer.UpdateBuildingPositions();
-        }
-         */
-
 
         public GameInfo GameInfo
         {

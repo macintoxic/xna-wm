@@ -14,7 +14,8 @@ namespace WM.Units
         Vector2 position;
         float rotation;
         Vector2 scale;  // we only use the X for now
-        Vector2 offset;  
+        Vector2 offset;
+        Vector2 size;
         float targetRadius;
         float speed;
         int creditsCost;
@@ -27,12 +28,14 @@ namespace WM.Units
         public Vector2 DrawingScale;
         public Vector2 screenCenter;
 
-        public UnitBase(Vector2 position, float rotation, Vector2 scale, float targetRadius, float Speed, string TextureAsset, Vector2 offset)
+        public UnitBase(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string TextureAsset, Vector2 offset, Vector2 size)
         {
             Position = position;
             Rotation = rotation;
             Scale = scale;
             Offset = offset;
+            Size = size;
+            Speed = speed;
             TargetRadius = targetRadius;
             speed = Speed;
             textureAsset = TextureAsset;
@@ -55,6 +58,12 @@ namespace WM.Units
         {
             get { return scale; }
             set { scale = value; }
+        }
+        
+        public Vector2 Size
+        {
+            get { return size; }
+            set { size = value; }
         }
 
         public Vector2 Offset
@@ -97,28 +106,17 @@ namespace WM.Units
         {
             //texture = content.Load<Texture2D>(textureAsset);
             //spriteSheetUnit = content.Load<SpriteSheetBase>("XML\\Units\\SpriteSheetUnit");
-            spriteSheetUnit = content.Load<SpriteSheetBase>(textureAsset);      
+            //spriteSheetUnit = content.Load<SpriteSheetBase>(textureAsset);
+            texture = content.Load<Texture2D>(TextureAsset);
         }
 
         public virtual void Draw(SpriteBatch batch, float time)
         {
-            /*
-              Rectangle sourceRect = new Rectangle(
-                (int)tile.Offset.X,
-                (int)tile.Offset.Y,
-                (int)tile.Size.X,
-                (int)tile.Size.Y);
-              
-              batch.Draw(texture, screenCenter, sourceRect, color,
-                cameraRotation, tile.DrawingPosition, tile.DrawingScale,
-                SpriteEffects.None, 0.0f);          
-            */
-
             Rectangle sourceRect = new Rectangle(
               (int)offset.X,
               (int)offset.Y,
-              64,
-              64);            
+              (int)size.X,
+              (int)size.Y);            
             
             batch.Draw(texture, 
                         screenCenter,
