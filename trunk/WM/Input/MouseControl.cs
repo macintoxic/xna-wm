@@ -51,17 +51,18 @@ namespace WM.Input
                 }
                 else
                 {
-                    // See if we should produce unit stuff.
-                    TryUnitProduction(gameInfo.MyPlayer);
-
-                    // See if we should build a building.
-                    TryBuildingProduction(gameInfo.MyPlayer, new Vector2(mouseX, mouseY));
-
-                    // See if there are units selected which should move toward an destination.
-                    TryMovement(gameInfo.MyPlayer);
-
                     // See if there is anything the player should select.
-                    TrySelection(gameInfo.MyPlayer, new Vector2(mouseX, mouseY));
+                    if ( !TrySelection(gameInfo.MyPlayer, new Vector2(mouseX, mouseY)) )
+                    {
+                        // See if we should produce unit stuff.
+                        //TryUnitProduction(gameInfo.MyPlayer); // should be swapped to the HUD.
+
+                        // See if we should build a building.
+                        TryBuildingProduction(gameInfo.MyPlayer, new Vector2(mouseX, mouseY));
+
+                        // See if there are units selected which should move toward an destination.
+                        TryMovement(gameInfo.MyPlayer);
+                    }
                 }
             }
         }
@@ -114,18 +115,69 @@ namespace WM.Input
 
         }
 
-        public void TrySelection(Player player, Vector2 mousePosition)
+        public bool TrySelection(Player player, Vector2 mousePosition)
         {
-            // See if anything on screen position is selectable (HUD items).
-            //player.SelectedBuildingInHud
-            //mousePosition
-
             // See if anything at the world position is selectable.
-            Vector2 worldPosition = DeterminePositionInWorld(mousePosition);           
-            // todo           
-            //player.SelectedBuildingOnMap
-            //player.SelectedUnitList.Add();
+            Vector2 worldPosition = DeterminePositionInWorld(mousePosition);
+            Trace.WriteLine(worldPosition);
 
+            // todo performance update, break when building found.
+            for (int i = 0; i < player.UnitBuildingList.Count; i++)
+            {
+                if (worldPosition.X >= player.UnitBuildingList[i].Position.X && 
+                    worldPosition.Y >= player.UnitBuildingList[i].Position.Y)
+                {
+                    if (worldPosition.X <= player.UnitBuildingList[i].Position.X + player.UnitBuildingList[i].Size.X &&
+                        worldPosition.Y <= player.UnitBuildingList[i].Position.Y + player.UnitBuildingList[i].Size.Y)
+                    {
+                        player.SelectedBuildingOnMap = player.UnitBuildingList[i];
+                        Trace.WriteLine("found building");
+                    }                    
+                }                
+            }
+
+            // todo performance update, break when unit found.
+            for (int i = 0; i < player.UnitHumanOidList.Count; i++)
+            {
+                if (worldPosition.X >= player.UnitHumanOidList[i].Position.X &&
+                    worldPosition.Y >= player.UnitHumanOidList[i].Position.Y)
+                {
+                    if (worldPosition.X <= player.UnitHumanOidList[i].Position.X + player.UnitHumanOidList[i].Size.X &&
+                        worldPosition.Y <= player.UnitHumanOidList[i].Position.Y + player.UnitHumanOidList[i].Size.Y)
+                    {
+                        // First check if already in list
+                        if ( !player.SelectedUnitList.Contains(player.UnitHumanOidList[i]) )
+                        {
+                            // else add
+                            player.SelectedUnitList.Add( player.UnitHumanOidList[i] );
+                            Trace.WriteLine("found human unit");
+                        }
+                    }
+                }
+            }
+
+            // todo performance update, break when unit found.
+            for (int i = 0; i < player.UnitVehicleList.Count; i++)
+            {
+                if (worldPosition.X >= player.UnitVehicleList[i].Position.X &&
+                    worldPosition.Y >= player.UnitVehicleList[i].Position.Y)
+                {
+                    if (worldPosition.X <= player.UnitVehicleList[i].Position.X + player.UnitVehicleList[i].Size.X &&
+                        worldPosition.Y <= player.UnitVehicleList[i].Position.Y + player.UnitVehicleList[i].Size.Y)
+                    {
+                        // First check if already in list
+                        if (!player.SelectedUnitList.Contains(player.UnitVehicleList[i]))
+                        {
+                            // else add
+                            player.SelectedUnitList.Add( player.UnitVehicleList[i] );
+                            Trace.WriteLine("found human tank");
+                        }
+                    }
+                }
+            }
+
+
+            return false;
         }
 
         public void Update()

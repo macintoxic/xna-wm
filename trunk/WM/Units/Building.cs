@@ -11,9 +11,14 @@ namespace WM.Units
     {
         private UnitBase productionUnit;
 
-        public Building(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 Offset)
-            : base(position, rotation, scale, targetRadius, speed, textureAsset, Offset)
+        public Building(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, string productionUnit)
+            : base(position, rotation, scale, targetRadius, speed, textureAsset, offset, size)
         {
+            if (productionUnit == "Soldier")
+                ProductionUnit = new HumanOid();
+            else if (productionUnit == "Tank")
+                ProductionUnit = new Vehicle();
+
             targetRadius = 0;
             speed = 0;
         }
@@ -29,8 +34,9 @@ namespace WM.Units
         }
 
         public UnitBase GetProductionUnit()
-        {            
-            return productionUnit;
+        {
+            // todo this one should not be empty it should be a copy of a template found in Units class (HumanOidList or VehicleList)
+            return productionUnit; 
         }
 
         public Vector2 GetUnitSpawnPosition()

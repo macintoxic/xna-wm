@@ -10,7 +10,7 @@
         <Rotation>0</Rotation>
         <Scale>1 1</Scale>
         <Offset>0 0</Offset>
-        <Size>100 100</Size>
+        <Size>10 10</Size>
         <Speed>2</Speed>
         <Health>25</Health>
         <AttackPower>10</AttackPower>
@@ -27,7 +27,7 @@
         <Rotation>0</Rotation>
         <Scale>1 1</Scale>
         <Offset>0 0</Offset>
-        <Size>100 100</Size>
+        <Size>20 20</Size>
         <Speed>4</Speed>
         <Health>100</Health>
         <AttackPower>40</AttackPower>
@@ -45,7 +45,7 @@
         <Rotation>0</Rotation>
         <Scale>1 1</Scale>
         <Offset>0 0</Offset>
-        <Size>100 100</Size>
+        <Size>64 64</Size>
         <Speed>0</Speed>
         <Health>1000</Health>
         <AttackPower>0</AttackPower>
@@ -61,7 +61,7 @@
         <Rotation>0</Rotation>
         <Scale>1 1</Scale>
         <Offset>64 0</Offset>
-        <Size>100 100</Size>
+        <Size>64 64</Size>
         <Speed>0</Speed>
         <Health>1000</Health>
         <AttackPower>0</AttackPower>
@@ -77,7 +77,7 @@
         <Rotation>0</Rotation>
         <Scale>1 1</Scale>
         <Offset>128 0</Offset>
-        <Size>100 100</Size>
+        <Size>64 64</Size>
         <Speed>0</Speed>
         <Health>1000</Health>
         <AttackPower>0</AttackPower>
