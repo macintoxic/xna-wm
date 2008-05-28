@@ -7,7 +7,11 @@ using SpriteSheetRuntime;
 using XMLContentShared;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using WM.Input;
+using WM.Input;
+using WM.MatchInfo;
 using System.Diagnostics;
+
 
 namespace WM
 {
@@ -19,6 +23,10 @@ namespace WM
 
         private WMGame game;
         private ContentManager content;
+        private MatchInfo.MatchInfo matchInfo;
+        private MatchInfo.Player myPlayer;
+
+        private MouseControl mouseControl;
 
         private Camera2D camera;
         private Vector2 screenCenter;
@@ -34,6 +42,12 @@ namespace WM
         {
             this.game = game;
             this.rand = new Random();
+
+            mouseControl = new MouseControl(this);
+
+            matchInfo = new MatchInfo.MatchInfo();
+            myPlayer = new MatchInfo.Player();
+            matchInfo.AddPlayer(myPlayer);
 
             this.UnitsOnMap = new List<UnitBase>();
         }
@@ -69,6 +83,10 @@ namespace WM
 
         public void Update(GameTime gameTime)
         {
+            //Call sample-specific input handling function
+            //HandleKeyboardInput((float)gameTime.ElapsedGameTime.TotalSeconds);
+            //mouseControl.HandleMouseInput((float)gameTime.ElapsedGameTime.TotalSeconds);
+
             if (camera.IsChanged)
                 CameraChanged();
 
@@ -118,46 +136,9 @@ namespace WM
 
             // Call sample-specific input handling function
             HandleKeyboardInput(elapsed, input);
-            HandleMouseInput(elapsed, input);
+            mouseControl.HandleMouseInput(elapsed);//HandleMouseInput(elapsed, input);
         }
 
-        public void HandleMouseInput(float elapsed, InputState input)
-        {            
-            MouseState current_mouse = Mouse.GetState();
-
-            // The mouse x and y positions are returned relative to the
-            // upper-left corner of the game window.
-            int mouseX = current_mouse.X;
-            int mouseY = current_mouse.Y;
-            int leftMouse = (int)current_mouse.LeftButton;
-            int rightMouse = (int)current_mouse.RightButton;
-            
-            // If clicked see if we should process an action.
-            if (rightMouse == 1)
-            {
-                // Clear all selections
-
-            }
-            if (leftMouse == 1)
-            {
-                // See if we should produce unit stuff
-
-                // See if we should build stuff
-
-                // See if there are units selected which should move toward an destination.
-
-            }
-
-            //float dX = ReadKeyboardAxis(currentKeyboardState, Keys.Left, Keys.Right) * elapsed * MovementRate;
-            //float dY = ReadKeyboardAxis(currentKeyboardState, Keys.Down, Keys.Up) * elapsed * MovementRate;
-
-            //camera.MoveRight(ref dX);
-            //camera.MoveUp(ref dY);
-            
-            // Change background color based on mouse position.
-            //Color backColor = new Color((byte)(mouseX / 3), (byte)(mouseY / 2), 0);
-            //game.ScreenManager.GraphicsDevice.Clear(backColor);            
-        }
 
         public void HandleKeyboardInput(float elapsed, InputState input)
         {
@@ -168,7 +149,7 @@ namespace WM
             camera.MoveRight(ref dX);
             camera.MoveUp(ref dY);
 
-            Trace.WriteLine(camera.Position);
+            //Trace.WriteLine(camera.Position);
         }
 
         /// <summary>
@@ -201,12 +182,10 @@ namespace WM
             currentLevel.Draw(gameTime, spriteBatch);
 
             spriteBatch.Begin();
-
             for (int i = 0; i < UnitsOnMap.Count; i++)
             {
                 UnitsOnMap[i].Draw(spriteBatch, time);               
             }
-
             spriteBatch.End();              
         }
 
@@ -257,5 +236,18 @@ namespace WM
             UnitsOnMap.Add( NewUnit );
 
         }
+
+        public MatchInfo.Player MyPlayer
+        {
+            get { return myPlayer; }
+            set { myPlayer = value; }
+        }
+
+        public Camera2D Camera
+        {
+            get { return camera; }
+            set { camera = value; }
+        }
+
     }
 }
