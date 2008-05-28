@@ -174,31 +174,12 @@ namespace XMLContentShared
                     (int)tile.Size.X,
                     (int)tile.Size.Y);
 
-                //spriteBatch.Draw(
-                //    texture, 
-                //    tile.DrawingPosition,
-                //    sourceRectangle,
-                //    color, 
-                //    tile.Rotation, 
-                //    new Vector2(tile.Size.X / 2, tile.Size.Y / 2),
-                //    tile.Scale, 
-                //    SpriteEffects.None, 
-                //    depth);
-
                 spriteBatch.Draw(texture, screenCenter, sourceRect, color,
                     cameraRotation, tile.DrawingPosition, tile.DrawingScale, 
                     SpriteEffects.None, 0.0f);
             }
 
             spriteBatch.End();
-
-            ////draw the background layers
-            //groundLayer.Color = Color.LightGray;
-
-            //groundLayer.Draw(spriteBatch);
-            //detailLayer.Draw(spriteBatch);
-            //rockLayer.Draw(spriteBatch);
-            //cloudLayer.Draw(spriteBatch);
         }
     }
 }
