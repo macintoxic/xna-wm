@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using WM.Units;
@@ -8,15 +9,21 @@ using XMLContentShared;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using WM.Input;
-using WM.Input;
 using WM.MatchInfo;
 using System.Diagnostics;
-
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace WM
 {
     public class GameInfo
     {
+        const int maxGamers = 16;
+        const int maxLocalGamers = 4;
+
+        public NetworkSession NetworkSession;
+        public PacketWriter PacketWriter = new PacketWriter();
+        public PacketReader PacketReader = new PacketReader();
+
         private const float MovementRate = 500f;
         private const float RotationRate = 1.5f;
         private const float ZoomRate = 0.5f;
@@ -47,11 +54,80 @@ namespace WM
 
             mouseControl = new MouseControl(this);
 
-            matchInfo = new MatchInfo.MatchInfo();
-            myPlayer = new MatchInfo.Player();
+            matchInfo = new MatchInfo.MatchInfo(this);
+            myPlayer = new MatchInfo.Player(this);
             matchInfo.AddPlayer(myPlayer);
 
             this.UnitsOnMap = new List<UnitBase>();
+        }
+
+        private void JoinOrCreateNetworkSession()
+        {
+            try
+            {
+                // Search for sessions.
+                using (AvailableNetworkSessionCollection availableSessions = 
+                    NetworkSession.Find(NetworkSessionType.SystemLink, maxLocalGamers, null))
+                {
+                    if (availableSessions.Count == 0)
+                    {
+                        CreateNetworkSession();
+                        return;
+                    }
+
+                    // Join the first session we found.
+                    NetworkSession = NetworkSession.Join(availableSessions[0]);
+                    HookSessionEvents();
+                }
+            }
+            catch (Exception)
+            {
+                CreateNetworkSession();
+            }
+        }
+
+        private void CreateNetworkSession()
+        {
+            try
+            {
+                NetworkSession = NetworkSession.Create(NetworkSessionType.SystemLink, maxLocalGamers, maxGamers);
+                HookSessionEvents();
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        /// <summary>
+        /// After creating or joining a network session, we must subscribe to
+        /// some events so we will be notified when the session changes state.
+        /// </summary>
+        private void HookSessionEvents()
+        {
+            NetworkSession.GamerJoined += GamerJoinedEventHandler;
+            NetworkSession.SessionEnded += SessionEndedEventHandler;
+        }
+
+        /// <summary>
+        /// This event handler will be called whenever a new gamer joins the session.
+        /// We use it to allocate a Tank object, and associate it with the new gamer.
+        /// </summary>
+        private void GamerJoinedEventHandler(object sender, GamerJoinedEventArgs e)
+        {
+            int gamerIndex = NetworkSession.AllGamers.IndexOf(e.Gamer);
+
+            e.Gamer.Tag = new MatchInfo.Player(this);
+        }
+
+        /// <summary>
+        /// Event handler notifies us when the network session has ended.
+        /// </summary>
+        private void SessionEndedEventHandler(object sender, NetworkSessionEndedEventArgs e)
+        {
+            //errorMessage = e.EndReason.ToString();
+
+            NetworkSession.Dispose();
+            NetworkSession = null;
         }
 
         public void LoadContent()
@@ -111,21 +187,100 @@ namespace WM
                 hud.UnloadContent(content);
         }
 
+        /// <summary>
+        /// Updates the state of the network session, moving the tanks
+        /// around and synchronizing their state over the network.
+        /// </summary>
+        void UpdateNetworkSession()
+        {
+            if (NetworkSession != null)
+            {
+                // Update our locally controlled tanks, and send their
+                // latest position data to everyone in the session.
+                foreach (LocalNetworkGamer gamer in NetworkSession.LocalGamers)
+                {
+                    UpdateLocalGamer(gamer);
+                }
+
+                // Pump the underlying session object.
+                NetworkSession.Update();
+
+                // Make sure the session has not ended.
+                if (NetworkSession == null)
+                    return;
+
+                // Read any packets telling us the positions of remotely controlled tanks.
+                foreach (LocalNetworkGamer gamer in NetworkSession.LocalGamers)
+                {
+                    ReadIncomingPackets(gamer);
+                }
+            }
+            else
+                JoinOrCreateNetworkSession();
+        }
+
+
+        /// <summary>
+        /// Helper for updating a locally controlled gamer.
+        /// </summary>
+        void UpdateLocalGamer(LocalNetworkGamer gamer)
+        {
+            // Look up what tank is associated with this local player.
+            Player localPlayer = gamer.Tag as MatchInfo.Player;
+
+            localPlayer.UpdateNetworkWriter(PacketWriter);
+
+            // Send the data to everyone in the session.
+            gamer.SendData(PacketWriter, SendDataOptions.InOrder);
+        }
+
+
+        /// <summary>
+        /// Helper for reading incoming network packets.
+        /// </summary>
+        void ReadIncomingPackets(LocalNetworkGamer gamer)
+        {
+            // Keep reading as long as incoming packets are available.
+            while (gamer.IsDataAvailable)
+            {
+                NetworkGamer sender;
+
+                // Read a single packet from the network.
+                gamer.ReceiveData(PacketReader, out sender);
+
+                // Discard packets sent by local gamers: we already know their state!
+                if (sender.IsLocal)
+                    continue;
+
+                // Look up the tank associated with whoever sent this packet.
+                Player remotePlayer = sender.Tag as Player;
+
+                remotePlayer.UpdateNetworkReader(PacketReader);
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
-            //Call sample-specific input handling function
-            //HandleKeyboardInput((float)gameTime.ElapsedGameTime.TotalSeconds);
-            //mouseControl.HandleMouseInput((float)gameTime.ElapsedGameTime.TotalSeconds);
+            if (Gamer.SignedInGamers.Count == 0)
+            {
+                // If there are no profiles signed in, we cannot proceed.
+                // Show the Guide so the user can sign in.
+                Guide.ShowSignIn(4, false);
+            }
+            else
+            {
+                UpdateNetworkSession();
 
-            if (camera.IsChanged)
-                CameraChanged();
+                if (camera.IsChanged)
+                    CameraChanged();
 
-            UpdateTiles();
+                UpdateTiles();
 
-            GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
+                GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
 
-            currentLevel.Update(gameTime);
-            hud.Update(gameTime, graphics);
+                currentLevel.Update(gameTime);
+                hud.Update(gameTime, graphics);
+            }
         }
 
         private void UpdateTiles()
@@ -204,23 +359,27 @@ namespace WM
         public void Draw(GameTime gameTime)
         {
             GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
-            //SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
-            float time = (float)gameTime.TotalGameTime.TotalSeconds;
 
             //since we're drawing in order from back to front,
             //depth buffer is disabled
             graphics.RenderState.DepthBufferEnable = false;
-            graphics.Clear(Color.CornflowerBlue);
+            graphics.Clear(Color.Black);
 
-            currentLevel.Draw(gameTime, spriteBatch);
-            hud.Draw(gameTime, graphics, spriteBatch);
-
-            spriteBatch.Begin();
-            for (int i = 0; i < UnitsOnMap.Count; i++)
+            if (Gamer.SignedInGamers.Count > 0)
             {
-                UnitsOnMap[i].Draw(spriteBatch, time);               
+                //SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
+                float time = (float)gameTime.TotalGameTime.TotalSeconds;
+
+                currentLevel.Draw(gameTime, spriteBatch);
+                hud.Draw(gameTime, graphics, spriteBatch);
+
+                spriteBatch.Begin();
+                for (int i = 0; i < UnitsOnMap.Count; i++)
+                {
+                    UnitsOnMap[i].Draw(spriteBatch, time);
+                }
+                spriteBatch.End();
             }
-            spriteBatch.End();
         }
 
         /// <summary>

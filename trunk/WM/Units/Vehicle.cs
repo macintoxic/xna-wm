@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Net;
 
 namespace WM.Units
 {
@@ -11,5 +12,15 @@ namespace WM.Units
         {            
         }
 
+
+        public override void UpdateNetworkReader(PacketReader reader)
+        {
+            base.UpdateNetworkReader(reader);
+        }
+
+        public override void UpdateNetworkWriter(PacketWriter writer)
+        {
+            base.UpdateNetworkWriter(writer);
+        }
     }
 }
