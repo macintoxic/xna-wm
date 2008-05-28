@@ -40,6 +40,8 @@ namespace WM
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
 
+            Components.Add(new GamerServicesComponent(this));
+
             gameInfo = new GameInfo(this);
 
             // Create the screen manager component.

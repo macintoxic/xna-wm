@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using SpriteSheetRuntime;
+using Microsoft.Xna.Framework.Net;
 
 namespace WM.Units
 {
@@ -104,6 +105,27 @@ namespace WM.Units
         }
 
 
-        public virtual void Update(GameTime gameTime)   {}
+        public virtual void Update(GameTime gameTime) { }
+
+
+        public virtual void UpdateNetworkReader(PacketReader reader)
+        {
+            position = reader.ReadVector2();
+            rotation = reader.ReadSingle();
+            scale = reader.ReadVector2();
+            targetradius = reader.ReadSingle();
+            speed = reader.ReadSingle();
+            creditsCost = reader.ReadInt32();
+        }
+
+        public virtual void UpdateNetworkWriter(PacketWriter writer)
+        {
+            writer.Write(position);
+            writer.Write(rotation);
+            writer.Write(scale);
+            writer.Write(targetradius);
+            writer.Write(speed);
+            writer.Write(creditsCost);
+        }
     }
 }
