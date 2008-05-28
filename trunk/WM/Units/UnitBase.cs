@@ -14,20 +14,26 @@ namespace WM.Units
         Vector2 position;
         float rotation;
         Vector2 scale;  // we only use the X for now
-        float targetradius;
+        Vector2 offset;  
+        float targetRadius;
         float speed;
         int creditsCost;
 
         string textureAsset;
-        Texture2D texture; // not used
+        protected Texture2D texture; // not used
         protected SpriteSheetBase spriteSheetUnit;
 
-        public UnitBase(Vector2 position, float rotation, Vector2 scale, float targetRadius, float Speed, string TextureAsset)
+        public Vector2 DrawingPosition;
+        public Vector2 DrawingScale;
+        public Vector2 screenCenter;
+
+        public UnitBase(Vector2 position, float rotation, Vector2 scale, float targetRadius, float Speed, string TextureAsset, Vector2 offset)
         {
             Position = position;
             Rotation = rotation;
             Scale = scale;
-            targetradius = targetRadius;
+            Offset = offset;
+            TargetRadius = targetRadius;
             speed = Speed;
             textureAsset = TextureAsset;
             creditsCost = 100;
@@ -51,10 +57,16 @@ namespace WM.Units
             set { scale = value; }
         }
 
+        public Vector2 Offset
+        {
+            get { return offset; }
+            set { offset = value; }
+        }
+
         public float TargetRadius
         {
-            get { return TargetRadius; }
-            set { TargetRadius = value; }
+            get { return targetRadius; }
+            set { targetRadius = value; }
         }
 
         public float Speed
@@ -69,11 +81,11 @@ namespace WM.Units
             set { creditsCost = value; }
         }
 
-        //public string TextureAsset
-        //{
-        //    get { return textureAsset; }
-        //    set { textureAsset = value; }
-        //}
+        public string TextureAsset
+        {
+            get { return textureAsset; }
+            set { textureAsset = value; }
+        }
 
         //[ContentSerializerIgnore]
         //public Texture2D Texture
@@ -81,15 +93,43 @@ namespace WM.Units
         //    get { return texture; }
         //}
 
-        public void Load(ContentManager content)
+        public virtual void Load(ContentManager content)
         {
-            //texture = content.Load<Texture2D>(textureAsset);                        
+            //texture = content.Load<Texture2D>(textureAsset);
             //spriteSheetUnit = content.Load<SpriteSheetBase>("XML\\Units\\SpriteSheetUnit");
-            spriteSheetUnit = content.Load<SpriteSheetBase>(textureAsset);
+            spriteSheetUnit = content.Load<SpriteSheetBase>(textureAsset);      
         }
 
         public virtual void Draw(SpriteBatch batch, float time)
         {
+            /*
+              Rectangle sourceRect = new Rectangle(
+                (int)tile.Offset.X,
+                (int)tile.Offset.Y,
+                (int)tile.Size.X,
+                (int)tile.Size.Y);
+              
+              batch.Draw(texture, screenCenter, sourceRect, color,
+                cameraRotation, tile.DrawingPosition, tile.DrawingScale,
+                SpriteEffects.None, 0.0f);          
+            */
+
+            Rectangle sourceRect = new Rectangle(
+              (int)offset.X,
+              (int)offset.Y,
+              64,
+              64);            
+            
+            batch.Draw(texture, 
+                        screenCenter,
+                        sourceRect, 
+                        Color.White,
+                        Rotation, 
+                        DrawingPosition, 
+                        DrawingScale,
+                        SpriteEffects.None, 
+                        0.0f);       
+            
             /*
             batch.Draw(
                 texture,
@@ -113,7 +153,7 @@ namespace WM.Units
             position = reader.ReadVector2();
             rotation = reader.ReadSingle();
             scale = reader.ReadVector2();
-            targetradius = reader.ReadSingle();
+            targetRadius = reader.ReadSingle();
             speed = reader.ReadSingle();
             creditsCost = reader.ReadInt32();
         }
@@ -123,7 +163,7 @@ namespace WM.Units
             writer.Write(position);
             writer.Write(rotation);
             writer.Write(scale);
-            writer.Write(targetradius);
+            writer.Write(targetRadius);
             writer.Write(speed);
             writer.Write(creditsCost);
         }

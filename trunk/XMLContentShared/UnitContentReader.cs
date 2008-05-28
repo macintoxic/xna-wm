@@ -27,7 +27,8 @@ namespace XMLContentShared
                 unitItem.Size = input.ReadVector2();
                 unitItem.Speed = input.ReadSingle();
                 //unitItem.Texture = input.ReadSingle();
-                unitItem.TextureAsset = input.ReadString();                
+                unitItem.TextureAsset = input.ReadString();
+                unitItem.CreditsCost = input.ReadInt32();
                 u.HumanOidList.Add(unitItem);
             }
 
@@ -48,6 +49,7 @@ namespace XMLContentShared
                 unitItem.Speed = input.ReadSingle();
                 //unitItem.Texture = input.ReadSingle();
                 unitItem.TextureAsset = input.ReadString();
+                unitItem.CreditsCost = input.ReadInt32();
                 u.VehicleList.Add(unitItem);
             }
 
@@ -68,6 +70,8 @@ namespace XMLContentShared
                 unitItem.Speed = input.ReadSingle();
                 //unitItem.Texture = input.ReadSingle();
                 unitItem.TextureAsset = input.ReadString();
+                unitItem.CreditsCost = input.ReadInt32();
+                unitItem.ProductionUnit = input.ReadString();
                 u.BuildingList.Add(unitItem);
             }
             

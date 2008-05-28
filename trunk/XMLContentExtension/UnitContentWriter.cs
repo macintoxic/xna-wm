@@ -27,6 +27,7 @@ namespace XMLContentExtension
                 output.Write(value.HumanOidList[i].Speed);
                 //output.Write(value.HumanOidList[i].Texture);
                 output.Write(value.HumanOidList[i].TextureAsset);
+                output.Write(value.HumanOidList[i].CreditsCost);
             }
 
             output.Write(value.VehicleList.Count);
@@ -45,6 +46,7 @@ namespace XMLContentExtension
                 output.Write(value.VehicleList[i].Speed);
                 //output.Write(value.VehicleList[i].Texture);
                 output.Write(value.VehicleList[i].TextureAsset);
+                output.Write(value.VehicleList[i].CreditsCost);
             }
 
             output.Write(value.BuildingList.Count);
@@ -63,6 +65,8 @@ namespace XMLContentExtension
                 output.Write(value.BuildingList[i].Speed);
                 //output.Write(value.BuildingList[i].Texture);
                 output.Write(value.BuildingList[i].TextureAsset);
+                output.Write(value.BuildingList[i].CreditsCost);
+                output.Write(value.BuildingList[i].ProductionUnit);                
             }
 
         }
