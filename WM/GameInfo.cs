@@ -26,6 +26,8 @@ namespace WM
         private MatchInfo.MatchInfo matchInfo;
         private MatchInfo.Player myPlayer;
 
+        private Hud hud;
+
         private MouseControl mouseControl;
 
         private Camera2D camera;
@@ -71,6 +73,31 @@ namespace WM
 
             camera = new Camera2D();
             ResetToInitialPositions();
+
+            hud = new Hud();
+            hud.HudElementClick += new HudElementClick(hud_HudElementClick);
+            hud.LoadContent(content);
+        }
+
+        private void hud_HudElementClick(Hud hud, HudElementType element)
+        {
+            switch (element)
+            {
+                case HudElementType.BuildBarrack:
+                    break;
+
+                case HudElementType.BuildHQ:
+                    break;
+
+                case HudElementType.BuildSoldier:
+                    break;
+
+                case HudElementType.BuildTank:
+                    break;
+
+                case HudElementType.BuildWarFactory:
+                    break;
+            }
         }
 
         public void UnloadContent()
@@ -79,6 +106,9 @@ namespace WM
 
             if (currentLevel != null)
                 currentLevel.UnloadContent(content);
+
+            if (hud != null)
+                hud.UnloadContent(content);
         }
 
         public void Update(GameTime gameTime)
@@ -92,7 +122,10 @@ namespace WM
 
             UpdateTiles();
 
+            GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
+
             currentLevel.Update(gameTime);
+            hud.Update(gameTime, graphics);
         }
 
         private void UpdateTiles()
@@ -169,7 +202,7 @@ namespace WM
         }
 
         public void Draw(GameTime gameTime)
-        {               
+        {
             GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
             //SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
             float time = (float)gameTime.TotalGameTime.TotalSeconds;
@@ -180,13 +213,14 @@ namespace WM
             graphics.Clear(Color.CornflowerBlue);
 
             currentLevel.Draw(gameTime, spriteBatch);
+            hud.Draw(gameTime, graphics, spriteBatch);
 
             spriteBatch.Begin();
             for (int i = 0; i < UnitsOnMap.Count; i++)
             {
                 UnitsOnMap[i].Draw(spriteBatch, time);               
             }
-            spriteBatch.End();              
+            spriteBatch.End();
         }
 
         /// <summary>
