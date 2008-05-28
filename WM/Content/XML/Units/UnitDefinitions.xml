@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="XMLContentShared.Units">
+    <Name>Unit definitions</Name>
+    <HumanOidList>
+      <Item>        
+        <Name>Soldier</Name>
+        <TextureAsset>Textures\\terrain\\ground</TextureAsset>
+        <Position>0 0</Position>
+        <Rotation>0</Rotation>
+        <Scale>.1 .1</Scale>
+        <Offset>0 0</Offset>
+        <Size>100 100</Size>
+        <Speed>2</Speed>
+        <Health>25</Health>
+        <AttackPower>10</AttackPower>
+        <AttackRadius>10</AttackRadius>
+        <DefenseRadius>20</DefenseRadius>
+      </Item>
+     </HumanOidList>
+     <VehicleList>    
+      <Item>
+        <Name>Tank</Name>
+        <TextureAsset>Textures\\terrain\\ground</TextureAsset>
+        <Position>0 0</Position>
+        <Rotation>0</Rotation>
+        <Scale>.1 .1</Scale>
+        <Offset>0 0</Offset>
+        <Size>100 100</Size>
+        <Speed>4</Speed>
+        <Health>100</Health>
+        <AttackPower>40</AttackPower>
+        <AttackRadius>20</AttackRadius>
+        <DefenseRadius>30</DefenseRadius>
+      </Item>      
+    </VehicleList>    
+
+    <BuildingList>
+      <Item>
+        <Name>HeadQuarters</Name>
+        <TextureAsset>Textures\\terrain\\ground</TextureAsset>
+        <Position>0 0</Position>
+        <Rotation>0</Rotation>
+        <Scale>.1 .1</Scale>
+        <Offset>0 0</Offset>
+        <Size>100 100</Size>
+        <Speed>0</Speed>
+        <Health>1000</Health>
+        <AttackPower>0</AttackPower>
+        <AttackRadius>0</AttackRadius>
+        <DefenseRadius>0</DefenseRadius>
+      </Item>
+    </BuildingList>  
+    
+  </Asset>
+</XnaContent>

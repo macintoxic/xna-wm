@@ -7,6 +7,7 @@ using SpriteSheetRuntime;
 using XMLContentShared;
 using System.Collections.Generic;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Input;
 
 namespace WM
 {
@@ -248,6 +249,7 @@ namespace WM
             Texture2D cloudTexture = content.Load<Texture2D>("Textures\\Terrain\\clouds");
             //Texture2D waterTexture = content.Load<Texture2D>("Textures\\Terrain\\water");
             //Texture2D dirtTexture = content.Load<Texture2D>("Textures\\Terrain\\dirt");
+            XMLContentShared.Units unitList = content.Load<XMLContentShared.Units>("XML\\Units\\UnitDefinitions");
 
             groundSheet = LoadGroundTiles(groundTexture);
             cloudSheet = LoadCloudTiles(cloudTexture);
@@ -262,8 +264,7 @@ namespace WM
             rockLayer = LoadRockLayer(numDetailTiles);
             cloudLayer = LoadCloudLayer(numCloudTiles);
 
-            spriteBatch = new SpriteBatch(game.ScreenManager.GraphicsDevice);
-            //spriteSheetUnit = content.Load<SpriteSheetBase>("XML\\Units\\SpriteSheetUnit");
+            spriteBatch = new SpriteBatch(game.ScreenManager.GraphicsDevice);            
             GenerateUnitsOnMapList();
 
             camera = new Camera2D();
@@ -281,14 +282,105 @@ namespace WM
 
         public void Update(GameTime gameTime)
         {
+            //Call sample-specific input handling function
+            HandleKeyboardInput((float)gameTime.ElapsedGameTime.TotalSeconds);
+            HandleMouseInput((float)gameTime.ElapsedGameTime.TotalSeconds);
+
             if (camera.IsChanged)
             {
                 CameraChanged();
             }
         }
 
-        public void Draw(GameTime gameTime)
+        public void HandleMouseInput(float elapsed)
+        {            
+            MouseState current_mouse = Mouse.GetState();
+
+            // The mouse x and y positions are returned relative to the
+            // upper-left corner of the game window.
+            int mouseX = current_mouse.X;
+            int mouseY = current_mouse.Y;
+            int leftMouse = (int)current_mouse.LeftButton;
+            int rightMouse = (int)current_mouse.RightButton;
+            
+            // If clicked see if we should process an action.
+            if (rightMouse == 1)
+            {
+                // Clear all selections
+
+            }
+            if (leftMouse == 1)
+            {
+                // See if we should produce unit stuff
+
+                // See if we should build stuff
+
+                // See if there are units selected which should move toward an destination.
+
+            }
+            
+            // Change background color based on mouse position.
+            //Color backColor = new Color((byte)(mouseX / 3), (byte)(mouseY / 2), 0);
+            //game.ScreenManager.GraphicsDevice.Clear(backColor);            
+        }
+
+        public void HandleKeyboardInput(float elapsed)
         {
+            /*
+            //check for camera movement
+            float dX = ReadKeyboardAxis(currentKeyboardState, Keys.Left, Keys.Right) *
+                elapsed * MovementRate;
+            float dY = ReadKeyboardAxis(currentKeyboardState, Keys.Down, Keys.Up) *
+                elapsed * MovementRate;
+            camera.MoveRight(ref dX);
+            camera.MoveUp(ref dY);
+
+            //check for animted sprite movement
+            animatedSpritePosition.X += (float)Math.Cos(-camera.Rotation) *
+                ReadKeyboardAxis(currentKeyboardState, Keys.A, Keys.D) *
+                elapsed * MovementRate;
+            animatedSpritePosition.Y += (float)Math.Sin(-camera.Rotation) *
+                ReadKeyboardAxis(currentKeyboardState, Keys.A, Keys.D) *
+                elapsed * MovementRate;
+
+            animatedSpritePosition.X -= (float)Math.Sin(camera.Rotation) *
+                ReadKeyboardAxis(currentKeyboardState, Keys.S, Keys.W) *
+                elapsed * MovementRate;
+            animatedSpritePosition.Y -= (float)Math.Cos(camera.Rotation) *
+                ReadKeyboardAxis(currentKeyboardState, Keys.S, Keys.W) *
+                elapsed * MovementRate;
+
+            //since the sprite position has changed, the Origin must be updated
+            //on the animated sprite object
+            animatedSprite.Origin = (camera.Position - animatedSpritePosition)
+                    / animatedSpriteScale.X;
+
+            //check for camera rotation
+            dX = ReadKeyboardAxis(currentKeyboardState, Keys.E, Keys.Q) *
+                elapsed * RotationRate;
+            camera.Rotation += dX;
+
+
+            //check for camera zoom
+            dX = ReadKeyboardAxis(currentKeyboardState, Keys.X, Keys.Z) *
+                elapsed * ZoomRate;
+
+            //limit the zoom
+            camera.Zoom += dX;
+            if (camera.Zoom < .5f) camera.Zoom = .5f;
+            if (camera.Zoom > 2f) camera.Zoom = 2f;
+
+            //check for camera reset
+            if (currentKeyboardState.IsKeyDown(Keys.R) &&
+                lastKeyboardState.IsKeyDown(Keys.R))
+            {
+                ResetToInitialPositions();
+            }
+            */
+        }
+
+        public void Draw(GameTime gameTime)
+        {               
             GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
             //SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
             float time = (float)gameTime.TotalGameTime.TotalSeconds;
@@ -312,29 +404,10 @@ namespace WM
 
             for (int i = 0; i < UnitsOnMap.Count; i++)
             {
-                UnitsOnMap[i].Draw(spriteBatch, time);
-                // Draw a spinning cat sprite, looking it up from the sprite sheet by name.
-                //spriteBatch.Draw(spriteSheetUnit.Texture, new Vector2(200, 250),
-                //                 spriteSheetUnit.SourceRectangle("cat"), Color.White,
-                //                 time, new Vector2(50, 50), 1, SpriteEffects.None, 0);
-
-                //// Draw an animating glow effect, by rapidly cycling
-                //// through 7 slightly different sprite images.
-                //const int animationFramesPerSecond = 20;
-                //const int animationFrameCount = 7;
-
-                //// Look up the index of the first glow sprite.
-                //int glowIndex = spriteSheetUnit.GetIndex("glow1");
-
-                //// Modify the index to select the current frame of the animation.
-                //glowIndex += (int)(time * animationFramesPerSecond) % animationFrameCount;
-
-                //// Draw the current glow sprite.
-                //spriteBatch.Draw(spriteSheetUnit.Texture, new Rectangle(100, 150, 200, 200),
-                //                 spriteSheetUnit.SourceRectangle(glowIndex), Color.White);
+                UnitsOnMap[i].Draw(spriteBatch, time);               
             }
 
-            spriteBatch.End();
+            spriteBatch.End();              
         }
 
         /// <summary>
@@ -386,15 +459,18 @@ namespace WM
    
         public void GenerateUnitsOnMapList()
         {
-            HumanOid NewUnit = new HumanOid(new Vector2(100, 100), 0, new Vector2(1, 1), 10, 1, "XML\\Units\\SpriteSheetUnit");
+
+
+
+            HumanOid NewUnit = new HumanOid(new Vector2(100, 100), 0, new Vector2(0.5f, 0.5f), 10, 1, "XML\\Units\\SpriteSheetUnit");
             NewUnit.Load(content);
             UnitsOnMap.Add( NewUnit );
 
-            NewUnit = new HumanOid(new Vector2(200, 200), 0, new Vector2(1, 1), 10, 1, "XML\\Units\\SpriteSheetUnit");
+            NewUnit = new HumanOid(new Vector2(200, 200), 0, new Vector2(0.5f, 0.5f), 10, 1, "XML\\Units\\SpriteSheetUnit");
             NewUnit.Load(content);
             UnitsOnMap.Add( NewUnit );
 
-            NewUnit = new HumanOid(new Vector2(300, 300), 0, new Vector2(1, 1), 10, 1, "XML\\Units\\SpriteSheetUnit");
+            NewUnit = new HumanOid(new Vector2(300, 300), 0, new Vector2(0.5f, 0.5f), 10, 1, "XML\\Units\\SpriteSheetUnit");
             NewUnit.Load(content);
             UnitsOnMap.Add( NewUnit );
 
