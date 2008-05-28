@@ -50,19 +50,5 @@ namespace XMLContentShared
             get { return size; }
             set { size = value; }
         }
-
-        public void Draw(SpriteBatch batch)
-        {
-            //batch.Draw(
-            //    texture,
-            //    position,
-            //    null,
-            //    Color.White,
-            //    rotation,
-            //    Vector2.Zero,
-            //    scale,
-            //    SpriteEffects.None,
-            //    0f);
-        }
     }
 }

@@ -5,12 +5,43 @@
     <LayerList>
       <Item>
         <Name>ground</Name>
+        <Depth>0.0</Depth>
+        <Color>100</Color>
         <TextureAsset>Textures\\terrain\\ground</TextureAsset>
         <TileList>
           <Item>
-            <Position>0 0</Position>
+            <Position>50 50</Position>
             <Rotation>0</Rotation>
-            <Scale>.1 .1</Scale>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 200</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+        </TileList>
+      </Item>
+      <Item>
+        <Name>water</Name>
+        <Depth>0.0</Depth>
+        <Color>0</Color>
+        <TextureAsset>Textures\\terrain\\water</TextureAsset>
+        <TileList>
+          <Item>
+            <Position>50 50</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 200</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
             <Offset>0 0</Offset>
             <Size>100 100</Size>
           </Item>

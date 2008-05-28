@@ -1,6 +1,8 @@
 using System;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace XMLContentShared
 {
@@ -40,6 +42,31 @@ namespace XMLContentShared
         {
             get { return layerList; }
             set { layerList = value; }
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            foreach (TileLayer layer in layerList)
+                layer.LoadContent(content);
+
+        }
+
+        public void UnloadContent(ContentManager content)
+        {
+            foreach (TileLayer layer in layerList)
+                layer.UnloadContent(content);
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            foreach (TileLayer layer in layerList)
+                layer.Update(gameTime);
+        }
+
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            foreach (TileLayer layer in layerList)
+                layer.Draw(gameTime, spriteBatch);
         }
     }
 }

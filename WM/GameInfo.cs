@@ -55,6 +55,8 @@ namespace WM
         private const int numTiles = 200;
         private Random rand;
 
+        private Level currentLevel;
+
         public GameInfo(WMGame game)
         {
             this.game = game;
@@ -243,7 +245,9 @@ namespace WM
                 (float)game.ScreenManager.GraphicsDevice.Viewport.Width / 2f,
                 (float)game.ScreenManager.GraphicsDevice.Viewport.Height / 2f);
 
-            Level level = content.Load<Level>(@"XML\Maps\WvsM");
+            currentLevel = content.Load<Level>(@"XML\Maps\WvsM");
+            currentLevel.LoadContent(content);
+
             //List<Tile> tileList = content.Load<List<Tile>>("XML\\Maps\\WvsM");
             Texture2D groundTexture = content.Load<Texture2D>("Textures\\Terrain\\ground");
             Texture2D cloudTexture = content.Load<Texture2D>("Textures\\Terrain\\clouds");
@@ -274,6 +278,9 @@ namespace WM
         public void UnloadContent()
         {
             content.Unload();
+
+            if (currentLevel != null)
+                currentLevel.UnloadContent(content);
         }
 
         public void HandleInput(InputState input)
@@ -285,6 +292,8 @@ namespace WM
             //Call sample-specific input handling function
             HandleKeyboardInput((float)gameTime.ElapsedGameTime.TotalSeconds);
             HandleMouseInput((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            currentLevel.Update(gameTime);
 
             if (camera.IsChanged)
             {
@@ -390,17 +399,9 @@ namespace WM
             graphics.RenderState.DepthBufferEnable = false;
             graphics.Clear(Color.CornflowerBlue);
 
-            //draw the background layers
-            groundLayer.Color = Color.LightGray;
-
-            groundLayer.Draw(spriteBatch);
-            detailLayer.Draw(spriteBatch);
-            rockLayer.Draw(spriteBatch);
-            cloudLayer.Draw(spriteBatch);
+            currentLevel.Draw(gameTime, spriteBatch);
 
             spriteBatch.Begin();
-            //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
-            //spriteBatch.DrawString(gameFont, "Insert Gameplay Here", enemyPosition, Color.DarkRed);
 
             for (int i = 0; i < UnitsOnMap.Count; i++)
             {
