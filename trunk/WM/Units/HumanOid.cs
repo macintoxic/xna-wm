@@ -81,6 +81,12 @@ namespace WM.Units
             if (attackTarget != null)
                 return;
 
+            Trace.Write(Position);
+            Trace.Write("   ");
+            Trace.Write(TargetPosition);
+            Trace.Write("   ");
+            Trace.Write(DrawingPosition);
+            Trace.WriteLine("");
             // Find a path toward the destination.
             // Is the unit there yet?
             if( Position != TargetPosition && bMoveTowardtarget )
@@ -90,9 +96,9 @@ namespace WM.Units
 
                 Vector2 Distance = closestTargetPosition - Position;
                 Trace.WriteLine(Distance.LengthSquared());
-                if (Distance.LengthSquared() <= 1000)
+                if (Distance.LengthSquared() <= 10)
                 {
-                    Trace.WriteLine("FOUND DEST... ");
+                    //Trace.WriteLine("FOUND DEST... ");
                     //Position = closestTargetPosition;
                     //SetMoveTargetPosition(new Vector2(-1, -1));
                     bMoveTowardtarget = false;
@@ -145,19 +151,19 @@ namespace WM.Units
                 }
                 else if ( UnitListFound.Count == 1 && UnitListFound[0] == this )
                 {
-                    Trace.Write("     self");
+                    //Trace.Write("     self");
                     //newTargetPosition = Position;
                     bFindAvailablePosition = false;
                     bMoveTowardtarget = false; // <--- very ugly to stop complete movement
                 }
                 else
                 {
-                    Trace.Write("     Correct path: ");
+                    //Trace.Write("     Correct path: ");
                     Vector2 distanceNormalized = newTargetPosition - Position;
                     distanceNormalized.Normalize();
                     newTargetPosition.X -= distanceNormalized.X * 34; // todo Use unit size now it uses static 34
                     newTargetPosition.Y -= distanceNormalized.Y * 34;
-                    Trace.WriteLine(newTargetPosition);
+                    //Trace.WriteLine(newTargetPosition);
                 }
             }
 

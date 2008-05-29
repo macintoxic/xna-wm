@@ -129,7 +129,7 @@ namespace WM.MatchInfo
                         testPostition.Y <= UnitBuildingList[i].Position.Y + UnitBuildingList[i].Size.Y)
                     {
                         //something at location
-                        Trace.Write(" Building found ");
+                        //Trace.Write(" Building found ");
                         CollidingUnits.Add(UnitBuildingList[i]);
                         //return UnitBuildingList[i];
                     }
@@ -145,7 +145,7 @@ namespace WM.MatchInfo
                         testPostition.Y <= UnitHumanOidList[i].Position.Y + UnitHumanOidList[i].Size.Y)
                     {
                         //something at location
-                        Trace.Write(" Human found ");
+                        //Trace.Write(" Human found ");
                         //return UnitHumanOidList[i];
                         CollidingUnits.Add(UnitHumanOidList[i]);
                     }
@@ -161,7 +161,7 @@ namespace WM.MatchInfo
                         testPostition.Y <= UnitVehicleList[i].Position.Y + UnitVehicleList[i].Size.Y)
                     {
                         //something at location
-                        Trace.Write(" Vehicle found ");
+                        //Trace.Write(" Vehicle found ");
                         //return UnitVehicleList[i];
                         CollidingUnits.Add(UnitVehicleList[i]);
                     }

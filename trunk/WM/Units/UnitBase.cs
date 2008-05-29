@@ -146,8 +146,10 @@ namespace WM.Units
                         DrawingPosition, 
                         DrawingScale,
                         SpriteEffects.None, 
-                        0.0f);       
-            
+                        0.0f);
+
+            DrawCenter(batch, screenCenter, DrawingPosition);
+
             /*
             batch.Draw(
                 texture,
@@ -160,6 +162,30 @@ namespace WM.Units
                 SpriteEffects.None,
                 0f);
              */
+        }
+
+        public void DrawCenter(SpriteBatch batch, Vector2 aPosition, Vector2 aOrigin)
+        {
+            Rectangle sourceRect = new Rectangle(
+              355,
+              600,
+              10,
+              10);      
+
+            batch.Draw(texture,
+                        aPosition,
+                        sourceRect,
+                        Color.Green,
+                        Rotation,
+                        aOrigin,
+                        1,
+                        SpriteEffects.None,
+                        0.0f);
+        }
+
+        public void DrawBorder(SpriteBatch batch, Vector2 aPosition, Vector2 aOrigin)
+        {
+            // todo
         }
         
         public virtual void Update(GameTime gameTime) { }
