@@ -113,6 +113,7 @@ namespace WM.Input
                 if (player.DecreaseCredits(BuildingToBuild.CreditsCost))
                 {
                     //BuildingCreatedThisTurn = true;
+                    ClearSelections(player);
                     player.CreateBuilding(TargetedPositionOnMap, BuildingToBuild);
                 }
             }
