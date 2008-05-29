@@ -149,6 +149,7 @@ namespace WM.Units
                         0.0f);
 
             DrawCenter(batch, screenCenter, DrawingPosition);
+            DrawBorder(batch, screenCenter, DrawingPosition);
 
             /*
             batch.Draw(
@@ -164,28 +165,73 @@ namespace WM.Units
              */
         }
 
-        public void DrawCenter(SpriteBatch batch, Vector2 aPosition, Vector2 aOrigin)
+        public void DrawCenter(SpriteBatch batch, Vector2 aCenter, Vector2 aOffset)
         {
             Rectangle sourceRect = new Rectangle(
               355,
               600,
               10,
-              10);      
+              10);
 
             batch.Draw(texture,
-                        aPosition,
+                        aCenter,
                         sourceRect,
                         Color.Green,
                         Rotation,
-                        aOrigin,
+                        aOffset,
                         1,
                         SpriteEffects.None,
                         0.0f);
         }
 
-        public void DrawBorder(SpriteBatch batch, Vector2 aPosition, Vector2 aOrigin)
+        public void DrawBorder(SpriteBatch batch, Vector2 aCenter, Vector2 aOffset)
         {
             // todo
+            Rectangle sourceRect = new Rectangle(
+              355,
+              600,
+              5,
+              5);
+
+            batch.Draw(texture,
+                        aCenter,
+                        sourceRect,
+                        Color.Green,
+                        Rotation,
+                        aOffset + new Vector2(-size.X/2, 0),
+                        1,
+                        SpriteEffects.None,
+                        0.0f);
+
+            batch.Draw(texture,
+                        aCenter,
+                        sourceRect,
+                        Color.Green,
+                        Rotation,
+                        aOffset + new Vector2(size.X / 2, 0),
+                        1,
+                        SpriteEffects.None,
+                        0.0f);
+
+            batch.Draw(texture,
+                        aCenter,
+                        sourceRect,
+                        Color.Green,
+                        Rotation,
+                        aOffset + new Vector2(0, Size.Y/2),
+                        1,
+                        SpriteEffects.None,
+                        0.0f);
+
+            batch.Draw(texture,
+                        aCenter,
+                        sourceRect,
+                        Color.Green,
+                        Rotation,
+                        aOffset + new Vector2(0, -Size.Y / 2),
+                        1,
+                        SpriteEffects.None,
+                        0.0f);
         }
         
         public virtual void Update(GameTime gameTime) { }
