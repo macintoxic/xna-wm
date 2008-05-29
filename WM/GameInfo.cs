@@ -152,31 +152,34 @@ namespace WM
             camera.MapSize = currentLevel.MapSize;
             ResetToInitialPositions();
 
-            hud = new Hud();
+            hud = new Hud(this);
             hud.HudElementClick += new HudElementClick(hud_HudElementClick);
             hud.LoadContent(content);
         }
 
         private void hud_HudElementClick(Hud hud, HudElementType element)
-        {
+        {            
             switch (element)
             {
                 case HudElementType.BuildBarrack:
                     {
+                        mouseControl.ClearSelections(MyPlayer);
                         BuildingItem newBuildingItem = (BuildingItem)unitList.GetObjectDefinitionByName("Barrack", 3);
                         if (newBuildingItem != null)
                         {
                             UnitItem productionUnitItem = (UnitItem)unitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
                             MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem, matchInfo);
-                        }else
+                        }
+                        else
                         {
                             MyPlayer.SelectedBuildingInHud = null;
                         }
-                    }                   
+                    }
                     break;
 
                 case HudElementType.BuildHQ:
                     {
+                        mouseControl.ClearSelections(MyPlayer);
                         BuildingItem newBuildingItem = (BuildingItem)unitList.GetObjectDefinitionByName("HeadQuarter", 3);
                         if (newBuildingItem != null)
                         {
@@ -187,10 +190,11 @@ namespace WM
                         {
                             MyPlayer.SelectedBuildingInHud = null;
                         }
-                    }        
+                    }
                     break;
                 case HudElementType.BuildWarFactory:
                     {
+                        mouseControl.ClearSelections(MyPlayer);
                         BuildingItem newBuildingItem = (BuildingItem)unitList.GetObjectDefinitionByName("WarFactory", 3);
                         if (newBuildingItem != null)
                         {
@@ -200,7 +204,7 @@ namespace WM
                         else
                         {
                             MyPlayer.SelectedBuildingInHud = null;
-                        }                    
+                        }
                     }
                     break;
 
@@ -279,8 +283,7 @@ namespace WM
             else
                 JoinOrCreateNetworkSession();
         }
-
-
+        
         /// <summary>
         /// Helper for updating a locally controlled gamer.
         /// </summary>

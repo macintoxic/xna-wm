@@ -45,6 +45,13 @@ namespace WM
         private List<HudElement> hudElementsLine1;
         private List<HudElement> hudElementsLine2;
 
+        private GameInfo gameInfo;
+
+        public Hud(GameInfo aGameInfo)
+        {
+            gameInfo = aGameInfo;
+        }
+
         public virtual void OnHudElementClick(HudElementType type)
         {
             if (HudElementClick != null)
@@ -65,8 +72,8 @@ namespace WM
             hudElementsLine1 = new List<HudElement>();
             hudElementsLine2 = new List<HudElement>();
 
-            hudElementsLine1.Add(new HudElement(0, new Vector2(0, 0), HudElementType.BuildSoldier));
-            hudElementsLine1.Add(new HudElement(1, new Vector2(64, 0), HudElementType.BuildTank));
+            //hudElementsLine1.Add(new HudElement(0, new Vector2(0, 0), HudElementType.BuildSoldier));
+            //hudElementsLine1.Add(new HudElement(1, new Vector2(64, 0), HudElementType.BuildTank));
             hudElementsLine2.Add(new HudElement(2, new Vector2(0, 0), HudElementType.BuildBarrack));
             hudElementsLine2.Add(new HudElement(3, new Vector2(64, 0), HudElementType.BuildHQ));
             hudElementsLine2.Add(new HudElement(4, new Vector2(128, 0), HudElementType.BuildWarFactory));
@@ -112,6 +119,15 @@ namespace WM
                     }
                 }
             }
+
+            // When a building is selected generate unit menu belonging to the building.
+            if (gameInfo.MyPlayer.SelectedBuildingOnMap != null)
+            {
+                ClearUnitHud();
+                GenerateUnitHud();
+            }
+            else if (hudElementsLine1.Count > 0)
+                ClearUnitHud();
         }
 
         public void Draw(GameTime gameTime, GraphicsDevice graphics, SpriteBatch batch)
@@ -165,5 +181,26 @@ namespace WM
 
             batch.End();
         }
+    
+        public void GenerateUnitHud()
+        {
+            if (hudElementsLine1.Count == 0)
+            {
+                if (gameInfo.MyPlayer.SelectedBuildingOnMap.GetProductionUnit() != null)
+                {
+                    if (gameInfo.MyPlayer.SelectedBuildingOnMap.GetProductionUnit().Name == "Soldier")
+                        hudElementsLine1.Add(new HudElement(0, new Vector2(0, 0), HudElementType.BuildSoldier));
+
+                    if (gameInfo.MyPlayer.SelectedBuildingOnMap.GetProductionUnit().Name == "Tank")
+                        hudElementsLine1.Add(new HudElement(1, new Vector2(64, 0), HudElementType.BuildTank));
+                }
+            }
+        }
+
+        public void ClearUnitHud()
+        {
+            hudElementsLine1.Clear();
+        }
+
     }
 }
