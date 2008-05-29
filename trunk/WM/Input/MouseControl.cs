@@ -141,6 +141,7 @@ namespace WM.Input
                     if (worldPosition.X <= player.UnitBuildingList[i].Position.X + player.UnitBuildingList[i].Size.X &&
                         worldPosition.Y <= player.UnitBuildingList[i].Position.Y + player.UnitBuildingList[i].Size.Y)
                     {
+                        //ClearSelections(player); // <-- can be enabled so when clicking on a building the units won't move there, handy when attacking, bad when selecting your own building.
                         player.SelectedBuildingOnMap = player.UnitBuildingList[i];
                         //Trace.WriteLine("found building");
                     }                    
