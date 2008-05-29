@@ -11,6 +11,7 @@ namespace WM
         private float rotationValue;
         private float zoomValue;
         private bool cameraChanged;
+        private Vector2 mapSize;
         #endregion
 
         #region Public Properties
@@ -91,6 +92,7 @@ namespace WM
             zoomValue = 1.0f;
             rotationValue = 0.0f;
             positionValue = Vector2.Zero;
+            mapSize = new Vector2(1024, 1024);
         }
         #endregion
 
@@ -122,6 +124,7 @@ namespace WM
                     positionValue.X += dist;
                 }
             }
+            RestrictCameraPosition();
         }
         /// <summary>
         /// Pan in the left direction.  Corrects for rotation if specified.
@@ -141,6 +144,7 @@ namespace WM
                     positionValue.X += dist;
                 }
             }
+            RestrictCameraPosition();
         }
         /// <summary>
         /// Pan in the up direction.  Corrects for rotation if specified.
@@ -162,6 +166,7 @@ namespace WM
                     positionValue.Y -= dist;
                 }
             }
+            RestrictCameraPosition();
         }
         /// <summary>
         /// Pan in the down direction.  Corrects for rotation if specified.
@@ -183,7 +188,26 @@ namespace WM
                     positionValue.Y -= dist;
                 }
             }
+
+            RestrictCameraPosition();
         }
+
+        /// <summary>
+        /// Restricts the camera position to the map size
+        /// </summary>
+        private void RestrictCameraPosition()
+        {
+            if (positionValue.X > mapSize.X)
+                positionValue.X = mapSize.X;
+            else if (positionValue.X < 0)
+                positionValue.X = 0;
+
+            if (positionValue.Y > mapSize.Y)
+                positionValue.Y = mapSize.Y;
+            else if (positionValue.Y < 0)
+                positionValue.Y = 0;
+        }
+
         #endregion
     }
 }
