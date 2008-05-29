@@ -144,7 +144,7 @@ namespace WM.Units
             // Find Location between Destination and origin
             while (bFindAvailablePosition && bMoveTowardtarget)                
             {                
-                List<UnitBase> UnitListFound = MatchInfo.IsPositionAvailable(newTargetPosition);
+                List<UnitBase> UnitListFound = MatchInfo.IsPositionAvailable(newTargetPosition, Size);
                 if (UnitListFound.Count == 0)
                 {
                     bFindAvailablePosition = false;
@@ -182,7 +182,7 @@ namespace WM.Units
             nextPosition += Distance * GetUnitSpeed(elapsedTime);
             
             // If the new position is colliding, move around it. When possible.
-            List<UnitBase> UnitListFound = MatchInfo.IsPositionAvailable(nextPosition);
+            List<UnitBase> UnitListFound = MatchInfo.IsPositionAvailable(nextPosition, Size);
             if (UnitListFound.Count > 0)
             {
                 for(int i=0; i < UnitListFound.Count; i++)
