@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using SpriteSheetRuntime;
 using Microsoft.Xna.Framework.Net;
+using WM.MatchInfo;
 
 namespace WM.Units
 {
@@ -28,9 +29,11 @@ namespace WM.Units
         public Vector2 DrawingScale;
         public Vector2 screenCenter;
 
+        MatchInfo.MatchInfo matchInfo;
+
         string name;    // used to identify type, not unique
 
-        public UnitBase(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string TextureAsset, Vector2 offset, Vector2 size)
+        public UnitBase(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string TextureAsset, Vector2 offset, Vector2 size, MatchInfo.MatchInfo matchInfo)
         {
             Position = position;
             Rotation = rotation;
@@ -43,6 +46,7 @@ namespace WM.Units
             textureAsset = TextureAsset;
             creditsCost = 100;
             Name = name;
+            MatchInfo = matchInfo;
         }
 
         public Vector2 Position
@@ -104,6 +108,13 @@ namespace WM.Units
             get { return name; }
             set { name = value; }
         }
+
+        public MatchInfo.MatchInfo MatchInfo
+        {
+            get { return matchInfo; }
+            set { matchInfo = value; }
+        }        
+
 
         //[ContentSerializerIgnore]
         //public Texture2D Texture

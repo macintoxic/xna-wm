@@ -3,23 +3,30 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Net;
 using XMLContentShared;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace WM.Units
 {
     public class HumanOid : UnitBase
     {
 
+        bool bMoveTowardtarget;
         Vector2 targetPosition;
+        Vector2 targetPositionMoveOffset;
+
+
+
         UnitBase attackTarget;
 
-        public HumanOid(UnitItem unitDefinition)
-            : base(unitDefinition.Name, unitDefinition.Position, unitDefinition.Rotation, unitDefinition.Scale, unitDefinition.AttackRadius, unitDefinition.Speed, unitDefinition.TextureAsset, unitDefinition.Offset, unitDefinition.Size)
+        public HumanOid(UnitItem unitDefinition, MatchInfo.MatchInfo matchInfo)
+            : base(unitDefinition.Name, unitDefinition.Position, unitDefinition.Rotation, unitDefinition.Scale, unitDefinition.AttackRadius, unitDefinition.Speed, unitDefinition.TextureAsset, unitDefinition.Offset, unitDefinition.Size, matchInfo)
         {
             initialize();
         }
 
-        public HumanOid(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size)
-            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size)
+        public HumanOid(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, MatchInfo.MatchInfo matchInfo)
+            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo)
         {
             initialize();
         }
@@ -27,6 +34,7 @@ namespace WM.Units
         public void initialize()
         {
             SetMoveTargetPosition(new Vector2(-1, -1));
+            bMoveTowardtarget = false;
         }
 
         public override void Update(GameTime gameTime)
@@ -67,29 +75,31 @@ namespace WM.Units
 
         public void Move(GameTime gameTime)
         {              
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             // stop moving when having a target.
             if (attackTarget != null)
                 return;
 
             // Find a path toward the destination.
             // Is the unit there yet?
-            if( Position != TargetPosition 
-                && TargetPosition != new Vector2(-1,-1) )
+            if( Position != TargetPosition && bMoveTowardtarget )
             {
                 // Test if we can get at the position or else what is the closest we can get.                
-                Vector2 currentTargetPosition = FindClosestPosition(TargetPosition);
-                
-                Vector2 Distance = currentTargetPosition - Position;
-                if (Distance.LengthSquared() <= 10)
+                Vector2 closestTargetPosition = FindClosestPosition(TargetPosition, elapsed);
+
+                Vector2 Distance = closestTargetPosition - Position;
+                Trace.WriteLine(Distance.LengthSquared());
+                if (Distance.LengthSquared() <= 1000)
                 {
-                    Position = currentTargetPosition;
-                    SetMoveTargetPosition(new Vector2(-1, -1));
+                    Trace.WriteLine("FOUND DEST... ");
+                    //Position = closestTargetPosition;
+                    //SetMoveTargetPosition(new Vector2(-1, -1));
+                    bMoveTowardtarget = false;
                 }
 
                 Distance.Normalize();
-                float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Position += Distance * (Speed * elapsed);// todo may be take ground type into account to determine speed.
-                
+                Position += Distance * GetUnitSpeed(elapsed);
             }
         }
 
@@ -110,17 +120,90 @@ namespace WM.Units
         /// <summary>
         // Searches for the closest location near the TargetPosition which is possible to move to.
         /// </summary>
-        private Vector2 FindClosestPosition(Vector2 TargetPosition)
+        private Vector2 FindClosestPosition(Vector2 TargetPosition, float elapsedTime)
         {
-            // todo ...
+            // todo ... complete correct path finding
+            bool bFindAvailablePosition = true;            
+            Vector2 newTargetPosition = new Vector2(TargetPosition.X, TargetPosition.Y);
+
+            // See if next step is possible.
+            newTargetPosition = CalculateNextDirection(new Vector2(TargetPosition.X, TargetPosition.Y), elapsedTime);
 
             // Loop through whole map
 
-            // Test path toward found position.
+            // Test path toward Target position. If it is reachable. Else return closest reachable point.
 
-            // Return the last correct position found on path.
+            // Return the last correct position found on path. For example when we need to go around a building, or mountain, etc
 
+            // Find Location between Destination and origin
+            while (bFindAvailablePosition && bMoveTowardtarget)                
+            {                
+                List<UnitBase> UnitListFound = MatchInfo.IsPositionAvailable(newTargetPosition);
+                if (UnitListFound.Count == 0)
+                {
+                    bFindAvailablePosition = false;
+                }
+                else if ( UnitListFound.Count == 1 && UnitListFound[0] == this )
+                {
+                    Trace.Write("     self");
+                    //newTargetPosition = Position;
+                    bFindAvailablePosition = false;
+                    bMoveTowardtarget = false; // <--- very ugly to stop complete movement
+                }
+                else
+                {
+                    Trace.Write("     Correct path: ");
+                    Vector2 distanceNormalized = newTargetPosition - Position;
+                    distanceNormalized.Normalize();
+                    newTargetPosition.X -= distanceNormalized.X * 34; // todo Use unit size now it uses static 34
+                    newTargetPosition.Y -= distanceNormalized.Y * 34;
+                    Trace.WriteLine(newTargetPosition);
+                }
+            }
+
+            return newTargetPosition;
+        }
+
+        /// <summary>
+        // Tests if the new position doesn't collide with anything if it does it provides another direction.
+        // possibly to move around.
+        /// </summary>
+        private Vector2 CalculateNextDirection(Vector2 TargetPosition, float elapsedTime)
+        {
+            Vector2 Distance = TargetPosition - Position;
+            Distance.Normalize();            
+            Vector2 nextPosition = new Vector2( Position.X, Position.Y );
+            nextPosition += Distance * GetUnitSpeed(elapsedTime);
+            
+            // If the new position is colliding, move around it. When possible.
+            List<UnitBase> UnitListFound = MatchInfo.IsPositionAvailable(nextPosition);
+            if (UnitListFound.Count > 0)
+            {
+                for(int i=0; i < UnitListFound.Count; i++)
+                {
+                    if (UnitListFound[i] == this)
+                    {}
+                    else
+                    {
+                        // Unit is going to collide. Unit should evade.
+                        // todo ..
+
+                        // temporary code. Lets just stop the unit.
+                        bMoveTowardtarget = false;
+                    }
+                }
+            }
+
+            // temporary just return original path / target position.
             return TargetPosition;
+        }
+
+        /// <summary>
+        // Use this function to get the speed of the unit, since it takes all settings into account, like ground type, etc
+        /// </summary>
+        public float GetUnitSpeed(float elapsedTime)
+        {
+            return (Speed * elapsedTime);// todo maybe take ground type into account to determine speed.
         }
 
         public override void UpdateNetworkReader(PacketReader reader)
@@ -135,7 +218,9 @@ namespace WM.Units
 
         public override void SetMoveTargetPosition(Vector2 targetPosition) 
         {
-            TargetPosition = targetPosition;
+            bMoveTowardtarget = true;
+            TargetPosition = targetPosition;// +new Vector2(Size.X, Size.Y);
+            targetPositionMoveOffset = new Vector2(0, 0);
         }
 
         public override void ClearMoveTargetPosition(Vector2 targetPosition)

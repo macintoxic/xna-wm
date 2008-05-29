@@ -12,22 +12,22 @@ namespace WM.Units
     {
         private UnitBase productionUnit;
 
-        public Building(BuildingItem buildingDefinition, UnitItem productionUnitItem)
-            : base(buildingDefinition.Name, buildingDefinition.Position, buildingDefinition.Rotation, buildingDefinition.Scale, buildingDefinition.AttackRadius, buildingDefinition.Speed, buildingDefinition.TextureAsset, buildingDefinition.Offset, buildingDefinition.Size)
+        public Building(BuildingItem buildingDefinition, UnitItem productionUnitItem, MatchInfo.MatchInfo matchInfo)
+            : base(buildingDefinition.Name, buildingDefinition.Position, buildingDefinition.Rotation, buildingDefinition.Scale, buildingDefinition.AttackRadius, buildingDefinition.Speed, buildingDefinition.TextureAsset, buildingDefinition.Offset, buildingDefinition.Size, matchInfo)
         {
             // todo Need some enhancement so we do not need to check for strings.
             DetermineProductionUnitFromDefinition(productionUnitItem, buildingDefinition.ProductionUnit);
         }
 
-        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, string productionUnit, UnitItem productionUnitItem)
-            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size)
+        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, string productionUnit, UnitItem productionUnitItem, MatchInfo.MatchInfo matchInfo)
+            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo)
         {
             // todo Need some enhancement so we do not need to check for strings.
             DetermineProductionUnitFromDefinition(productionUnitItem, productionUnit);
         }
 
-        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, UnitBase productionUnit)
-            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size)
+        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, UnitBase productionUnit, MatchInfo.MatchInfo matchInfo)
+            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo)
         {
             ProductionUnit = productionUnit;
         }
@@ -37,11 +37,11 @@ namespace WM.Units
             // todo Need some enhancement so we do not need to check for strings.
             if (productionName == "Soldier")
             {
-                ProductionUnit = new HumanOid(productionUnitItem);
+                ProductionUnit = new HumanOid(productionUnitItem, MatchInfo);
             }
             else if (productionName == "Tank")
             {
-                ProductionUnit = new Vehicle(productionUnitItem);
+                ProductionUnit = new Vehicle(productionUnitItem, MatchInfo);
             }
         }
 
