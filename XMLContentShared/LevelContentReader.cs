@@ -11,6 +11,7 @@ namespace XMLContentShared
             Level level = new Level();
             
             level.Name = input.ReadString();
+            level.MapSize = input.ReadVector2();
             level.LayerList = LoadTileLayerList(input);
 
             return level;
