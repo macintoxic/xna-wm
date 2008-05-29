@@ -11,7 +11,7 @@
         <Scale>1 1</Scale>
         <Offset>0 0</Offset>
         <Size>32 32</Size>
-        <Speed>2</Speed>
+        <Speed>32</Speed>
         <Health>25</Health>
         <AttackPower>10</AttackPower>
         <AttackRadius>10</AttackRadius>
@@ -28,7 +28,7 @@
         <Scale>1 1</Scale>
         <Offset>0 0</Offset>
         <Size>32 64</Size>
-        <Speed>4</Speed>
+        <Speed>128</Speed>
         <Health>100</Health>
         <AttackPower>40</AttackPower>
         <AttackRadius>20</AttackRadius>

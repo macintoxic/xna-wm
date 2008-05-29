@@ -29,8 +29,9 @@ namespace WM.Input
 
             // The mouse x and y positions are returned relative to the
             // upper-left corner of the game window.
-            int mouseX = currentMouseState.X;
-            int mouseY = currentMouseState.Y;
+            //int mouseX = currentMouseState.X;
+            //int mouseY = currentMouseState.Y;
+            Vector2 mouseLocation = new Vector2(currentMouseState.X, currentMouseState.Y);
             int leftMouse = (int)currentMouseState.LeftButton;
             int rightMouse = (int)currentMouseState.RightButton;
 
@@ -46,22 +47,22 @@ namespace WM.Input
                 // First find out if the mouse is over the HUD
                 // Hud screen pos from XY: 0,472 to XY: 800,600
 
-                if (mouseY >= 600-128 )
+                if (mouseLocation.Y >= 600-128 )
                 { // do nothing we are in the HUD zone, Hud is handled differently elsewhere
                 }
                 else
                 {
                     // See if there is anything the player should select.
-                    if ( !TrySelection(gameInfo.MyPlayer, new Vector2(mouseX, mouseY)) )
+                    if ( !TrySelection(gameInfo.MyPlayer, mouseLocation) )
                     {
                         // See if we should produce unit stuff.
                         //TryUnitProduction(gameInfo.MyPlayer); // should be swapped to the HUD.
 
                         // See if we should build a building.
-                        TryBuildingProduction(gameInfo.MyPlayer, new Vector2(mouseX, mouseY));
+                        TryBuildingProduction(gameInfo.MyPlayer, mouseLocation);
 
                         // See if there are units selected which should move toward an destination.
-                        TryMovement(gameInfo.MyPlayer);
+                        TryMovement(gameInfo.MyPlayer, mouseLocation);
                     }
                 }
             }
@@ -117,9 +118,11 @@ namespace WM.Input
             }
         }
 
-        public void TryMovement(Player player)
+        public void TryMovement(Player player, Vector2 mousePosition)
         {
-
+            // Move unit selection toward this point
+            for (int i = 0; i < player.SelectedUnitList.Count; i++)
+                player.SelectedUnitList[i].SetMoveTargetPosition(DeterminePositionInWorld(mousePosition));
         }
 
         public bool TrySelection(Player player, Vector2 mousePosition)
