@@ -76,8 +76,8 @@ namespace WM.MatchInfo
         }
                 
         public void CreateBuilding(Vector2 Position, Building BuildingType)
-        {            
-            Building newBuilding = new Building(BuildingType.Name, Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset, BuildingType.Size, BuildingType.ProductionUnit);
+        {
+            Building newBuilding = new Building(BuildingType.Name, Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset, BuildingType.Size, BuildingType.ProductionUnit, matchInfo);
             newBuilding.Load(matchInfo.GameInfo.Content);
             unitBuildingList.Add(newBuilding);
         }
@@ -86,13 +86,13 @@ namespace WM.MatchInfo
         {
             if (UnitType.GetType().Name == "HumanOid")
             {
-                HumanOid newUnit = new HumanOid(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size);
+                HumanOid newUnit = new HumanOid(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitHumanOidList.Add(newUnit);                
             }
             else if (UnitType.GetType().Name == "Vehicle")
             {
-                Vehicle newUnit = new Vehicle(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size);
+                Vehicle newUnit = new Vehicle(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitVehicleList.Add(newUnit);
             }
@@ -116,8 +116,10 @@ namespace WM.MatchInfo
             return false;
         }
 
-        public bool IsPositionAvailable(Vector2 testPostition)
+        public List<UnitBase> IsPositionAvailable(Vector2 testPostition)
         {
+            List<UnitBase> CollidingUnits = new List<UnitBase>();
+
             for (int i = 0; i < UnitBuildingList.Count; i++)
             {
                 if (testPostition.X >= UnitBuildingList[i].Position.X &&
@@ -127,7 +129,9 @@ namespace WM.MatchInfo
                         testPostition.Y <= UnitBuildingList[i].Position.Y + UnitBuildingList[i].Size.Y)
                     {
                         //something at location
-                        return false;
+                        Trace.Write(" Building found ");
+                        CollidingUnits.Add(UnitBuildingList[i]);
+                        //return UnitBuildingList[i];
                     }
                 }
             }
@@ -141,7 +145,9 @@ namespace WM.MatchInfo
                         testPostition.Y <= UnitHumanOidList[i].Position.Y + UnitHumanOidList[i].Size.Y)
                     {
                         //something at location
-                        return false;
+                        Trace.Write(" Human found ");
+                        //return UnitHumanOidList[i];
+                        CollidingUnits.Add(UnitHumanOidList[i]);
                     }
                 }
             }
@@ -155,12 +161,14 @@ namespace WM.MatchInfo
                         testPostition.Y <= UnitVehicleList[i].Position.Y + UnitVehicleList[i].Size.Y)
                     {
                         //something at location
-                        return false;
+                        Trace.Write(" Vehicle found ");
+                        //return UnitVehicleList[i];
+                        CollidingUnits.Add(UnitVehicleList[i]);
                     }
                 }
             }
 
-            return true;
+            return CollidingUnits;
         }
 
         public void Update(GameTime gameTime)

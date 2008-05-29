@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 using System.Diagnostics;
+using WM.Units;
 
 namespace WM.MatchInfo
 {
@@ -62,11 +63,14 @@ namespace WM.MatchInfo
             {
                 // todo use the size of the image (currently using hard coded values(32,64) add 2 to both as offset so they fit nicely.
                 tryLocation.X = startLocation.X + ((i % 5) * 34);   
-                for (int k = 0; k<players.Count; k++ )
+                /*for (int k = 0; k<players.Count; k++ )
                 {
                     if (players[k].IsPositionAvailable(tryLocation))
                         return tryLocation;
                 }
+                */
+                if (IsPositionAvailable(tryLocation).Count == 0)
+                    return tryLocation;
                 
                 if ((i % 5) == 4) 
                     tryLocation.Y += 66;                    
@@ -75,6 +79,20 @@ namespace WM.MatchInfo
             return new Vector2(0,0);
         }
 
+        public List<UnitBase> IsPositionAvailable(Vector2 tryLocation)
+        {
+            List<UnitBase> combinedUnitListFound =  new List<UnitBase>();
+            for (int k = 0; k < players.Count; k++)
+            {
+                List<UnitBase> unitFound = players[k].IsPositionAvailable(tryLocation);
+                for(int i=0; i<unitFound.Count; i++)
+                    combinedUnitListFound.Add(unitFound[i]);
+
+                //if (unitFound.Count() > null)
+                //    return unitFound;
+            }
+            return combinedUnitListFound;
+        }
 
         public GameInfo GameInfo
         {
