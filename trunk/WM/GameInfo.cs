@@ -233,7 +233,7 @@ namespace WM
                         BuildingItem newBuildingItem = (BuildingItem)unitList.GetObjectDefinitionByName("WarFactory", 3);
                         if (newBuildingItem != null)
                         {
-                            UnitItem productionUnitItem = (UnitItem)unitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
+                            UnitItem productionUnitItem = (UnitItem)unitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 2);
                             MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem);
                         }
                         else

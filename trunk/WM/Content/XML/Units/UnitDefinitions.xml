@@ -22,7 +22,7 @@
     <VehicleList>
       <Item>
         <Name>Tank</Name>
-        <TextureAsset>Textures\\terrain\\dirt</TextureAsset>
+        <TextureAsset>Textures\\terrain\\water</TextureAsset>
         <Position>0 0</Position>
         <Rotation>0</Rotation>
         <Scale>1 1</Scale>
