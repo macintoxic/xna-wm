@@ -148,8 +148,6 @@ namespace WM
             unitList = content.Load<XMLContentShared.Units>("XML\\Units\\UnitDefinitions");
             unitList.LoadContent(content);
 
-            //GenerateUnitsOnMapList();
-
             camera = new Camera2D();
             ResetToInitialPositions();
 
@@ -173,25 +171,6 @@ namespace WM
                         {
                             MyPlayer.SelectedBuildingInHud = null;
                         }
-                        /*
-                        for (int i = 0; i < unitList.BuildingList.Count; i++)
-                            if (unitList.BuildingList[i].Name == "Barrack")
-                            {
-                                Building newBuilding = new Building(
-                                    unitList.BuildingList[i].Name, 
-                                    unitList.BuildingList[i].Position,
-                                    unitList.BuildingList[i].Rotation,
-                                    unitList.BuildingList[i].Scale,
-                                    unitList.BuildingList[i].AttackRadius,
-                                    unitList.BuildingList[i].Speed,
-                                    unitList.BuildingList[i].TextureAsset,
-                                    unitList.BuildingList[i].Offset,
-                                    unitList.BuildingList[i].Size,
-                                    unitList.BuildingList[i].ProductionUnit);
-                                MyPlayer.SelectedBuildingInHud = newBuilding;
-                                break;
-                            }
-                         */
                     }                   
                     break;
 
@@ -207,25 +186,6 @@ namespace WM
                         {
                             MyPlayer.SelectedBuildingInHud = null;
                         }
-                        /*
-                        for (int i = 0; i < unitList.BuildingList.Count; i++)
-                            if (unitList.BuildingList[i].Name == "HeadQuarter")
-                            {
-                                Building newBuilding = new Building(
-                                    unitList.BuildingList[i].Name, 
-                                    unitList.BuildingList[i].Position,
-                                    unitList.BuildingList[i].Rotation,
-                                    unitList.BuildingList[i].Scale,
-                                    unitList.BuildingList[i].AttackRadius,
-                                    unitList.BuildingList[i].Speed,
-                                    unitList.BuildingList[i].TextureAsset,
-                                    unitList.BuildingList[i].Offset,
-                                    unitList.BuildingList[i].Size,
-                                    unitList.BuildingList[i].ProductionUnit);
-                                MyPlayer.SelectedBuildingInHud = newBuilding;
-                                break;
-                            }
-                         */
                     }        
                     break;
                 case HudElementType.BuildWarFactory:
@@ -239,26 +199,7 @@ namespace WM
                         else
                         {
                             MyPlayer.SelectedBuildingInHud = null;
-                        }
-                        /*
-                        for (int i = 0; i < unitList.BuildingList.Count; i++)
-                            if (unitList.BuildingList[i].Name == "WarFactory")
-                            {
-                                Building newBuilding = new Building(
-                                    unitList.BuildingList[i].Name, 
-                                    unitList.BuildingList[i].Position,
-                                    unitList.BuildingList[i].Rotation,
-                                    unitList.BuildingList[i].Scale,
-                                    unitList.BuildingList[i].AttackRadius,
-                                    unitList.BuildingList[i].Speed,
-                                    unitList.BuildingList[i].TextureAsset,
-                                    unitList.BuildingList[i].Offset,
-                                    unitList.BuildingList[i].Size,
-                                    unitList.BuildingList[i].ProductionUnit);
-                                MyPlayer.SelectedBuildingInHud = newBuilding;
-                                break;
-                            }
-                         */
+                        }                    
                     }
                     break;
 
@@ -274,25 +215,6 @@ namespace WM
                         {
                             MyPlayer.SelectedUnitInHud = null;
                         }
-                        /*
-                        for (int i = 0; i < unitList.HumanOidList.Count; i++)
-                            if (unitList.HumanOidList[i].Name == "Soldier")
-                            {                                
-                                HumanOid newSoldier = new HumanOid(
-                                    unitList.HumanOidList[i].Name,
-                                    unitList.HumanOidList[i].Position,
-                                    unitList.HumanOidList[i].Rotation,
-                                    unitList.HumanOidList[i].Scale,
-                                    unitList.HumanOidList[i].AttackRadius,
-                                    unitList.HumanOidList[i].Speed,
-                                    unitList.HumanOidList[i].TextureAsset,
-                                    unitList.HumanOidList[i].Offset,
-                                    unitList.HumanOidList[i].Size);
-                                MyPlayer.SelectedUnitInHud = newSoldier;
-                                mouseControl.TryUnitProduction(MyPlayer);
-                                break;
-                            }
-                         */
                     }
                     break;
 
@@ -308,24 +230,6 @@ namespace WM
                         {
                             MyPlayer.SelectedUnitInHud = null;
                         }
-                        /*
-                        for (int i = 0; i < unitList.VehicleList.Count; i++)
-                            if (unitList.VehicleList[i].Name == "Tank")
-                            {
-                                HumanOid newVehicle = new HumanOid(
-                                    unitList.VehicleList[i].Name, 
-                                    unitList.VehicleList[i].Position,
-                                    unitList.VehicleList[i].Rotation,
-                                    unitList.VehicleList[i].Scale,
-                                    unitList.VehicleList[i].AttackRadius,
-                                    unitList.VehicleList[i].Speed,
-                                    unitList.VehicleList[i].TextureAsset,
-                                    unitList.VehicleList[i].Offset,
-                                    unitList.VehicleList[i].Size);
-                                MyPlayer.SelectedUnitInHud = newVehicle;
-                                break;
-                            }
-                         */
                     }
                     break;
 
@@ -500,7 +404,7 @@ namespace WM
             camera.MoveRight(ref dX);
             camera.MoveUp(ref dY);
 
-            //Trace.WriteLine(camera.Position);
+            Trace.WriteLine(camera.Position);
         }
 
         /// <summary>
@@ -580,24 +484,7 @@ namespace WM
             //function is not called unnecessarily
             camera.ResetChanged();
         }
-   
-        public void GenerateUnitsOnMapList() // test function can be removed anytime
-        {
-            /*
-            HumanOid NewUnit = new HumanOid(new Vector2(100, 100), 0, new Vector2(0.5f, 0.5f), 10, 1, "XML\\Units\\SpriteSheetUnit");
-            NewUnit.Load(content);
-            UnitsOnMap.Add( NewUnit );
-
-            NewUnit = new HumanOid(new Vector2(200, 200), 0, new Vector2(0.5f, 0.5f), 10, 1, "XML\\Units\\SpriteSheetUnit");
-            NewUnit.Load(content);
-            UnitsOnMap.Add( NewUnit );
-
-            NewUnit = new HumanOid(new Vector2(300, 300), 0, new Vector2(0.5f, 0.5f), 10, 1, "XML\\Units\\SpriteSheetUnit");
-            NewUnit.Load(content);
-            UnitsOnMap.Add( NewUnit );
-            */
-        }
-
+  
         public MatchInfo.Player MyPlayer
         {
             get { return myPlayer; }

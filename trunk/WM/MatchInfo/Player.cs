@@ -80,8 +80,6 @@ namespace WM.MatchInfo
             Building newBuilding = new Building(BuildingType.Name, Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset, BuildingType.Size, BuildingType.ProductionUnit);
             newBuilding.Load(matchInfo.GameInfo.Content);
             unitBuildingList.Add(newBuilding);
-
-            Trace.Write("new Building");
         }
 
         public void CreateUnit(Vector2 Position, UnitBase UnitType)

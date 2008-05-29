@@ -120,7 +120,7 @@ namespace WM.Input
         {
             // See if anything at the world position is selectable.
             Vector2 worldPosition = DeterminePositionInWorld(mousePosition);
-            Trace.WriteLine(worldPosition);
+            //Trace.WriteLine(worldPosition);
 
             // todo performance update, break when building found.
             for (int i = 0; i < player.UnitBuildingList.Count; i++)
@@ -132,7 +132,7 @@ namespace WM.Input
                         worldPosition.Y <= player.UnitBuildingList[i].Position.Y + player.UnitBuildingList[i].Size.Y)
                     {
                         player.SelectedBuildingOnMap = player.UnitBuildingList[i];
-                        Trace.WriteLine("found building");
+                        //Trace.WriteLine("found building");
                     }                    
                 }                
             }
@@ -151,7 +151,7 @@ namespace WM.Input
                         {
                             // else add
                             player.SelectedUnitList.Add( player.UnitHumanOidList[i] );
-                            Trace.WriteLine("found human unit");
+                            //Trace.WriteLine("found human unit");
                         }
                     }
                 }
@@ -171,7 +171,7 @@ namespace WM.Input
                         {
                             // else add
                             player.SelectedUnitList.Add( player.UnitVehicleList[i] );
-                            Trace.WriteLine("found human tank");
+                            //Trace.WriteLine("found human tank");
                         }
                     }
                 }
