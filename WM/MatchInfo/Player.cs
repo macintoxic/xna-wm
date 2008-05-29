@@ -138,6 +138,43 @@ namespace WM.MatchInfo
 
         public void UpdateUnitPositions()
         {
+            UpdateUnitPositionsVehicle();
+            UpdateUnitPositionsHumanOid();            
+        }
+
+        public void UpdateUnitPositionsVehicle()
+        {
+            for (int i = 0; i < unitVehicleList.Count; i++)
+            {
+                Vector2 position = Vector2.Zero;
+                position.X = unitVehicleList[i].Position.X * unitVehicleList[i].Scale.X;
+                position.Y = unitVehicleList[i].Position.Y * unitVehicleList[i].Scale.Y;
+
+                Vector2 worldOffset = new Vector2(0, 0);// layer.Offset;
+                Vector2 cameraPosition = matchInfo.GameInfo.Camera.Position;
+                Vector2 scaleValue = unitVehicleList[i].Scale;
+                float zoomValue = matchInfo.GameInfo.Camera.Zoom;
+
+                // Offset the positions by the word position of the tile grid 
+                // this is the actual position of the tile in world coordinates.
+                Vector2.Add(ref position, ref worldOffset, out position);
+
+                // Now, we get the camera position relative to the tile's position
+                Vector2.Subtract(ref cameraPosition, ref position, out position);
+
+                // Get the tile's final size (note that scaling is done after 
+                // determining the position)
+                Vector2 scale;
+                Vector2.Multiply(ref scaleValue, zoomValue, out scale);
+
+                unitVehicleList[i].DrawingPosition = position + new Vector2(400, 300);
+                unitVehicleList[i].DrawingScale = scale;
+                unitVehicleList[i].screenCenter = matchInfo.GameInfo.ScreenCenter;
+            }       
+        }
+
+        public void UpdateUnitPositionsHumanOid()
+        {
             for (int i = 0; i < unitHumanOidList.Count; i++)
             {
                 Vector2 position = Vector2.Zero;
