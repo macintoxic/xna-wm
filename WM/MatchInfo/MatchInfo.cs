@@ -56,7 +56,7 @@ namespace WM.MatchInfo
         //  | บบบบบบบบ |
         //  | บบบบบบบบ |
         ///</summary>
-        public Vector2 FindAvailableUnitSpawnPosition(Vector2 startLocation)
+        public Vector2 FindAvailableUnitSpawnPosition(Vector2 startLocation, Vector2 extent)
         {
             Vector2 tryLocation = new Vector2(startLocation.X,startLocation.Y);
             for( int i = 0; i< 25; i++ )
@@ -69,7 +69,7 @@ namespace WM.MatchInfo
                         return tryLocation;
                 }
                 */
-                if (IsPositionAvailable(tryLocation).Count == 0)
+                if (IsPositionAvailable(tryLocation, extent).Count == 0)
                     return tryLocation;
                 
                 if ((i % 5) == 4) 
@@ -79,12 +79,12 @@ namespace WM.MatchInfo
             return new Vector2(0,0);
         }
 
-        public List<UnitBase> IsPositionAvailable(Vector2 tryLocation)
+        public List<UnitBase> IsPositionAvailable(Vector2 tryLocation, Vector2 extent)
         {
             List<UnitBase> combinedUnitListFound =  new List<UnitBase>();
             for (int k = 0; k < players.Count; k++)
             {
-                List<UnitBase> unitFound = players[k].IsPositionAvailable(tryLocation);
+                List<UnitBase> unitFound = players[k].IsPositionAvailable(tryLocation, extent);
                 for(int i=0; i<unitFound.Count; i++)
                     combinedUnitListFound.Add(unitFound[i]);
 

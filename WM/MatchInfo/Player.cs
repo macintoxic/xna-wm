@@ -116,8 +116,10 @@ namespace WM.MatchInfo
             return false;
         }
 
-        public List<UnitBase> IsPositionAvailable(Vector2 testPostition)
+        public List<UnitBase> IsPositionAvailable(Vector2 testPostition, Vector2 extent)
         {
+            // todo use extent to check for collision on whole area.
+            // ..
             List<UnitBase> CollidingUnits = new List<UnitBase>();
 
             for (int i = 0; i < UnitBuildingList.Count; i++)

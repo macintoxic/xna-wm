@@ -66,7 +66,7 @@ namespace WM.Units
         public Vector2 GetUnitSpawnPosition(GameInfo gameInfo)
         {
             // Set unit spawn location below the building, if there is already a unit, spawn it next to it.
-            Vector2 spawnPosition = gameInfo.MatchInfo.FindAvailableUnitSpawnPosition(Position);
+            Vector2 spawnPosition = gameInfo.MatchInfo.FindAvailableUnitSpawnPosition(Position, ProductionUnit.Size);
             return spawnPosition;
         }
 
