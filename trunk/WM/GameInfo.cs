@@ -294,8 +294,7 @@ namespace WM
             // Send the data to everyone in the session.
             gamer.SendData(PacketWriter, SendDataOptions.InOrder);
         }
-
-
+        
         /// <summary>
         /// Helper for reading incoming network packets.
         /// </summary>
@@ -340,9 +339,12 @@ namespace WM
                 GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
 
                 currentLevel.Update(gameTime);
-                hud.Update(gameTime, graphics);
-            }
 
+                hud.Update(gameTime, graphics);
+
+                MatchInfo.Update(gameTime);
+            }
+            
             mouseControl.Update();
         }
 
@@ -394,8 +396,7 @@ namespace WM
             HandleKeyboardInput(elapsed, input);
             mouseControl.HandleMouseInput(elapsed);//HandleMouseInput(elapsed, input);
         }
-
-
+        
         public void HandleKeyboardInput(float elapsed, InputState input)
         {
             //check for camera movement

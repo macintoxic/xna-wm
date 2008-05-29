@@ -163,6 +163,18 @@ namespace WM.MatchInfo
             return true;
         }
 
+        public void Update(GameTime gameTime)
+        {
+            for(int i=0; i<unitHumanOidList.Count; i++)
+                unitHumanOidList[i].Update(gameTime);
+
+            for(int i=0; i<unitVehicleList.Count; i++)
+                unitVehicleList[i].Update(gameTime);
+
+            for(int i=0; i<unitBuildingList.Count; i++)
+                unitBuildingList[i].Update(gameTime);
+        }
+
         public void Draw(SpriteBatch batch, float time)
         {
             batch.Begin();

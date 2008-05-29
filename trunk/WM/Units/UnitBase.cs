@@ -150,11 +150,9 @@ namespace WM.Units
                 0f);
              */
         }
-
-
+        
         public virtual void Update(GameTime gameTime) { }
-
-
+        
         public virtual void UpdateNetworkReader(PacketReader reader)
         {
             position = reader.ReadVector2();
@@ -174,5 +172,9 @@ namespace WM.Units
             writer.Write(speed);
             writer.Write(creditsCost);
         }
+
+        public virtual void SetMoveTargetPosition(Vector2 targetPosition){}
+        public virtual void ClearMoveTargetPosition(Vector2 targetPosition) {}
+        public virtual void SetAttackTarget(UnitBase target) {}
     }
 }

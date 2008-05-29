@@ -31,6 +31,12 @@ namespace WM.MatchInfo
             players.Add(player);
         }
 
+        public void Update(GameTime gameTime)
+        {
+            for (int i = 0; i < players.Count; i++)
+                players[i].Update(gameTime);
+        }
+
         public void Draw(SpriteBatch spriteBatch, float gameTime)
         {
             for (int i = 0; i < players.Count; i++ )
