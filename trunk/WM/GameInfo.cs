@@ -149,6 +149,7 @@ namespace WM
             unitList.LoadContent(content);
 
             camera = new Camera2D();
+            camera.MapSize = currentLevel.MapSize;
             ResetToInitialPositions();
 
             hud = new Hud();

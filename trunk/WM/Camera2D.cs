@@ -81,6 +81,15 @@ namespace WM
             set { isMovingUsingScreenAxis = value; }
             get { return isMovingUsingScreenAxis; }
         }
+
+        /// <summary>
+        /// Get/Set the mapSize
+        /// </summary>
+        public Vector2 MapSize
+        {
+            set { mapSize = value; }
+            get { return mapSize; }
+        }
         #endregion
 
         #region Constructor
@@ -92,7 +101,7 @@ namespace WM
             zoomValue = 1.0f;
             rotationValue = 0.0f;
             positionValue = Vector2.Zero;
-            mapSize = new Vector2(1024, 1024);
+            mapSize = new Vector2(0, 0);
         }
         #endregion
 

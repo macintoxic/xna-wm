@@ -14,6 +14,11 @@ namespace XMLContentShared
         private string name;
 
         /// <summary>
+        /// The name of this level.
+        /// </summary>
+        private Vector2 mapSize;
+
+        /// <summary>
         /// The layer list of this level.
         /// </summary>
         private List<TileLayer> layerList;
@@ -33,6 +38,15 @@ namespace XMLContentShared
         {
             get { return name; }
             set { name = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of this level.
+        /// </summary>
+        public Vector2 MapSize
+        {
+            get { return mapSize; }
+            set { mapSize = value; }
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ namespace XMLContentExtension
         protected override void Write(ContentWriter output, Level value)
         {
             output.Write(value.Name);
+            output.Write(value.MapSize);
 
             WriteTileLayerList(output, value.LayerList);
         }

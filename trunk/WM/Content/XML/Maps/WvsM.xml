@@ -2,12 +2,13 @@
 <XnaContent>
   <Asset Type="XMLContentShared.Level">
     <Name>Our First Level</Name>
+    <MapSize>512 512</MapSize>
     <LayerList>
       <Item>
         <Name>ground</Name>
         <Depth>0.0</Depth>
         <Color>100</Color>
-        <Offset>0 0</Offset>
+        <Offset>0 0</Offset>        
         <CameraPosition>0 0</CameraPosition>
         <CameraRotation>0</CameraRotation>
         <CameraZoom>1</CameraZoom>
