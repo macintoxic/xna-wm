@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Net;
+using XMLContentShared;
 
 namespace WM.Units
 {
@@ -11,16 +12,45 @@ namespace WM.Units
     {
         private UnitBase productionUnit;
 
-        public Building(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, string productionUnit)
-            : base(position, rotation, scale, targetRadius, speed, textureAsset, offset, size)
+        public Building(BuildingItem buildingDefinition, UnitItem productionUnitItem)
+            : base(buildingDefinition.Name, buildingDefinition.Position, buildingDefinition.Rotation, buildingDefinition.Scale, buildingDefinition.AttackRadius, buildingDefinition.Speed, buildingDefinition.TextureAsset, buildingDefinition.Offset, buildingDefinition.Size)
         {
-            if (productionUnit == "Soldier")
-                ProductionUnit = new HumanOid();
-            else if (productionUnit == "Tank")
-                ProductionUnit = new Vehicle();
+            // todo Need some enhancement so we do not need to check for strings.
+            DetermineProductionUnitFromDefinition(productionUnitItem, buildingDefinition.ProductionUnit);
+            //targetRadius = 0; // not really needed when correctly set in XML
+            //speed = 0;
+        }
 
-            targetRadius = 0;
-            speed = 0;
+        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, string productionUnit, UnitItem productionUnitItem)
+            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size)
+        {
+            // todo Need some enhancement so we do not need to check for strings.
+            DetermineProductionUnitFromDefinition(productionUnitItem, productionUnit);
+            //ProductionUnit = productionUnit;
+            //targetRadius = 0; // not really needed when correctly set in XML
+            //speed = 0;
+        }
+
+        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, UnitBase productionUnit)
+            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size)
+        {
+            ProductionUnit = productionUnit;
+            //ProductionUnit = productionUnit;
+            //targetRadius = 0; // not really needed when correctly set in XML
+            //speed = 0;
+        }
+
+        private void DetermineProductionUnitFromDefinition(UnitItem productionUnitItem, string productionName)
+        {
+            // todo Need some enhancement so we do not need to check for strings.
+            if (productionName == "Soldier")
+            {
+                ProductionUnit = new HumanOid(productionUnitItem);
+            }
+            else if (productionName == "Tank")
+            {
+                ProductionUnit = new Vehicle(productionUnitItem);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -33,16 +63,21 @@ namespace WM.Units
             base.Draw(batch, time);
         }
 
-        public UnitBase GetProductionUnit()
+        public UnitBase GetProductionUnit() 
         {
             // todo this one should not be empty it should be a copy of a template found in Units class (HumanOidList or VehicleList)
+            //if (productionUnit == "Soldier")
+            //    ProductionUnit = new HumanOid();
+            //else if (productionUnit == "Tank")
+            //    ProductionUnit = new Vehicle();
+
             return productionUnit; 
         }
 
         public Vector2 GetUnitSpawnPosition()
         {
             // todo update to correct location, maybe set by xml or always default right bottom ???
-            return Position;
+            return Position+new Vector2(0,Size.Y);
         }
 
         public override void Load(ContentManager content)

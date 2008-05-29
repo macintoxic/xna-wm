@@ -28,7 +28,9 @@ namespace WM.Units
         public Vector2 DrawingScale;
         public Vector2 screenCenter;
 
-        public UnitBase(Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string TextureAsset, Vector2 offset, Vector2 size)
+        string name;    // used to identify type, not unique
+
+        public UnitBase(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string TextureAsset, Vector2 offset, Vector2 size)
         {
             Position = position;
             Rotation = rotation;
@@ -40,6 +42,7 @@ namespace WM.Units
             speed = Speed;
             textureAsset = TextureAsset;
             creditsCost = 100;
+            Name = name;
         }
 
         public Vector2 Position
@@ -94,6 +97,12 @@ namespace WM.Units
         {
             get { return textureAsset; }
             set { textureAsset = value; }
+        }
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
         }
 
         //[ContentSerializerIgnore]

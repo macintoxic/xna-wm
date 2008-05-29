@@ -34,6 +34,36 @@ namespace XMLContentShared
             buildingList = new List<BuildingItem>();
         }
 
+        /// <summary>
+        /// Return a object based on type and name.
+        /// ObjectType: 
+        ///     1 = HumanOid
+        ///     2 = Vehicle
+        ///     3 = Building
+        /// </summary>
+        public ItemDefinition GetObjectDefinitionByName(string nameToIdentify, int ObjectType)
+        {
+            if (ObjectType == 1)
+            {
+                for (int i = 0; i < humanOidList.Count; i++)
+                    if (humanOidList[i].Name == nameToIdentify)
+                        return humanOidList[i];
+            }
+            else if (ObjectType == 2)
+            {
+                for (int i = 0; i < vehicleList.Count; i++)
+                    if (vehicleList[i].Name == nameToIdentify)
+                        return vehicleList[i];
+            }
+            else if (ObjectType == 3)
+            {
+                for (int i = 0; i < buildingList.Count; i++)
+                    if (buildingList[i].Name == nameToIdentify)
+                        return buildingList[i];
+            }
+            return null;
+        }
+
         public void LoadContent(ContentManager content)
         {
             foreach (UnitItem unitItem in humanOidList)

@@ -1,46 +1,48 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
 namespace XMLContentShared
 {
-    public class BuildingItem : ItemDefinition
+    public class ItemDefinition
     {
-        /*
         /// <summary>
         /// The name of this layer.
         /// </summary>
-        private string name;
+        protected string name;
 
         /// <summary>
         /// The name of the texture that this layer uses.
         /// </summary>
-        private string textureAsset;
+        protected string textureAsset;
 
         /// <summary>
         /// The texture that is used by this layer.
         /// </summary>
-        private Texture2D texture;
+        protected Texture2D texture;
 
-        private Vector2 position;
-        private float rotation;
-        private Vector2 scale;
-        private Vector2 offset;
-        private Vector2 size;
+        protected Vector2 position;
+        protected float rotation;
+        protected Vector2 scale;
+        protected Vector2 offset;
+        protected Vector2 size;
 
-        private float speed;
-        private float health;
-        private float attackPower;
-        private float attackRadius;
-        private float defenseRadius;
-        private int creditsCost;
-        */
-        private string productionUnit;
+        protected float speed;
+        protected float health;
+        protected float attackPower;
+        protected float attackRadius;
+        protected float defenseRadius;
+        protected int creditsCost;
 
 
-        /*
+        public ItemDefinition()
+        {
+        }
+
+
         /// <summary>
         /// Gets or sets the name of this tile layer.
         /// </summary>
@@ -130,23 +132,14 @@ namespace XMLContentShared
             get { return creditsCost; }
             set { creditsCost = value; }
         }
-        */
 
-        public string ProductionUnit
+        public virtual void LoadContent(ContentManager content)
         {
-            get { return productionUnit; }
-            set { productionUnit = value; }
         }
 
-        public override void LoadContent(ContentManager content)
+        public virtual void UnLoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>(textureAsset);
-            
         }
 
-        public override void UnLoadContent(ContentManager content)
-        {
-
-        }
     }
 }
