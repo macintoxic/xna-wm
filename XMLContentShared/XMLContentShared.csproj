@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildingItem.cs" />
+    <Compile Include="ItemDefinition.cs" />
     <Compile Include="UnitContentReader.cs" />
     <Compile Include="UnitItem.cs" />
     <Compile Include="Units.cs" />

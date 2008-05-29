@@ -164,10 +164,22 @@ namespace WM
             {
                 case HudElementType.BuildBarrack:
                     {
+                        BuildingItem newBuildingItem = (BuildingItem)unitList.GetObjectDefinitionByName("Barrack", 3);
+                        if (newBuildingItem != null)
+                        {
+                            UnitItem productionUnitItem = (UnitItem)unitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
+                            MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem);
+                        }else
+                        {
+                            MyPlayer.SelectedBuildingInHud = null;
+                        }
+                        /*
                         for (int i = 0; i < unitList.BuildingList.Count; i++)
                             if (unitList.BuildingList[i].Name == "Barrack")
                             {
-                                Building newBuilding = new Building(unitList.BuildingList[i].Position,
+                                Building newBuilding = new Building(
+                                    unitList.BuildingList[i].Name, 
+                                    unitList.BuildingList[i].Position,
                                     unitList.BuildingList[i].Rotation,
                                     unitList.BuildingList[i].Scale,
                                     unitList.BuildingList[i].AttackRadius,
@@ -179,15 +191,29 @@ namespace WM
                                 MyPlayer.SelectedBuildingInHud = newBuilding;
                                 break;
                             }
+                         */
                     }                   
                     break;
 
                 case HudElementType.BuildHQ:
                     {
+                        BuildingItem newBuildingItem = (BuildingItem)unitList.GetObjectDefinitionByName("HeadQuarter", 3);
+                        if (newBuildingItem != null)
+                        {
+                            UnitItem productionUnitItem = (UnitItem)unitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
+                            MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem);
+                        }
+                        else
+                        {
+                            MyPlayer.SelectedBuildingInHud = null;
+                        }
+                        /*
                         for (int i = 0; i < unitList.BuildingList.Count; i++)
                             if (unitList.BuildingList[i].Name == "HeadQuarter")
                             {
-                                Building newBuilding = new Building(unitList.BuildingList[i].Position,
+                                Building newBuilding = new Building(
+                                    unitList.BuildingList[i].Name, 
+                                    unitList.BuildingList[i].Position,
                                     unitList.BuildingList[i].Rotation,
                                     unitList.BuildingList[i].Scale,
                                     unitList.BuildingList[i].AttackRadius,
@@ -199,14 +225,28 @@ namespace WM
                                 MyPlayer.SelectedBuildingInHud = newBuilding;
                                 break;
                             }
+                         */
                     }        
                     break;
                 case HudElementType.BuildWarFactory:
                     {
+                        BuildingItem newBuildingItem = (BuildingItem)unitList.GetObjectDefinitionByName("WarFactory", 3);
+                        if (newBuildingItem != null)
+                        {
+                            UnitItem productionUnitItem = (UnitItem)unitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
+                            MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem);
+                        }
+                        else
+                        {
+                            MyPlayer.SelectedBuildingInHud = null;
+                        }
+                        /*
                         for (int i = 0; i < unitList.BuildingList.Count; i++)
                             if (unitList.BuildingList[i].Name == "WarFactory")
                             {
-                                Building newBuilding = new Building(unitList.BuildingList[i].Position,
+                                Building newBuilding = new Building(
+                                    unitList.BuildingList[i].Name, 
+                                    unitList.BuildingList[i].Position,
                                     unitList.BuildingList[i].Rotation,
                                     unitList.BuildingList[i].Scale,
                                     unitList.BuildingList[i].AttackRadius,
@@ -218,15 +258,29 @@ namespace WM
                                 MyPlayer.SelectedBuildingInHud = newBuilding;
                                 break;
                             }
+                         */
                     }
                     break;
 
                 case HudElementType.BuildSoldier:
                     {
+                        UnitItem newUnitItem = (UnitItem)unitList.GetObjectDefinitionByName("Soldier", 1);
+                        if (newUnitItem != null)
+                        {
+                            MyPlayer.SelectedUnitInHud = new HumanOid(newUnitItem);
+                            mouseControl.TryUnitProduction(MyPlayer);
+                        }
+                        else
+                        {
+                            MyPlayer.SelectedUnitInHud = null;
+                        }
+                        /*
                         for (int i = 0; i < unitList.HumanOidList.Count; i++)
                             if (unitList.HumanOidList[i].Name == "Soldier")
                             {                                
-                                HumanOid newSoldier = new HumanOid(unitList.HumanOidList[i].Position,
+                                HumanOid newSoldier = new HumanOid(
+                                    unitList.HumanOidList[i].Name,
+                                    unitList.HumanOidList[i].Position,
                                     unitList.HumanOidList[i].Rotation,
                                     unitList.HumanOidList[i].Scale,
                                     unitList.HumanOidList[i].AttackRadius,
@@ -238,15 +292,29 @@ namespace WM
                                 mouseControl.TryUnitProduction(MyPlayer);
                                 break;
                             }
+                         */
                     }
                     break;
 
                 case HudElementType.BuildTank:
                     {
+                        UnitItem newUnitItem = (UnitItem)unitList.GetObjectDefinitionByName("Tank", 2);
+                        if (newUnitItem != null)
+                        {
+                            MyPlayer.SelectedUnitInHud = new Vehicle(newUnitItem);
+                            mouseControl.TryUnitProduction(MyPlayer);
+                        }
+                        else
+                        {
+                            MyPlayer.SelectedUnitInHud = null;
+                        }
+                        /*
                         for (int i = 0; i < unitList.VehicleList.Count; i++)
                             if (unitList.VehicleList[i].Name == "Tank")
                             {
-                                HumanOid newVehicle = new HumanOid(unitList.VehicleList[i].Position,
+                                HumanOid newVehicle = new HumanOid(
+                                    unitList.VehicleList[i].Name, 
+                                    unitList.VehicleList[i].Position,
                                     unitList.VehicleList[i].Rotation,
                                     unitList.VehicleList[i].Scale,
                                     unitList.VehicleList[i].AttackRadius,
@@ -257,6 +325,7 @@ namespace WM
                                 MyPlayer.SelectedUnitInHud = newVehicle;
                                 break;
                             }
+                         */
                     }
                     break;
 
@@ -553,5 +622,10 @@ namespace WM
             set { screenCenter = value; }
         }
 
+        public XMLContentShared.Units UnitList
+        {
+            get { return unitList; }
+            set { unitList = value; }
+        }
     }
 }

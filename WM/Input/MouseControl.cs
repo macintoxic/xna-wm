@@ -89,7 +89,8 @@ namespace WM.Input
             if (player.SelectedBuildingOnMap != null)
             {
                 Building TargetBuilding = (Building)player.SelectedBuildingOnMap;
-                if ( player.DecreaseCredits(TargetBuilding.CreditsCost) )
+                // verify if there is a valid unit to produce and if the play has enough credits
+                if ( TargetBuilding.GetProductionUnit() != null && player.DecreaseCredits(TargetBuilding.CreditsCost) )
                 {
                     player.CreateUnit(TargetBuilding.GetUnitSpawnPosition(), TargetBuilding.GetProductionUnit());
                 }

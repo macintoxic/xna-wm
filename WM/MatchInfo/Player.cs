@@ -76,9 +76,8 @@ namespace WM.MatchInfo
         }
                 
         public void CreateBuilding(Vector2 Position, Building BuildingType)
-        {
-            string productionUnit = "Soldier";//todo get the correct productionunit here maybe save the string inside Building object??? BuildingType.ProductionUnit
-            Building newBuilding = new Building(Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset, BuildingType.Size, productionUnit);
+        {            
+            Building newBuilding = new Building(BuildingType.Name, Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset, BuildingType.Size, BuildingType.ProductionUnit);
             newBuilding.Load(matchInfo.GameInfo.Content);
             unitBuildingList.Add(newBuilding);
 
@@ -89,13 +88,13 @@ namespace WM.MatchInfo
         {
             if (UnitType.GetType().Name == "HumanOid")
             {
-                HumanOid newUnit = new HumanOid(Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size);
+                HumanOid newUnit = new HumanOid(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitHumanOidList.Add(newUnit);                
             }
             else if (UnitType.GetType().Name == "Vehicle")
             {
-                Vehicle newUnit = new Vehicle(Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size);
+                Vehicle newUnit = new Vehicle(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitVehicleList.Add(newUnit);
             }
@@ -139,7 +138,33 @@ namespace WM.MatchInfo
 
         public void UpdateUnitPositions()
         {
-            
+            for (int i = 0; i < unitHumanOidList.Count; i++)
+            {
+                Vector2 position = Vector2.Zero;
+                position.X = unitHumanOidList[i].Position.X * unitHumanOidList[i].Scale.X;
+                position.Y = unitHumanOidList[i].Position.Y * unitHumanOidList[i].Scale.Y;
+
+                Vector2 worldOffset = new Vector2(0, 0);// layer.Offset;
+                Vector2 cameraPosition = matchInfo.GameInfo.Camera.Position;
+                Vector2 scaleValue = unitHumanOidList[i].Scale;
+                float zoomValue = matchInfo.GameInfo.Camera.Zoom;
+
+                // Offset the positions by the word position of the tile grid 
+                // this is the actual position of the tile in world coordinates.
+                Vector2.Add(ref position, ref worldOffset, out position);
+
+                // Now, we get the camera position relative to the tile's position
+                Vector2.Subtract(ref cameraPosition, ref position, out position);
+
+                // Get the tile's final size (note that scaling is done after 
+                // determining the position)
+                Vector2 scale;
+                Vector2.Multiply(ref scaleValue, zoomValue, out scale);
+
+                unitHumanOidList[i].DrawingPosition = position + new Vector2(400, 300);
+                unitHumanOidList[i].DrawingScale = scale;
+                unitHumanOidList[i].screenCenter = matchInfo.GameInfo.ScreenCenter;
+            }                   
         }
 
         public void UpdateBuildingPositions()

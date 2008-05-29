@@ -6,8 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace XMLContentShared
 {
-    public class UnitItem
+    public class UnitItem : ItemDefinition
     {
+        /*
         /// <summary>
         /// The name of this layer.
         /// </summary>
@@ -35,7 +36,9 @@ namespace XMLContentShared
         private float attackRadius;
         private float defenseRadius;
         private int creditsCost;
+        */
 
+        /*
         /// <summary>
         /// Gets or sets the name of this tile layer.
         /// </summary>
@@ -125,18 +128,14 @@ namespace XMLContentShared
             get { return creditsCost; }
             set { creditsCost = value; }
         }
-       
-        public void Load(ContentManager content)
+       */
+
+        public override void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>(textureAsset);
+            texture = content.Load<Texture2D>(textureAsset);            
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            Load(content);            
-        }
-
-        public void UnLoadContent(ContentManager content)
+        public override void UnLoadContent(ContentManager content)
         {
             
         }
