@@ -90,9 +90,15 @@ namespace WM.Input
             {
                 Building TargetBuilding = (Building)player.SelectedBuildingOnMap;
                 // verify if there is a valid unit to produce and if the play has enough credits
-                if ( TargetBuilding.GetProductionUnit() != null && player.DecreaseCredits(TargetBuilding.CreditsCost) )
+                if ( TargetBuilding.GetProductionUnit() != null )
                 {
-                    player.CreateUnit(TargetBuilding.GetUnitSpawnPosition(), TargetBuilding.GetProductionUnit());
+                    Vector2 spawnPosition = TargetBuilding.GetUnitSpawnPosition(gameInfo);
+                    if (spawnPosition.X != 0
+                        && spawnPosition.Y != 0
+                        && player.DecreaseCredits(TargetBuilding.CreditsCost))
+                    {
+                        player.CreateUnit(TargetBuilding.GetUnitSpawnPosition(gameInfo), TargetBuilding.GetProductionUnit());
+                    }                    
                 }
             }
         }

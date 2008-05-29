@@ -405,7 +405,7 @@ namespace WM
             camera.MoveRight(ref dX);
             camera.MoveUp(ref dY);
 
-            Trace.WriteLine(camera.Position);
+            //Trace.WriteLine(camera.Position);
         }
 
         /// <summary>
@@ -491,6 +491,12 @@ namespace WM
             get { return myPlayer; }
             set { myPlayer = value; }
         }
+
+        public MatchInfo.MatchInfo MatchInfo
+        {
+            get { return matchInfo; }
+            set { matchInfo = value; }
+        }        
 
         public Camera2D Camera
         {

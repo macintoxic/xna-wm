@@ -116,6 +116,53 @@ namespace WM.MatchInfo
             return false;
         }
 
+        public bool IsPositionAvailable(Vector2 testPostition)
+        {
+            for (int i = 0; i < UnitBuildingList.Count; i++)
+            {
+                if (testPostition.X >= UnitBuildingList[i].Position.X &&
+                    testPostition.Y >= UnitBuildingList[i].Position.Y)
+                {
+                    if (testPostition.X <= UnitBuildingList[i].Position.X + UnitBuildingList[i].Size.X &&
+                        testPostition.Y <= UnitBuildingList[i].Position.Y + UnitBuildingList[i].Size.Y)
+                    {
+                        //something at location
+                        return false;
+                    }
+                }
+            }
+                        
+            for (int i = 0; i < UnitHumanOidList.Count; i++)
+            {
+                if (testPostition.X >= UnitHumanOidList[i].Position.X &&
+                    testPostition.Y >= UnitHumanOidList[i].Position.Y)
+                {
+                    if (testPostition.X <= UnitHumanOidList[i].Position.X + UnitHumanOidList[i].Size.X &&
+                        testPostition.Y <= UnitHumanOidList[i].Position.Y + UnitHumanOidList[i].Size.Y)
+                    {
+                        //something at location
+                        return false;
+                    }
+                }
+            }
+
+            for (int i = 0; i < UnitVehicleList.Count; i++)
+            {
+                if (testPostition.X >= UnitVehicleList[i].Position.X &&
+                    testPostition.Y >= UnitVehicleList[i].Position.Y)
+                {
+                    if (testPostition.X <= UnitVehicleList[i].Position.X + UnitVehicleList[i].Size.X &&
+                        testPostition.Y <= UnitVehicleList[i].Position.Y + UnitVehicleList[i].Size.Y)
+                    {
+                        //something at location
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
         public void Draw(SpriteBatch batch, float time)
         {
             batch.Begin();
