@@ -17,8 +17,6 @@ namespace WM.Units
         {
             // todo Need some enhancement so we do not need to check for strings.
             DetermineProductionUnitFromDefinition(productionUnitItem, buildingDefinition.ProductionUnit);
-            //targetRadius = 0; // not really needed when correctly set in XML
-            //speed = 0;
         }
 
         public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, string productionUnit, UnitItem productionUnitItem)
@@ -26,18 +24,12 @@ namespace WM.Units
         {
             // todo Need some enhancement so we do not need to check for strings.
             DetermineProductionUnitFromDefinition(productionUnitItem, productionUnit);
-            //ProductionUnit = productionUnit;
-            //targetRadius = 0; // not really needed when correctly set in XML
-            //speed = 0;
         }
 
         public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, UnitBase productionUnit)
             : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size)
         {
             ProductionUnit = productionUnit;
-            //ProductionUnit = productionUnit;
-            //targetRadius = 0; // not really needed when correctly set in XML
-            //speed = 0;
         }
 
         private void DetermineProductionUnitFromDefinition(UnitItem productionUnitItem, string productionName)
@@ -65,19 +57,17 @@ namespace WM.Units
 
         public UnitBase GetProductionUnit() 
         {
-            // todo this one should not be empty it should be a copy of a template found in Units class (HumanOidList or VehicleList)
-            //if (productionUnit == "Soldier")
-            //    ProductionUnit = new HumanOid();
-            //else if (productionUnit == "Tank")
-            //    ProductionUnit = new Vehicle();
-
             return productionUnit; 
         }
-
-        public Vector2 GetUnitSpawnPosition()
+                
+        /// <summary>
+        // return Vector2(0,0) when no valid spawn location found.
+        /// </summary>
+        public Vector2 GetUnitSpawnPosition(GameInfo gameInfo)
         {
-            // todo update to correct location, maybe set by xml or always default right bottom ???
-            return Position+new Vector2(0,Size.Y);
+            // Set unit spawn location below the building, if there is already a unit, spawn it next to it.
+            Vector2 spawnPosition = gameInfo.MatchInfo.FindAvailableUnitSpawnPosition(Position);
+            return spawnPosition;
         }
 
         public override void Load(ContentManager content)
