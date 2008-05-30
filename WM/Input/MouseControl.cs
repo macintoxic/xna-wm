@@ -138,20 +138,7 @@ namespace WM.Input
                 if ( player.Square2DCollide(worldPosition, new Vector2(1, 1), player.UnitBuildingList[i].Position, player.UnitBuildingList[i].Size) )
                 {
                     player.SelectedBuildingOnMap = player.UnitBuildingList[i];
-                }
-                /*
-                if (worldPosition.X >= player.UnitBuildingList[i].Position.X && 
-                    worldPosition.Y >= player.UnitBuildingList[i].Position.Y)
-                {
-                    if (worldPosition.X <= player.UnitBuildingList[i].Position.X + player.UnitBuildingList[i].Size.X &&
-                        worldPosition.Y <= player.UnitBuildingList[i].Position.Y + player.UnitBuildingList[i].Size.Y)
-                    {
-                        //ClearSelections(player); // <-- can be enabled so when clicking on a building the units won't move there, handy when attacking, bad when selecting your own building.
-                        player.SelectedBuildingOnMap = player.UnitBuildingList[i];
-                        //Trace.WriteLine("found building");
-                    }                    
-                }     
-                */ 
+                }             
             }
                         
             for (int i = 0; i < player.UnitHumanOidList.Count; i++)
@@ -159,24 +146,7 @@ namespace WM.Input
                 if (player.Square2DCollide(worldPosition, new Vector2(1, 1), player.UnitHumanOidList[i].Position, player.UnitHumanOidList[i].Size))
                 {
                     player.SelectedUnitList.Add( player.UnitHumanOidList[i] );
-                }
-                /*
-                if (worldPosition.X >= player.UnitHumanOidList[i].Position.X &&
-                    worldPosition.Y >= player.UnitHumanOidList[i].Position.Y)
-                {
-                    if (worldPosition.X <= player.UnitHumanOidList[i].Position.X + player.UnitHumanOidList[i].Size.X &&
-                        worldPosition.Y <= player.UnitHumanOidList[i].Position.Y + player.UnitHumanOidList[i].Size.Y)
-                    {
-                        // First check if already in list
-                        if ( !player.SelectedUnitList.Contains(player.UnitHumanOidList[i]) )
-                        {
-                            // else add
-                            player.SelectedUnitList.Add( player.UnitHumanOidList[i] );
-                            //Trace.WriteLine("found human unit");
-                        }
-                    }
-                }
-                */
+                }   
             }
                         
             for (int i = 0; i < player.UnitVehicleList.Count; i++)
@@ -185,23 +155,6 @@ namespace WM.Input
                 {
                     player.SelectedUnitList.Add(player.UnitVehicleList[i]);
                 }
-                /*
-                if (worldPosition.X >= player.UnitVehicleList[i].Position.X &&
-                    worldPosition.Y >= player.UnitVehicleList[i].Position.Y)
-                {
-                    if (worldPosition.X <= player.UnitVehicleList[i].Position.X + player.UnitVehicleList[i].Size.X &&
-                        worldPosition.Y <= player.UnitVehicleList[i].Position.Y + player.UnitVehicleList[i].Size.Y)
-                    {
-                        // First check if already in list
-                        if (!player.SelectedUnitList.Contains(player.UnitVehicleList[i]))
-                        {
-                            // else add
-                            player.SelectedUnitList.Add( player.UnitVehicleList[i] );
-                            //Trace.WriteLine("found human tank");
-                        }
-                    }
-                }
-                */
             }
 
 
