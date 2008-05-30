@@ -95,6 +95,27 @@ namespace WM.MatchInfo
             return combinedUnitListFound;
         }
 
+        ///<summary>
+        // Loops over the player list and checks every unit based on UnitBase if it 
+        // resides within the assigned radius it returns it in a list.
+        // Skips own units for now.
+        ///</summary>        
+        public List<UnitBase> AllObjectsWithinRadius(Vector2 tryPosition, float radius)
+        {
+            List<UnitBase> combinedUnitListFound = new List<UnitBase>();
+            for (int k = 0; k < players.Count; k++)
+            {
+                // Skip own units. For now no reason to also find own units.
+                if (players[k] != gameInfo.MyPlayer) 
+                {
+                    List<UnitBase> unitFound = players[k].ObjectsWithinRadius(tryPosition, radius);
+                    for (int i = 0; i < unitFound.Count; i++)
+                        combinedUnitListFound.Add(unitFound[i]);
+                }
+            }
+            return combinedUnitListFound;
+        }
+                
         public GameInfo GameInfo
         {
             get { return gameInfo; }

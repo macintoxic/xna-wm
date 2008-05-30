@@ -16,6 +16,8 @@ namespace WM.Units
         Vector2 targetPositionMoveOffset;
         
         UnitBase attackTarget;
+        float FiringTime;
+        float FireDelay;
 
         public HumanOid(UnitItem unitDefinition, MatchInfo.MatchInfo matchInfo)
             : base(unitDefinition.Name, unitDefinition.Position, unitDefinition.Rotation, unitDefinition.Scale, unitDefinition.AttackRadius, unitDefinition.Speed, unitDefinition.TextureAsset, unitDefinition.Offset, unitDefinition.Size, matchInfo)
@@ -33,6 +35,8 @@ namespace WM.Units
         {
             SetMoveTargetPosition(new Vector2(-1, -1));
             bMoveTowardtarget = false;
+            FiringTime = 0.0f;
+            FireDelay = 2.0f;
         }
 
         public override void Update(GameTime gameTime)
@@ -179,7 +183,7 @@ namespace WM.Units
                 }
                 else
                 {
-                    Trace.WriteLine("     Correct the path: ");
+                    Trace.WriteLine("     Correct the path:   FIX_ME, i cannot find a path and am search to long... help let me stop after searching for awhile... i want to stop search my target. bMoveTowardtarget = false ");
                     // todo..  doesn't work very well so for now we just make the unit hold its current position.
                     newTargetPosition = Position;
 
@@ -273,20 +277,58 @@ namespace WM.Units
 
         public void Attack(GameTime gameTime)
         {
-            // When not having any target do not attack.
-            if (attackTarget == null)
-                return;
+            // If no target available try finding one.            
+            if (attackTarget == null )
+            {
+                FindTargetWithinRadius();
+                // When still not having found any target do not attack.
+                if (attackTarget == null)
+                {
+                    FiringTime = 0.0f;
+                    return;
+                }
+            }
+            else
+            {
+                // Check if current target is still in range else find another
+                Vector2 distance = attackTarget.Position - Position;
+                if ( Math.Abs(distance.Length()) > TargetRadius )
+                {
+                    FindTargetWithinRadius();
+                    // When still not having found any target do not attack.
+                    if (attackTarget == null)
+                    {
+                        FiringTime = 0.0f;
+                        return;
+                    }
+                }
+            }
 
+            // If we came this far we do have a target now, start shooting.
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            FireAtTarget(elapsed);
         }
 
         public UnitBase FindTargetWithinRadius()
         {
-            return null;
+            List<UnitBase> targetList = MatchInfo.AllObjectsWithinRadius(Position, TargetRadius);
+            if (targetList.Count > 0)
+                attackTarget = targetList[0];
+
+            return attackTarget;
         }
 
-        public void FireAtTarget()
+        public void FireAtTarget(float elapsed)
         {
+            FiringTime += elapsed;
+            // If we waited longer then our firedelay shoot at target.
+            if (FiringTime >= FireDelay)
+            {
+                FiringTime -= FireDelay;
 
+                // todo .. Spawn a projectile
+
+            }
 
         }
 
