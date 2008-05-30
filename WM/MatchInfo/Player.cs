@@ -268,6 +268,12 @@ namespace WM.MatchInfo
                 unitBuildingList[i].Draw(batch, time);
 
             batch.End();
+
+            batch.Begin();
+            for (int i = 0; i < projectileList.Count; i++)
+                projectileList[i].Draw(batch, time);
+
+            batch.End();
         }
 
         public void UpdateUnitPositions()
