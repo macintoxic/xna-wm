@@ -20,24 +20,44 @@ namespace WM.Units.Projectiles
         public Vector2 DrawingScale;
         public Vector2 screenCenter;
 
+        private Vector2 direction;
         private float damage;
         private float radius;
         private float speed;
+        private float currentLifeTime; // LifeTime * Speed = Range
+        private float lifeTime; // LifeTime * Speed = Range
 
         public ProjectileBase(Vector2 position, float rotation, Vector2 scale, Vector2 offset, Vector2 size,
-                              Texture2D texture, float damage, float radius, float speed)
+                              Texture2D texture, Vector2 direction, float damage, float radius, float speed, float lifeTime)
         {
 
+
+            currentLifeTime = 0;
+        }
+
+        public bool CheckForHit()
+        {
+
+            //if ()
+            //{
+            // Explode()
+            //ApplyDamageToTarget();
+            // return true
+            //}
+
+            return false;
         }
 
         public void Explode()
-        {
+        {        
+            // todo... some explosion effect at the current bullet position.    
 
         }
 
         public void ApplyDamageToTarget(UnitBase HitTarget)
         {
-
+            // Notify UnitBase that it should substract this bullets damage from its health/shield/armor/etc
+            //HitTarget.
         }
 
         public virtual void Draw(SpriteBatch batch, float time)
@@ -59,7 +79,21 @@ namespace WM.Units.Projectiles
                         0.0f);
         }
 
-        public virtual void Update(GameTime gameTime) { }
+        public virtual void Update(GameTime gameTime) 
+        { 
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (currentLifeTime + elapsed <= lifeTime) // travel speed distance
+                Position += direction * speed * elapsed;
+            else if (currentLifeTime < lifeTime)     // travel resulting distance
+                Position += direction * speed * (lifeTime - currentLifeTime);
+            else
+            {
+                // todo...  destroy/cleanup bullet.
+                Explode();
+            }
+
+            CheckForHit();
+        }
 
         public Vector2 Position
         {
@@ -97,6 +131,12 @@ namespace WM.Units.Projectiles
             set { texture = value; }
         }
 
+        public Vector2 Direction
+        {
+            get { return direction; }
+            set { direction = value; }
+        }
+
         public float Damage
         {
             get { return damage; }
@@ -115,6 +155,10 @@ namespace WM.Units.Projectiles
             set { speed = value; }
         }
 
-
+        public float LifeTime
+        {
+            get { return lifeTime; }
+            set { lifeTime = value; }
+        }
     }
 }

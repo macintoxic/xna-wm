@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Net;
 using XMLContentShared;
 using System.Diagnostics;
 using System.Collections.Generic;
+using WM.Units.Projectiles;
 
 namespace WM.Units
 {
@@ -16,6 +17,7 @@ namespace WM.Units
         Vector2 targetPositionMoveOffset;
         
         UnitBase attackTarget;
+        float AttackPower;
         float FiringTime;
         float FireDelay;
 
@@ -327,9 +329,13 @@ namespace WM.Units
                 FiringTime -= FireDelay;
 
                 // todo .. Spawn a projectile
+                Vector2 attackDirection = AttackTarget.Position - Position;
+                attackDirection.Normalize();
+                Bullet newBullet = new Bullet(Position, Rotation, new Vector2(1, 1), new Vector2(0, 0), new Vector2(4, 4),
+                                              null, attackDirection, AttackPower, 10, 128, 6);
+                MatchInfo.GameInfo.MyPlayer.ProjectileList.Add( newBullet );
 
             }
-
         }
 
         public override void UpdateNetworkReader(PacketReader reader)

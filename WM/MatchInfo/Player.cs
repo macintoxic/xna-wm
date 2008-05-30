@@ -6,6 +6,7 @@ using WM.Units;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Net;
+using WM.Units.Projectiles;
 
 namespace WM.MatchInfo
 {
@@ -15,6 +16,7 @@ namespace WM.MatchInfo
         private List<HumanOid> unitHumanOidList;
         private List<Vehicle> unitVehicleList;
         private List<Building> unitBuildingList;
+        private List<ProjectileBase> projectileList;
         private int creditAmount;
         private int rank;
         private string nickName;
@@ -427,6 +429,11 @@ namespace WM.MatchInfo
             set { unitVehicleList = value; }
         }
 
-
+        public List<ProjectileBase> ProjectileList
+        {
+            get { return projectileList; }
+            set { projectileList = value; }
+        }
+                
     }
 }
