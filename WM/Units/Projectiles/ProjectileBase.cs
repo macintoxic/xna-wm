@@ -47,6 +47,10 @@ namespace WM.Units.Projectiles
             MatchInfo = matchInfo;
 
             currentLifeTime = 0;
+
+            // setup hardcoded a bullet texture for now.
+            texture = matchInfo.GameInfo.Content.Load<Texture2D>("Textures\\Terrain\\Water");
+
         }
 
         public bool CheckForHit()
@@ -73,8 +77,7 @@ namespace WM.Units.Projectiles
 
         public void ApplyDamageToTarget(UnitBase HitTarget)
         {
-            // Notify UnitBase that it should substract this bullets damage from its health/shield/armor/etc
-            //HitTarget.
+            HitTarget.TakeHit(damage);
         }
 
         public virtual void Draw(SpriteBatch batch, float time)
