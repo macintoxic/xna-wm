@@ -152,17 +152,49 @@ namespace WM.MatchInfo
 
             return CollidingUnits;
         }
-                
+
+        public List<UnitBase> ObjectsWithinRadius(Vector2 testPostition, float radius)
+        {
+            List<UnitBase> CollidingUnits = new List<UnitBase>();
+
+            // todo .. our other object its radius is not available. Calculate an radius which is +- overlaps the building area.
+            //          We actually need something which can see if the radius overlaps another building/unit.
+
+            for (int i = 0; i < UnitBuildingList.Count; i++)
+            {
+                if (Radius2DCollide(testPostition, radius, UnitBuildingList[i].Position, UnitBuildingList[i].Size.X)) // default use X but it isn't compatible with the other object.
+                {
+                    //Trace.Write(" Building found ");
+                    CollidingUnits.Add(UnitBuildingList[i]);
+                }
+            }
+
+            for (int i = 0; i < UnitHumanOidList.Count; i++)
+            {
+                if (Radius2DCollide(testPostition, radius, UnitHumanOidList[i].Position, UnitHumanOidList[i].Size.X))
+                {
+                    //Trace.Write(" Human found ");
+                    CollidingUnits.Add(UnitHumanOidList[i]);
+                }
+            }
+
+            for (int i = 0; i < UnitVehicleList.Count; i++)
+            {
+                if (Radius2DCollide(testPostition, radius, UnitVehicleList[i].Position, UnitVehicleList[i].Size.X))
+                {
+                    //Trace.Write(" Vehicle found ");
+                    CollidingUnits.Add(UnitVehicleList[i]);
+                }
+            }
+
+            return CollidingUnits;
+        }
+
         /// <summary>
-        // 2D Square Object-to-object bounding-box collision detector
+        // 2D Square Object-to-object bounding-box collision detection
         /// </summary>
         public bool Square2DCollide(Vector2 Position1, Vector2 extent1, Vector2 Position2, Vector2 extent2) 
         {
-            // some info for usage of radius
-            // void Collision( Actor *a, Actor *b )
-            // float r=(float)sqrt((a->x - b->x) * (a->x - b->x) + (a->y - b->y) * (a->y - b->y));
-            // if( r<(a->colr+b->colr) )
-
             float left1, left2;
             float right1, right2;
             float top1, top2;
@@ -185,7 +217,27 @@ namespace WM.MatchInfo
 
             return true;
         }
-        
+
+        /// <summary>
+        // 2D Radius Object-to-object collision detection
+        // Collision( Actor *a, Actor *b )
+        // float r=(float)sqrt((a->x - b->x) * (a->x - b->x) + (a->y - b->y) * (a->y - b->y))
+        /// </summary>
+        public bool Radius2DCollide(Vector2 Position1, float radius1, Vector2 Position2, float radius2)
+        {
+            // some info for usage of radius
+            // void Collision( Actor *a, Actor *b )
+            // float r=(float)sqrt((a->x - b->x) * (a->x - b->x) + (a->y - b->y) * (a->y - b->y));
+            // if( r<(a->colr+b->colr) )
+            float r = (float)Math.Sqrt((Position1.X - Position2.X) * (Position1.X - Position2.X) + 
+                                       (Position1.Y - Position2.Y) * (Position1.Y - Position2.Y));
+
+            if (r < (radius1 + radius2))
+                return true;
+
+            return false;
+        }
+
         public void Update(GameTime gameTime)
         {
             for(int i=0; i<unitHumanOidList.Count; i++)
