@@ -14,9 +14,7 @@ namespace WM.Units
         bool bMoveTowardtarget;
         Vector2 targetPosition;
         Vector2 targetPositionMoveOffset;
-
-
-
+        
         UnitBase attackTarget;
 
         public HumanOid(UnitItem unitDefinition, MatchInfo.MatchInfo matchInfo)
@@ -94,10 +92,11 @@ namespace WM.Units
                 // Test if we can get at the position or else what is the closest we can get.                
                 Vector2 closestTargetPosition = FindClosestPosition(TargetPosition, elapsed);
 
-                Vector2 Distance = closestTargetPosition - Position;
+                Vector2 Distance = TargetPosition - Position;//closestTargetPosition - Position;
                 //Trace.WriteLine(Distance.LengthSquared());
                 if (Distance.LengthSquared() <= 10)
                 {
+                    Trace.Write("  Stop movement 1");
                     //Trace.Write(Position);
                     //Trace.WriteLine("FOUND DEST... ");
                     //Position = closestTargetPosition;
@@ -105,24 +104,14 @@ namespace WM.Units
                     bMoveTowardtarget = false;
                     return;
                 }
-                
-                Distance.Normalize();
-                Position += Distance * GetUnitSpeed(elapsed);
+
+                if (closestTargetPosition != Position)
+                {
+                    Distance = closestTargetPosition - Position;
+                    Distance.Normalize();
+                    Position += Distance * GetUnitSpeed(elapsed);
+                }
             }
-        }
-
-        public void Attack(GameTime gameTime)
-        {
-            // When not having any target do not attack.
-            if (attackTarget == null)
-                return;
-
-
-        }
-
-        public UnitBase FindTargetWithinRadius()
-        {
-            return null;
         }
 
         /// <summary>
@@ -131,12 +120,39 @@ namespace WM.Units
         private Vector2 FindClosestPosition(Vector2 TargetPosition, float elapsedTime)
         {
             // todo ... complete correct path finding
+            // ....
             bool bFindAvailablePosition = true;
-            short MaxLoopDuration = 100; // backup for loops, to prevent infinity UGLY stuff
-            Vector2 newTargetPosition = new Vector2(TargetPosition.X, TargetPosition.Y);
+            short TryAllDirections = 3;                     // used for trying to find a movement direction in 4 directions.
+            float rotationAngle = (2 * (float)Math.PI) / 4; // 90 degrees in radians
+            Vector2 newDir = new Vector2(0, 0);             // stores the newly calculated dir
+            Vector2 newTargetPosition;
 
             // See if next step is possible.
-            newTargetPosition = CalculateNextDirection(new Vector2(TargetPosition.X, TargetPosition.Y), elapsedTime);
+            //newTargetPosition = CalculateNextDirection(new Vector2(TargetPosition.X, TargetPosition.Y), elapsedTime);
+            if ( CalculateNextDirection(new Vector2(TargetPosition.X, TargetPosition.Y), elapsedTime) )
+            {
+                return TargetPosition;
+            }
+            // else continue and search for an evasive route
+            Vector2 distanceNormalized = new Vector2(TargetPosition.X, TargetPosition.Y) - Position;
+            distanceNormalized.Normalize();
+            newTargetPosition = new Vector2(Position.X, Position.Y);
+            newTargetPosition += distanceNormalized * GetUnitSpeed(elapsedTime);
+            /* //rotate 4 times 90 degrees counterclockwise, example
+            Vector2 oldDir = new Vector2(1, 0);
+            Vector2 newDir = new Vector2(0, 0);
+            float r = (2 * (float)Math.PI) / 4; // 90 degrees in radians
+            Trace.WriteLine(r);
+            for (int i = 0; i < 4; i++)
+            {
+                Trace.WriteLine(i);
+                Trace.Write("   ");
+                Trace.WriteLine(oldDir);
+                newDir.X = (float)Math.Cos(r) * oldDir.X - (float)Math.Sin(r) * oldDir.Y;
+                newDir.Y = (float)Math.Cos(r) * oldDir.Y + (float)Math.Sin(r) * oldDir.X;
+                oldDir = new Vector2(newDir.X, newDir.Y);
+            }
+            */
 
             // Loop through whole map
 
@@ -145,34 +161,68 @@ namespace WM.Units
             // Return the last correct position found on path. For example when we need to go around a building, or mountain, etc
 
             // Find Location between Destination and origin
-            while (bFindAvailablePosition && bMoveTowardtarget && MaxLoopDuration > 0)  
+            while (bFindAvailablePosition && bMoveTowardtarget && TryAllDirections >= 0)  
             {
-                MaxLoopDuration -= 1;
                 //Trace.WriteLine(" find new pos");
                 List<UnitBase> UnitListFound = MatchInfo.IsPositionAvailable(newTargetPosition, Size);
                 if (UnitListFound.Count == 0)
                 {
+                    Trace.Write("  go to this direction. ");
                     bFindAvailablePosition = false;
                 }
-                else if ( UnitListFound.Count == 1 && UnitListFound[0] == this )
+                else if ( UnitListFound.Count == 1 && UnitListFound[0] == this )    // there is only a collision with ourself so exit pathfinding.
                 {
                     //Trace.Write("     self");
-                    //newTargetPosition = Position;
+                    Trace.Write("  Stop movement 3");
                     bFindAvailablePosition = false;
-                    bMoveTowardtarget = false; // <--- very ugly to stop complete movement
+                    //bMoveTowardtarget = false; // <--- very ugly to stop complete movement
                 }
                 else
                 {
-                    //Trace.Write("     Correct the path: ");
-                    Vector2 distanceNormalized = newTargetPosition - Position;
-                    distanceNormalized.Normalize();
-                    newTargetPosition.X -= distanceNormalized.X * 34; // todo Use unit size now it uses static 34
-                    newTargetPosition.Y -= distanceNormalized.Y * 34;
-                    //Trace.WriteLine(newTargetPosition);
-                    //bFindAvailablePosition = false; // so we leave the loop
+                    Trace.WriteLine("     Correct the path: ");
+                    // todo..  doesn't work very well so for now we just make the unit hold its current position.
+                    newTargetPosition = Position;
+
+                    /* // this code below. Evade path should be done/calculated by the function CalculateNextDirection(..)
+                    if ( TryAllDirections == 3 ) // verify 90 degrees, counterclockwise
+                    {
+                        TryAllDirections = 2;
+                        newDir.X = (float)Math.Cos(rotationAngle) * distanceNormalized.X - (float)Math.Sin(rotationAngle) * distanceNormalized.Y;
+                        newDir.Y = (float)Math.Cos(rotationAngle) * distanceNormalized.Y + (float)Math.Sin(rotationAngle) * distanceNormalized.X;                        
+                        distanceNormalized = new Vector2(newDir.X,newDir.Y);
+                        newTargetPosition.X = TargetPosition.X + (distanceNormalized.X * Size.X) + (distanceNormalized.X * GetUnitSpeed(elapsedTime));
+                        newTargetPosition.Y = TargetPosition.Y + (distanceNormalized.Y * Size.Y) + (distanceNormalized.Y * GetUnitSpeed(elapsedTime)); 
+                    }
+                    else if (TryAllDirections == 2) // verify 180 degrees, counterclockwise (since dir is already rotated 90 we only need another 90 to make 180.)
+                    {
+                        TryAllDirections = 1;
+                        newDir.X = (float)Math.Cos(rotationAngle) * distanceNormalized.X - (float)Math.Sin(rotationAngle) * distanceNormalized.Y;
+                        newDir.Y = (float)Math.Cos(rotationAngle) * distanceNormalized.Y + (float)Math.Sin(rotationAngle) * distanceNormalized.X;
+                        distanceNormalized = new Vector2(newDir.X, newDir.Y);
+                        newTargetPosition.X = TargetPosition.X + (distanceNormalized.X * Size.X) + (distanceNormalized.X * GetUnitSpeed(elapsedTime));
+                        newTargetPosition.Y = TargetPosition.Y + (distanceNormalized.Y * Size.Y) + (distanceNormalized.Y * GetUnitSpeed(elapsedTime)); 
+                    }
+                    else if (TryAllDirections == 1) // verify 270 degrees, it is already 180 degrees rotated.
+                    {
+                        // End of all test positions/directions afterwards end loop.
+                        TryAllDirections = 0;
+                        newDir.X = (float)Math.Cos(rotationAngle) * distanceNormalized.X - (float)Math.Sin(rotationAngle) * distanceNormalized.Y;
+                        newDir.Y = (float)Math.Cos(rotationAngle) * distanceNormalized.Y + (float)Math.Sin(rotationAngle) * distanceNormalized.X;
+                        distanceNormalized = new Vector2(newDir.X, newDir.Y);
+                        newTargetPosition.X = TargetPosition.X + (distanceNormalized.X * Size.X) + (distanceNormalized.X * GetUnitSpeed(elapsedTime));
+                        newTargetPosition.Y = TargetPosition.Y + (distanceNormalized.Y * Size.Y) + (distanceNormalized.Y * GetUnitSpeed(elapsedTime)); 
+                    }
+                    else
+                    {
+                        Trace.WriteLine("No good position found"); 
+                        // Keep retrying for some time and if it still doesn't work, stop unit.
+                        //bMoveTowardtarget = false;                        
+                        TryAllDirections = -1;
+                        //newTargetPosition = Position;
+                    }
+                    */
                 }
             }
-
             return newTargetPosition;
         }
 
@@ -180,7 +230,8 @@ namespace WM.Units
         // Tests if the new position doesn't collide with anything if it does it provides another direction.
         // possibly to move around.
         /// </summary>
-        private Vector2 CalculateNextDirection(Vector2 TargetPosition, float elapsedTime)
+        //private Vector2 CalculateNextDirection(Vector2 TargetPosition, float elapsedTime)
+        private bool CalculateNextDirection(Vector2 TargetPosition, float elapsedTime)
         {
             Vector2 Distance = TargetPosition - Position;
             Distance.Normalize();            
@@ -199,24 +250,44 @@ namespace WM.Units
                     {
                         // Unit is going to collide. Unit should evade.
                         // todo ..
-                        //Trace.Write("  COLLIDE    ");
+                        //Trace.WriteLine("  COLLIDE    ");
                         // temporary code. Lets just stop the unit.
-                        bMoveTowardtarget = false;
-                        TargetPosition = Position;
+                        // bMoveTowardtarget = false;
+                        //TargetPosition = Position;
+                        return false;
                     }
                 }
             }
 
             // temporary just return original path / target position.
-            return TargetPosition;
+            return true;
         }
-
+        
         /// <summary>
         // Use this function to get the speed of the unit, since it takes all settings into account, like ground type, etc
         /// </summary>
         public float GetUnitSpeed(float elapsedTime)
         {
             return (Speed * elapsedTime);// todo maybe take ground type into account to determine speed.
+        }
+
+        public void Attack(GameTime gameTime)
+        {
+            // When not having any target do not attack.
+            if (attackTarget == null)
+                return;
+
+        }
+
+        public UnitBase FindTargetWithinRadius()
+        {
+            return null;
+        }
+
+        public void FireAtTarget()
+        {
+
+
         }
 
         public override void UpdateNetworkReader(PacketReader reader)
