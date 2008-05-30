@@ -131,7 +131,8 @@ namespace WM.Units
         private Vector2 FindClosestPosition(Vector2 TargetPosition, float elapsedTime)
         {
             // todo ... complete correct path finding
-            bool bFindAvailablePosition = true;            
+            bool bFindAvailablePosition = true;
+            short MaxLoopDuration = 100; // backup for loops, to prevent infinity UGLY stuff
             Vector2 newTargetPosition = new Vector2(TargetPosition.X, TargetPosition.Y);
 
             // See if next step is possible.
@@ -144,8 +145,9 @@ namespace WM.Units
             // Return the last correct position found on path. For example when we need to go around a building, or mountain, etc
 
             // Find Location between Destination and origin
-            while (bFindAvailablePosition && bMoveTowardtarget)                
+            while (bFindAvailablePosition && bMoveTowardtarget && MaxLoopDuration > 0)  
             {
+                MaxLoopDuration -= 1;
                 //Trace.WriteLine(" find new pos");
                 List<UnitBase> UnitListFound = MatchInfo.IsPositionAvailable(newTargetPosition, Size);
                 if (UnitListFound.Count == 0)
@@ -167,6 +169,7 @@ namespace WM.Units
                     newTargetPosition.X -= distanceNormalized.X * 34; // todo Use unit size now it uses static 34
                     newTargetPosition.Y -= distanceNormalized.Y * 34;
                     //Trace.WriteLine(newTargetPosition);
+                    //bFindAvailablePosition = false; // so we leave the loop
                 }
             }
 
