@@ -81,6 +81,8 @@
     <Compile Include="TileGrid.cs" />
     <Compile Include="Units\Building.cs" />
     <Compile Include="Units\HumanOid.cs" />
+    <Compile Include="Units\Projectiles\Bullet.cs" />
+    <Compile Include="Units\Projectiles\ProjectileBase.cs" />
     <Compile Include="Units\SpriteSheetUnit.cs" />
     <Compile Include="Units\UnitBase.cs" />
     <Compile Include="Units\Vehicle.cs" />

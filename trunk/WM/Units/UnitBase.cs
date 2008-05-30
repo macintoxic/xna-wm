@@ -14,7 +14,7 @@ namespace WM.Units
     {
         Vector2 position;
         float rotation;
-        Vector2 scale;  // we only use the X for now
+        Vector2 scale;
         Vector2 offset;
         Vector2 size;
         float targetRadius;
@@ -22,7 +22,7 @@ namespace WM.Units
         int creditsCost;
 
         string textureAsset;
-        protected Texture2D texture; // not used
+        protected Texture2D texture;
         protected SpriteSheetBase spriteSheetUnit;
 
         public Vector2 DrawingPosition;
