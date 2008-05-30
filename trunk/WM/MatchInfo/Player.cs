@@ -118,12 +118,21 @@ namespace WM.MatchInfo
 
         public List<UnitBase> IsPositionAvailable(Vector2 testPostition, Vector2 extent)
         {
+            // void Collision( Actor *a, Actor *b )
+            // float r=(float)sqrt((a->x - b->x) * (a->x - b->x) + (a->y - b->y) * (a->y - b->y));
+            // if( r<(a->colr+b->colr) )
+
             // todo use extent to check for collision on whole area.
             // ..
             List<UnitBase> CollidingUnits = new List<UnitBase>();
 
             for (int i = 0; i < UnitBuildingList.Count; i++)
             {
+                if (Square2DCollide(testPostition, extent, UnitBuildingList[i].Position, UnitBuildingList[i].Size))
+                {
+                    CollidingUnits.Add(UnitBuildingList[i]);
+                }
+                /*
                 if (testPostition.X >= UnitBuildingList[i].Position.X &&
                     testPostition.Y >= UnitBuildingList[i].Position.Y)
                 {
@@ -136,10 +145,16 @@ namespace WM.MatchInfo
                         //return UnitBuildingList[i];
                     }
                 }
+                */ 
             }
                         
             for (int i = 0; i < UnitHumanOidList.Count; i++)
             {
+                if (Square2DCollide(testPostition, extent, UnitHumanOidList[i].Position, UnitHumanOidList[i].Size))
+                {
+                    CollidingUnits.Add(UnitHumanOidList[i]);
+                }
+                /*
                 if (testPostition.X >= UnitHumanOidList[i].Position.X &&
                     testPostition.Y >= UnitHumanOidList[i].Position.Y)
                 {
@@ -152,10 +167,16 @@ namespace WM.MatchInfo
                         CollidingUnits.Add(UnitHumanOidList[i]);
                     }
                 }
+                */
             }
 
             for (int i = 0; i < UnitVehicleList.Count; i++)
             {
+                if (Square2DCollide(testPostition, extent, UnitVehicleList[i].Position, UnitVehicleList[i].Size))
+                {
+                    CollidingUnits.Add(UnitVehicleList[i]);
+                }
+                /*
                 if (testPostition.X >= UnitVehicleList[i].Position.X &&
                     testPostition.Y >= UnitVehicleList[i].Position.Y)
                 {
@@ -168,10 +189,51 @@ namespace WM.MatchInfo
                         CollidingUnits.Add(UnitVehicleList[i]);
                     }
                 }
+                */ 
             }
 
             return CollidingUnits;
         }
+
+        
+        /// <summary>
+        // 2D Square Object-to-object bounding-box collision detector
+        /// </summary>
+        public bool Square2DCollide(Vector2 Position1, Vector2 extent1, Vector2 Position2, Vector2 extent2) 
+        {         
+            float left1, left2;
+            float right1, right2;
+            float top1, top2;
+            float bottom1, bottom2;
+
+            /*
+            left1 = object1->x;
+            left2 = object2->x;
+            right1 = object1->x + object1->width;
+            right2 = object2->x + object2->width;
+            top1 = object1->y;
+            top2 = object2->y;
+            bottom1 = object1->y + object1->height;
+            bottom2 = object2->y + object2->height;
+            */
+            left1 = Position1.X;
+            left2 = Position2.X;
+            right1 = Position1.X + extent1.X;
+            right2 = Position2.X + extent2.X;
+            top1 = Position1.Y;
+            top2 = Position2.Y;
+            bottom1 = Position1.Y + extent1.Y;
+            bottom2 = Position2.Y + extent2.Y;
+
+            if (bottom1 < top2) return false;
+            if (top1 > bottom2) return false;
+
+            if (right1 < left2) return false;
+            if (left1 > right2) return false;
+
+            return true;
+        }
+
 
         public void Update(GameTime gameTime)
         {
