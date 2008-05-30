@@ -259,5 +259,15 @@ namespace WM.Units
         public virtual void SetMoveTargetPosition(Vector2 targetPosition){}
         public virtual void ClearMoveTargetPosition(Vector2 targetPosition) {}
         public virtual void SetAttackTarget(UnitBase target) {}
+        public virtual void TakeHit(float damageAmount)
+        {
+            // todo ..import Health variable from ItemDefinition/UnitItem/BuildingItem (XML) so we can substract
+            // health -= damageAmount
+            // if (health <= 0 )
+            //{
+                // todo ..Destroy UntiBase from level
+                // todo ..Remove it frm playerList
+            //}
+        }
     }
 }
