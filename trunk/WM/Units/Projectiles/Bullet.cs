@@ -10,8 +10,9 @@ namespace WM.Units.Projectiles
     {
 
         public Bullet(Vector2 position, float rotation, Vector2 scale, Vector2 offset, Vector2 size,
-                              Texture2D texture, Vector2 direction, float damage, float radius, float speed, float lifeTime)
-            : base(position, rotation, scale, offset, size, texture, direction, damage, radius, speed, lifeTime)
+                      Texture2D texture, Vector2 direction, float damage, float radius, float speed,
+                      float lifeTime, MatchInfo.MatchInfo matchInfo)
+            : base(position, rotation, scale, offset, size, texture, direction, damage, radius, speed, lifeTime, matchInfo)
         {
             
         }

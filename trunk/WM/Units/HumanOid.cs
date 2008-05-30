@@ -332,7 +332,7 @@ namespace WM.Units
                 Vector2 attackDirection = AttackTarget.Position - Position;
                 attackDirection.Normalize();
                 Bullet newBullet = new Bullet(Position, Rotation, new Vector2(1, 1), new Vector2(0, 0), new Vector2(4, 4),
-                                              null, attackDirection, AttackPower, 10, 128, 6);
+                                              null, attackDirection, AttackPower, 10, 128, 6, MatchInfo);
                 MatchInfo.GameInfo.MyPlayer.ProjectileList.Add( newBullet );
 
             }

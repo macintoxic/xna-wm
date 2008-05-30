@@ -24,26 +24,43 @@ namespace WM.Units.Projectiles
         private float damage;
         private float radius;
         private float speed;
-        private float currentLifeTime; // LifeTime * Speed = Range
+        private float currentLifeTime; 
         private float lifeTime; // LifeTime * Speed = Range
+        
+        MatchInfo.MatchInfo matchInfo;
 
         public ProjectileBase(Vector2 position, float rotation, Vector2 scale, Vector2 offset, Vector2 size,
-                              Texture2D texture, Vector2 direction, float damage, float radius, float speed, float lifeTime)
+                              Texture2D texture, Vector2 direction, float damage, float radius, float speed, 
+                              float lifeTime, MatchInfo.MatchInfo matchInfo)
         {
-
+            Position = position;
+            Rotation = rotation;
+            Scale = scale;
+            Offset = offset;
+            Size = size;
+            Texture = texture;
+            Direction = direction;
+            Damage= damage;
+            Radius = radius;
+            Speed = speed;
+            LifeTime = lifeTime;
+            MatchInfo = matchInfo;
 
             currentLifeTime = 0;
         }
 
         public bool CheckForHit()
         {
+            List<UnitBase> collisionList = matchInfo.IsPositionAvailable(position, size);
+            if ( collisionList.Count > 0 )
+                //!(collisionList.Count==1 && collisionList[0]==this) ) // not possible to hit itself, since bullets are not returned by that function.
+            {
+                Explode();
+                for (int i = 0; i< collisionList.Count; i++)
+                    ApplyDamageToTarget(collisionList[i]);
 
-            //if ()
-            //{
-            // Explode()
-            //ApplyDamageToTarget();
-            // return true
-            //}
+                return true;
+            }
 
             return false;
         }
@@ -160,5 +177,12 @@ namespace WM.Units.Projectiles
             get { return lifeTime; }
             set { lifeTime = value; }
         }
+
+        public MatchInfo.MatchInfo MatchInfo
+        {
+            get { return matchInfo; }
+            set { matchInfo = value; }
+        }        
+    
     }
 }
