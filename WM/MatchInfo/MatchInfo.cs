@@ -79,17 +79,18 @@ namespace WM.MatchInfo
             return new Vector2(0,0);
         }
 
-        public List<UnitBase> IsPositionAvailable(Vector2 tryLocation, Vector2 extent)
+        ///<summary>
+        // Loops over the player list and checks every unit based on UnitBase if it resides at the appointed position.
+        // returns a list of UnitBase based objects which are located there.
+        ///</summary>        
+        public List<UnitBase> IsPositionAvailable(Vector2 tryPosition, Vector2 extent)
         {
             List<UnitBase> combinedUnitListFound =  new List<UnitBase>();
             for (int k = 0; k < players.Count; k++)
             {
-                List<UnitBase> unitFound = players[k].IsPositionAvailable(tryLocation, extent);
+                List<UnitBase> unitFound = players[k].IsPositionAvailable(tryPosition, extent);
                 for(int i=0; i<unitFound.Count; i++)
                     combinedUnitListFound.Add(unitFound[i]);
-
-                //if (unitFound.Count() > null)
-                //    return unitFound;
             }
             return combinedUnitListFound;
         }

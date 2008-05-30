@@ -132,9 +132,14 @@ namespace WM.Input
             Vector2 worldPosition = DeterminePositionInWorld(mousePosition);
             //Trace.WriteLine(worldPosition);
 
-            // todo performance update, break when building found.
+            // todo performance update, maybe break when building found ??
             for (int i = 0; i < player.UnitBuildingList.Count; i++)
             {
+                if ( player.Square2DCollide(worldPosition, new Vector2(1, 1), player.UnitBuildingList[i].Position, player.UnitBuildingList[i].Size) )
+                {
+                    player.SelectedBuildingOnMap = player.UnitBuildingList[i];
+                }
+                /*
                 if (worldPosition.X >= player.UnitBuildingList[i].Position.X && 
                     worldPosition.Y >= player.UnitBuildingList[i].Position.Y)
                 {
@@ -145,12 +150,17 @@ namespace WM.Input
                         player.SelectedBuildingOnMap = player.UnitBuildingList[i];
                         //Trace.WriteLine("found building");
                     }                    
-                }                
+                }     
+                */ 
             }
-
-            // todo performance update, break when unit found.
+                        
             for (int i = 0; i < player.UnitHumanOidList.Count; i++)
             {
+                if (player.Square2DCollide(worldPosition, new Vector2(1, 1), player.UnitHumanOidList[i].Position, player.UnitHumanOidList[i].Size))
+                {
+                    player.SelectedUnitList.Add( player.UnitHumanOidList[i] );
+                }
+                /*
                 if (worldPosition.X >= player.UnitHumanOidList[i].Position.X &&
                     worldPosition.Y >= player.UnitHumanOidList[i].Position.Y)
                 {
@@ -166,11 +176,16 @@ namespace WM.Input
                         }
                     }
                 }
+                */
             }
-
-            // todo performance update, break when unit found.
+                        
             for (int i = 0; i < player.UnitVehicleList.Count; i++)
             {
+                if (player.Square2DCollide(worldPosition, new Vector2(1, 1), player.UnitVehicleList[i].Position, player.UnitVehicleList[i].Size))
+                {
+                    player.SelectedUnitList.Add(player.UnitVehicleList[i]);
+                }
+                /*
                 if (worldPosition.X >= player.UnitVehicleList[i].Position.X &&
                     worldPosition.Y >= player.UnitVehicleList[i].Position.Y)
                 {
@@ -186,6 +201,7 @@ namespace WM.Input
                         }
                     }
                 }
+                */
             }
 
 
