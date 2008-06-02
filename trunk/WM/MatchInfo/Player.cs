@@ -216,7 +216,7 @@ namespace WM.MatchInfo
             if (top1 > bottom2) return false;
 
             if (right1 < left2) return false;
-            if (left1 > right2) return false;
+            if (left1 > right2) return false; //&& right1 > left2
 
             return true;
         }
