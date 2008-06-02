@@ -431,7 +431,7 @@ namespace WM
         public void Draw(GameTime gameTime)
         {
             GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
-
+            
             //since we're drawing in order from back to front,
             //depth buffer is disabled
             graphics.RenderState.DepthBufferEnable = false;
@@ -455,7 +455,10 @@ namespace WM
                 }
                 spriteBatch.End();
 
-            }
+            }             
+
+            // Draw anything the mouseControl wants us to draw.
+            mouseControl.Draw();
         }
 
         /// <summary>
@@ -489,7 +492,14 @@ namespace WM
             //function is not called unnecessarily
             camera.ResetChanged();
         }
-  
+
+
+        public WMGame Game
+        {
+            get { return game; }
+            set { game = value; }
+        }
+
         public MatchInfo.Player MyPlayer
         {
             get { return myPlayer; }

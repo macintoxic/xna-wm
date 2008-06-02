@@ -6,24 +6,39 @@ using WM.MatchInfo;
 using WM.Units;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace WM.Input
 {
     class MouseControl
     {
         private GameInfo gameInfo;
+        //private GraphicsDevice graphicsDevice;
         //private bool BuildingCreatedThisTurn;
         private MouseState prevMouseState;
         private MouseState currentMouseState;
+        private Vector2 mouseLocation;
+        private Vector2 SelectionAreaStart;
+        private bool bSHouldDrawSelection;
+
+        // a block of vertices used to draw selection area,
+        // and will determine how many primitives to draw from positionInBuffer.
+        private VertexPositionColor[] vertices;
+        private VertexDeclaration vertexDeclaration;
+        private BasicEffect basicEffect;
 
         public MouseControl(GameInfo GameInfoObj)
         {
             gameInfo = GameInfoObj;
+            vertices = new VertexPositionColor[8]; // 8 default buffsersize, we need 4 lines for selection area
+            mouseLocation = new Vector2(0.0f, 0.0f);
+            bSHouldDrawSelection = false;
         }
 
 
         public void HandleMouseInput(float elapsed)
         {
+            bSHouldDrawSelection = false;
             prevMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
@@ -31,7 +46,7 @@ namespace WM.Input
             // upper-left corner of the game window.
             //int mouseX = currentMouseState.X;
             //int mouseY = currentMouseState.Y;
-            Vector2 mouseLocation = new Vector2(currentMouseState.X, currentMouseState.Y);
+            mouseLocation = new Vector2(currentMouseState.X, currentMouseState.Y);
             int leftMouse = (int)currentMouseState.LeftButton;
             int rightMouse = (int)currentMouseState.RightButton;
 
@@ -40,6 +55,16 @@ namespace WM.Input
             {
                 // Clear all selections
                 ClearSelections(gameInfo.MyPlayer);
+            }
+            // If LeftMouse pressed show selection area.
+            if (currentMouseState.LeftButton == ButtonState.Pressed)
+            {
+                // Store start point of selection area.
+                if (prevMouseState.LeftButton == ButtonState.Released)
+                {
+                    SelectionAreaStart = mouseLocation;
+                }
+                bSHouldDrawSelection = true;
             }
             // If LeftMouse released see if we should process an action.
             if (prevMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
@@ -83,8 +108,7 @@ namespace WM.Input
 
             return worldPosition;
         }
-
-
+        
         public void TryUnitProduction(Player player)
         {
             if (player.SelectedBuildingOnMap != null)
@@ -164,6 +188,76 @@ namespace WM.Input
         public void Update()
         {
             //BuildingCreatedThisTurn = false;
+        }
+
+        public void Draw()
+        {
+            DrawSelectionArea();
+        }
+
+        public void DrawSelectionArea()
+        {
+            if (bSHouldDrawSelection)
+            {
+                GraphicsDevice graphicsDevice = gameInfo.Game.ScreenManager.GraphicsDevice;
+
+                // Setup VertexDeclaration
+                // create a vertex declaration, which tells the graphics card what kind of
+                // data to expect during a draw call. We're drawing using
+                // VertexPositionColors, so we'll use those vertex elements.
+                if (vertexDeclaration == null)
+                    vertexDeclaration = new VertexDeclaration(graphicsDevice, VertexPositionColor.VertexElements);
+
+                // Setup BasicEffect
+                if (basicEffect == null)
+                    basicEffect = new BasicEffect(graphicsDevice, null);
+
+                basicEffect.VertexColorEnabled = true;
+                // projection uses CreateOrthographicOffCenter to create 2d projection
+                // matrix with 0,0 in the upper left.
+                basicEffect.Projection = Matrix.CreateOrthographicOffCenter
+                    (0, graphicsDevice.Viewport.Width,
+                    graphicsDevice.Viewport.Height, 0,
+                    0, 1);
+
+                // Setup graphicsDevice
+                graphicsDevice.VertexDeclaration = vertexDeclaration;
+
+                // how many verts will each of these primitives require?
+                int numVertsPerPrimitive = 2;// PrimitiveType.LineList = 2
+                int positionInBuffer = 0;
+
+                // Create Selection area
+                Color color = new Color(0, 255, 0);
+                List<Vector2> vertex =  new List<Vector2>();
+                vertex.Add(SelectionAreaStart);
+                vertex.Add(new Vector2(mouseLocation.X, SelectionAreaStart.Y));
+                vertex.Add(new Vector2(mouseLocation.X, SelectionAreaStart.Y));
+                vertex.Add(mouseLocation);
+                vertex.Add(mouseLocation);
+                vertex.Add(new Vector2(SelectionAreaStart.X, mouseLocation.Y));
+                vertex.Add(new Vector2(SelectionAreaStart.X, mouseLocation.Y));
+                vertex.Add(SelectionAreaStart);
+
+                for (int i = 0; i < vertex.Count; i++ )
+                {
+                    vertices[positionInBuffer].Position = new Vector3(vertex[i], 0.0f);
+                    vertices[positionInBuffer].Color = color;
+                    positionInBuffer++;
+                }
+
+                // how many primitives will we draw?
+                int primitiveCount = positionInBuffer / numVertsPerPrimitive;
+                                
+                // Start drawing
+                basicEffect.Begin();
+                basicEffect.CurrentTechnique.Passes[0].Begin();
+
+                graphicsDevice.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineList, vertices, 0, primitiveCount);
+                                
+                basicEffect.CurrentTechnique.Passes[0].End();
+                basicEffect.End();
+            }
         }
 
 
