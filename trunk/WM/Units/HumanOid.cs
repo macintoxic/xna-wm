@@ -82,8 +82,8 @@ namespace WM.Units
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // stop moving when having a target.
-            if (attackTarget != null)
-                return;
+            //if (attackTarget != null)
+            //    return;
 
             //Trace.WriteLine(Position);
             //Trace.Write("   ");
@@ -294,8 +294,10 @@ namespace WM.Units
             {
                 // Check if current target is still in range else find another
                 Vector2 distance = attackTarget.Position - Position;
-                if ( Math.Abs(distance.Length()) > TargetRadius )
+                float  distanceLength = Math.Abs(distance.Length());
+                if (distanceLength > TargetRadius)
                 {
+                    attackTarget = null;
                     FindTargetWithinRadius();
                     // When still not having found any target do not attack.
                     if (attackTarget == null)
@@ -313,9 +315,12 @@ namespace WM.Units
 
         public UnitBase FindTargetWithinRadius()
         {
-            List<UnitBase> targetList = MatchInfo.AllObjectsWithinRadius(Position, TargetRadius);
-            if (targetList.Count > 0)
-                attackTarget = targetList[0];
+            List<UnitBase> targetList = MatchInfo.AllObjectsWithinRadius(Position, TargetRadius);            
+            for (int i=0; i < targetList.Count; i++)
+            {
+                if (targetList[i] != this)
+                    attackTarget = targetList[i];
+            }
 
             return attackTarget;
         }
