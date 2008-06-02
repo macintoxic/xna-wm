@@ -47,9 +47,12 @@ namespace WM
 
         private GameInfo gameInfo;
 
+        private Vector2 moneyPosition;
+
         public Hud(GameInfo aGameInfo)
         {
             gameInfo = aGameInfo;
+            moneyPosition = new Vector2(50, 50);
         }
 
         public virtual void OnHudElementClick(HudElementType type)
@@ -178,7 +181,8 @@ namespace WM
                     0f);
             }
 
-
+            string resources = "$" + gameInfo.MyPlayer.CreditAmount;
+            batch.DrawString(Fonts.MoneyFont, resources, moneyPosition, Fonts.MoneyFontColor);
             batch.End();
         }
     
