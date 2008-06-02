@@ -251,6 +251,9 @@ namespace WM.MatchInfo
 
             for(int i=0; i<unitBuildingList.Count; i++)
                 unitBuildingList[i].Update(gameTime);
+
+            for (int i = 0; i < projectileList.Count; i++)
+                projectileList[i].Update(gameTime);
         }
 
         public void Draw(SpriteBatch batch, float time)
@@ -375,6 +378,38 @@ namespace WM.MatchInfo
                 unitBuildingList[i].screenCenter = matchInfo.GameInfo.ScreenCenter;
             }            
         }
+
+        public void UpdateProjectilePositions()
+        {
+            for (int i = 0; i < projectileList.Count; i++)
+            {
+                Vector2 position = Vector2.Zero;
+                position.X = projectileList[i].Position.X * projectileList[i].Scale.X;
+                position.Y = projectileList[i].Position.Y * projectileList[i].Scale.Y;
+
+                Vector2 worldOffset = new Vector2(0, 0);// layer.Offset;
+                Vector2 cameraPosition = matchInfo.GameInfo.Camera.Position;
+                Vector2 scaleValue = projectileList[i].Scale;
+                float zoomValue = matchInfo.GameInfo.Camera.Zoom;
+
+                // Offset the positions by the word position of the tile grid 
+                // this is the actual position of the tile in world coordinates.
+                Vector2.Add(ref position, ref worldOffset, out position);
+
+                // Now, we get the camera position relative to the tile's position
+                Vector2.Subtract(ref cameraPosition, ref position, out position);
+
+                // Get the tile's final size (note that scaling is done after 
+                // determining the position)
+                Vector2 scale;
+                Vector2.Multiply(ref scaleValue, zoomValue, out scale);
+
+                projectileList[i].DrawingPosition = position + new Vector2(400, 300);
+                projectileList[i].DrawingScale = scale;
+                projectileList[i].screenCenter = matchInfo.GameInfo.ScreenCenter;
+            }        
+        }
+
 
         public int CreditAmount
         {

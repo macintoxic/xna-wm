@@ -42,7 +42,6 @@ namespace WM
 
         private SpriteBatch spriteBatch;
 
-        private List<UnitBase> UnitsOnMap;
         private Random rand;
 
         private Level currentLevel;
@@ -58,8 +57,6 @@ namespace WM
             matchInfo = new MatchInfo.MatchInfo(this);
             myPlayer = new MatchInfo.Player(matchInfo);
             matchInfo.AddPlayer(myPlayer);
-
-            this.UnitsOnMap = new List<UnitBase>();
         }
 
         private void JoinOrCreateNetworkSession()
@@ -389,6 +386,7 @@ namespace WM
             //matchInfo.UpdateBuildingPositions();
             MyPlayer.UpdateUnitPositions();
             MyPlayer.UpdateBuildingPositions();
+            MyPlayer.UpdateProjectilePositions();
         }
 
         public void HandleInput(GameTime gameTime, InputState input)
@@ -447,14 +445,6 @@ namespace WM
 
                 //Draw Units/Buildings on Map
                 matchInfo.Draw(spriteBatch, time);
-
-                spriteBatch.Begin();
-                for (int i = 0; i < UnitsOnMap.Count; i++)
-                {
-                    UnitsOnMap[i].Draw(spriteBatch, time);
-                }
-                spriteBatch.End();
-
             }             
 
             // Draw anything the mouseControl wants us to draw.
