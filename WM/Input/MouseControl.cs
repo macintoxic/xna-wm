@@ -14,7 +14,6 @@ namespace WM.Input
     {
         private GameInfo gameInfo;
         //private GraphicsDevice graphicsDevice;
-        //private bool BuildingCreatedThisTurn;
         private MouseState prevMouseState;
         private MouseState currentMouseState;
         private Vector2 mouseLocation;
@@ -225,7 +224,6 @@ namespace WM.Input
 
         public void Update()
         {
-            //BuildingCreatedThisTurn = false;
         }
 
         public void Draw()

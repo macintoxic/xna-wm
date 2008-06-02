@@ -49,7 +49,7 @@ namespace WM.Units.Projectiles
             currentLifeTime = 0;
 
             // setup hardcoded a bullet texture for now.
-            texture = matchInfo.GameInfo.Content.Load<Texture2D>("Textures\\Terrain\\Water");
+            Texture = matchInfo.GameInfo.Content.Load<Texture2D>("Textures\\Terrain\\Water");
 
         }
 
