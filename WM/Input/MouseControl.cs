@@ -67,12 +67,14 @@ namespace WM.Input
                 bSHouldDrawSelection = true;
             }
             // If LeftMouse released see if we should process an action.
-            if (prevMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
+            if (prevMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Released)
             {
                 // First find out if the mouse is over the HUD
                 // Hud screen pos from XY: 0,472 to XY: 800,600
 
-                if (mouseLocation.Y >= 600-128 )
+                if (mouseLocation.Y >= 600-128 &&
+                    Math.Abs(mouseLocation.X - SelectionAreaStart.X) < 30 &&
+                    Math.Abs(mouseLocation.Y - SelectionAreaStart.Y) < 30)
                 { // do nothing we are in the HUD zone, Hud is handled differently elsewhere
                 }
                 else
@@ -152,35 +154,71 @@ namespace WM.Input
 
         public bool TrySelection(Player player, Vector2 mousePosition)
         {
-            // See if anything at the world position is selectable.
-            Vector2 worldPosition = DeterminePositionInWorld(mousePosition);
-            //Trace.WriteLine(worldPosition);
+            Vector2 worldPositionStart;
+            Vector2 worldExtent;
+            bool bSelectionChanged = false;
 
-            // todo performance update, maybe break when building found ??
-            for (int i = 0; i < player.UnitBuildingList.Count; i++)
+            // Did a area select occur or just a click.
+            if (Math.Abs(mousePosition.X - SelectionAreaStart.X) > 30 || Math.Abs(mousePosition.Y - SelectionAreaStart.Y) > 30)
             {
-                if ( player.Square2DCollide(worldPosition, new Vector2(1, 1), player.UnitBuildingList[i].Position, player.UnitBuildingList[i].Size) )
-                {
-                    player.SelectedBuildingOnMap = player.UnitBuildingList[i];
-                }             
+                // Clear selection when doing a area select.
+                ClearSelections(player);
+
+                // Determine world selection start and end points.
+                worldPositionStart = DeterminePositionInWorld(SelectionAreaStart);
+                Vector2 worldPositionEnd = DeterminePositionInWorld(mousePosition);
+                worldExtent = mousePosition - SelectionAreaStart;
+
+                // re-order selection so it simulates a selection from left top to right bottom. (required for correct Square2DCollide collision test)
+                worldExtent.X = worldPositionStart.X > worldPositionEnd.X ? worldPositionStart.X - worldPositionEnd.X : worldExtent.X;
+                worldExtent.Y = worldPositionStart.Y > worldPositionEnd.Y ? worldPositionStart.Y - worldPositionEnd.Y : worldExtent.Y;
+                worldPositionStart.X = worldPositionStart.X < worldPositionEnd.X ? worldPositionStart.X : worldPositionEnd.X;
+                worldPositionStart.Y = worldPositionStart.Y < worldPositionEnd.Y ? worldPositionStart.Y : worldPositionEnd.Y;                
+            }
+            else
+            {
+                // See if anything at the world position is selectable.
+                worldPositionStart = DeterminePositionInWorld(mousePosition);
+                worldExtent = new Vector2(1, 1);
+                //Trace.WriteLine(worldPosition);
             }
                         
             for (int i = 0; i < player.UnitHumanOidList.Count; i++)
             {
-                if (player.Square2DCollide(worldPosition, new Vector2(1, 1), player.UnitHumanOidList[i].Position, player.UnitHumanOidList[i].Size))
+                if (player.Square2DCollide(worldPositionStart, worldExtent, player.UnitHumanOidList[i].Position, player.UnitHumanOidList[i].Size))
                 {
-                    player.SelectedUnitList.Add( player.UnitHumanOidList[i] );
-                }   
-            }
-                        
-            for (int i = 0; i < player.UnitVehicleList.Count; i++)
-            {
-                if (player.Square2DCollide(worldPosition, new Vector2(1, 1), player.UnitVehicleList[i].Position, player.UnitVehicleList[i].Size))
-                {
-                    player.SelectedUnitList.Add(player.UnitVehicleList[i]);
+                    player.SelectedBuildingOnMap = null;
+                    player.SelectedUnitList.Add(player.UnitHumanOidList[i]);
+                    bSelectionChanged = true;
                 }
             }
 
+            for (int i = 0; i < player.UnitVehicleList.Count; i++)
+            {
+                if (player.Square2DCollide(worldPositionStart, worldExtent, player.UnitVehicleList[i].Position, player.UnitVehicleList[i].Size))
+                {
+                    player.SelectedBuildingOnMap = null;
+                    player.SelectedUnitList.Add(player.UnitVehicleList[i]);
+                    bSelectionChanged = true;
+                }
+            }
+
+            // determine if any units were selected, if so do not(skip) select buildings.
+            if (!bSelectionChanged)
+            {
+                for (int i = 0; i < player.UnitBuildingList.Count; i++)
+                {
+                    if (player.Square2DCollide(worldPositionStart, worldExtent, player.UnitBuildingList[i].Position, player.UnitBuildingList[i].Size))
+                    {
+                        player.SelectedBuildingOnMap = player.UnitBuildingList[i];
+                        bSelectionChanged = true;
+                    }
+                }
+            }
+
+            // see if units or buildings were selected, if so return true.
+            if (bSelectionChanged)
+                return true;
 
             return false;
         }
