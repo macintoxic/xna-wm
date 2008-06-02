@@ -73,6 +73,20 @@ namespace WM
             get { return screenManager; }
         }
 
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            Fonts.LoadContent(Content);
+        }
+
+        protected override void UnloadContent()
+        {
+            base.UnloadContent();
+
+            Fonts.UnloadContent(Content);
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>

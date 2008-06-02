@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Camera2D.cs" />
+    <Compile Include="Fonts.cs" />
     <Compile Include="GameInfo.cs" />
     <Compile Include="HUD.cs" />
     <Compile Include="Input\MouseControl.cs" />
