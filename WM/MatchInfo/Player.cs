@@ -33,6 +33,7 @@ namespace WM.MatchInfo
             unitHumanOidList = new List<HumanOid>();
             unitVehicleList = new List<Vehicle>();
             unitBuildingList = new List<Building>();
+            projectileList = new List<ProjectileBase>();
             creditAmount = 10000;
             rank = 0;
             nickName = "";
