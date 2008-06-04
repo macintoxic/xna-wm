@@ -62,8 +62,9 @@ namespace WM.MatchInfo
             unitHumanOidList.Clear();
             for (int index = 0; index < unitHumanOidCount; index++)
             {
-                HumanOid human = new Vehicle();
+                HumanOid human = new HumanOid();
                 human.UpdateNetworkReader(reader);
+                human.Load(matchInfo.GameInfo.Game.Content);
                 unitHumanOidList.Add(human);
             }
 
@@ -73,6 +74,7 @@ namespace WM.MatchInfo
             {
                 Vehicle vehicle = new Vehicle();
                 vehicle.UpdateNetworkReader(reader);
+                vehicle.Load(matchInfo.GameInfo.Game.Content);
                 unitVehicleList.Add(vehicle);
             }
 
@@ -90,8 +92,8 @@ namespace WM.MatchInfo
 
                     Building building = new Building(newBuildingItem, productionUnitItem, matchInfo);
                     building.UpdateNetworkReader(reader);
-                    unitBuildingList.Add(building);
                     building.Load(matchInfo.GameInfo.Game.Content);
+                    unitBuildingList.Add(building);
                 }
             }
         }
