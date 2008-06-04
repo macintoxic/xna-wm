@@ -37,6 +37,14 @@ namespace WM.MatchInfo
             players.Remove(player);
         }
 
+        public bool OnlySelfLeft()
+        {
+            if (players.Count == 1 && players[0] == gameInfo.MyPlayer)
+                return true;
+
+            return false;
+        }
+
         public void Update(GameTime gameTime)
         {
             for (int i = 0; i < players.Count; i++)

@@ -21,6 +21,7 @@ namespace WM.MatchInfo
         private int rank;
         private string nickName;
         public bool buildingsLoseConditionValid;
+        public bool PlayersEnterdValid;
 
         private Building selectedBuildingOnMap;
         private Building selectedBuildingInHud;
@@ -39,6 +40,7 @@ namespace WM.MatchInfo
             rank = 0;
             nickName = "";
             buildingsLoseConditionValid = false;
+            PlayersEnterdValid = false;
 
             selectedUnitList = new List<UnitBase>(); // selected on the map/in the world.
             selectedUnitInHud = null;
@@ -262,12 +264,12 @@ namespace WM.MatchInfo
             // check for win or lose
             if (CheckWin())
             {
-                // the player won.
+                // the player won, notify of win.
 
             }
             else if (CheckLose())
             {
-                // the player lost.
+                // the player lost, be removed from game.
 
             }
 
@@ -450,6 +452,11 @@ namespace WM.MatchInfo
 
         public bool CheckWin()
         {
+            if (gameInfo.MatchInfo.OnlySelfLeft() && PlayersEnterdValid)
+            {
+                return true;
+            }
+
             return false;
         }
 
