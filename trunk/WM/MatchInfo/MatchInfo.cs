@@ -32,6 +32,11 @@ namespace WM.MatchInfo
             players.Add(player);
         }
 
+        public void RemovePlayer(Player player)
+        {
+            players.Remove(player);
+        }
+
         public void Update(GameTime gameTime)
         {
             for (int i = 0; i < players.Count; i++)
