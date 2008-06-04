@@ -63,6 +63,7 @@ namespace WM.MatchInfo
             for (int index = 0; index < unitHumanOidCount; index++)
             {
                 HumanOid human = new HumanOid();
+                human.MatchInfo = matchInfo;
                 human.UpdateNetworkReader(reader);
                 human.Load(matchInfo.GameInfo.Game.Content);
                 unitHumanOidList.Add(human);
@@ -73,6 +74,7 @@ namespace WM.MatchInfo
             for (int index = 0; index < unitVehicleCount; index++)
             {
                 Vehicle vehicle = new Vehicle();
+                vehicle.MatchInfo = matchInfo;
                 vehicle.UpdateNetworkReader(reader);
                 vehicle.Load(matchInfo.GameInfo.Game.Content);
                 unitVehicleList.Add(vehicle);
@@ -91,6 +93,7 @@ namespace WM.MatchInfo
                     UnitItem productionUnitItem = (UnitItem)matchInfo.GameInfo.UnitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
 
                     Building building = new Building(newBuildingItem, productionUnitItem, matchInfo);
+                    building.MatchInfo = matchInfo;
                     building.UpdateNetworkReader(reader);
                     building.Load(matchInfo.GameInfo.Game.Content);
                     unitBuildingList.Add(building);
