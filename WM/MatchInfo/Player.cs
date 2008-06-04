@@ -58,14 +58,32 @@ namespace WM.MatchInfo
 
             Trace.WriteLine("Reading from nickName: " + nickName + " creditAmount: " + creditAmount);
 
-            foreach (HumanOid item in unitHumanOidList)
-                item.UpdateNetworkReader(reader);
+            int unitHumanOidCount = reader.ReadInt32();
+            unitHumanOidList.Clear();
+            for (int index = 0; index < unitHumanOidCount; index++)
+            {
+                HumanOid human = new Vehicle();
+                human.UpdateNetworkReader(reader);
+                unitHumanOidList.Add(human);
+            }
 
-            foreach (Vehicle item in unitVehicleList)
-                item.UpdateNetworkReader(reader);
+            int unitVehicleCount = reader.ReadInt32();
+            unitVehicleList.Clear();
+            for (int index = 0; index < unitVehicleCount; index++)
+            {
+                Vehicle vehicle = new Vehicle();
+                vehicle.UpdateNetworkReader(reader);
+                unitVehicleList.Add(vehicle);
+            }
 
-            foreach (Building item in unitBuildingList)
-                item.UpdateNetworkReader(reader);
+            int unitBuildingCount = reader.ReadInt32();
+            unitBuildingList.Clear();
+            for (int index = 0; index < unitBuildingCount; index++)
+            {
+                Building building = new Building();
+                building.UpdateNetworkReader(reader);
+                unitBuildingList.Add(building);
+            }
         }
 
         public void UpdateNetworkWriter(PacketWriter writer)
@@ -76,12 +94,15 @@ namespace WM.MatchInfo
 
             Trace.WriteLine("Writing from nickName: " + nickName + " creditAmount: " + creditAmount);
 
+            writer.Write(unitHumanOidList.Count);
             foreach (HumanOid item in unitHumanOidList)
                 item.UpdateNetworkWriter(writer);
 
+            writer.Write(unitVehicleList.Count);
             foreach (Vehicle item in unitVehicleList)
                 item.UpdateNetworkWriter(writer);
 
+            writer.Write(unitBuildingList.Count);
             foreach (Building item in unitBuildingList)
                 item.UpdateNetworkWriter(writer);
         }

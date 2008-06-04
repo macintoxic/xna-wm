@@ -21,6 +21,11 @@ namespace WM.Units
         float FiringTime;
         float FireDelay;
 
+        public HumanOid()
+        {
+            initialize();
+        }
+
         public HumanOid(UnitItem unitDefinition, MatchInfo.MatchInfo matchInfo)
             : base(unitDefinition.Name, unitDefinition.Position, unitDefinition.Rotation, unitDefinition.Scale, unitDefinition.AttackRadius, unitDefinition.Speed, unitDefinition.TextureAsset, unitDefinition.Offset, unitDefinition.Size, matchInfo)
         {

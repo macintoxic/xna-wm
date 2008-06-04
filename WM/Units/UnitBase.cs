@@ -34,6 +34,10 @@ namespace WM.Units
 
         string name;    // used to identify type, not unique
 
+        public UnitBase()
+        {
+        }
+
         public UnitBase(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string TextureAsset, Vector2 offset, Vector2 size, MatchInfo.MatchInfo matchInfo)
         {
             Position = position;

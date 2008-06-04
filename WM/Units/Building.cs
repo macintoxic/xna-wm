@@ -12,6 +12,10 @@ namespace WM.Units
     {
         private UnitBase productionUnit;
 
+        public Building()
+        {
+        }
+
         public Building(BuildingItem buildingDefinition, UnitItem productionUnitItem, MatchInfo.MatchInfo matchInfo)
             : base(buildingDefinition.Name, buildingDefinition.Position, buildingDefinition.Rotation, buildingDefinition.Scale, buildingDefinition.AttackRadius, buildingDefinition.Speed, buildingDefinition.TextureAsset, buildingDefinition.Offset, buildingDefinition.Size, matchInfo)
         {
