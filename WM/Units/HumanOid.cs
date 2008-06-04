@@ -412,6 +412,19 @@ namespace WM.Units
             get { return attackPower; }
             set { attackPower = value; }
         }
+        public override void TakeHit(float damageAmount)
+        {
+            // todo ..import Health variable from ItemDefinition/UnitItem/BuildingItem (XML) so we can substract
+            Health -= damageAmount;
+             if (Health <= 0 )
+            {
+                // todo ..Destroy UntiBase from level
+                
+                // todo check object type, humanoid or building.
 
+                // Remove it from the lists
+                 MatchInfo.GameInfo.MyPlayer.RemoveUnit(this);
+            }
+        }
     }
 }

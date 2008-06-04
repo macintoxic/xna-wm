@@ -10,7 +10,7 @@ using WM.MatchInfo;
 
 namespace WM.Units
 {
-    public class UnitBase
+    public abstract class UnitBase
     {
         Vector2 position;
         float rotation;
@@ -284,22 +284,6 @@ namespace WM.Units
         public virtual void SetMoveTargetPosition(Vector2 targetPosition){}
         public virtual void ClearMoveTargetPosition(Vector2 targetPosition) {}
         public virtual void SetAttackTarget(UnitBase target) {}
-        public virtual void TakeHit(float damageAmount)
-        {
-            // todo ..import Health variable from ItemDefinition/UnitItem/BuildingItem (XML) so we can substract
-            health -= damageAmount;
-             if (health <= 0 )
-            {
-                // todo ..Destroy UntiBase from level
-                
-                // todo check object type, humanoid or building.
-
-                // Remove it from the lists
-                if ((Building)this != null)
-                    MatchInfo.GameInfo.MyPlayer.RemoveBuilding(this);
-                else if ((HumanOid)this != null)
-                    MatchInfo.GameInfo.MyPlayer.RemoveUnit(this);
-            }
-        }
+        public abstract void TakeHit(float damageAmount);
     }
 }
