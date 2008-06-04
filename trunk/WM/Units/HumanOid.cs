@@ -326,7 +326,7 @@ namespace WM.Units
             List<UnitBase> targetList = MatchInfo.AllObjectsWithinRadius(Position, TargetRadius);            
             for (int i=0; i < targetList.Count; i++)
             {
-                if (targetList[i] != this)
+                if (targetList[i].unitOwner != unitOwner)
                     attackTarget = targetList[i];
             }
 
@@ -347,7 +347,7 @@ namespace WM.Units
                 // add the units size so it wont collide with the units itself.
                 Vector2 startPositon = Position + (attackDirection*64);
                 Bullet newBullet = new Bullet(startPositon, Rotation, new Vector2(1, 1), new Vector2(0, 0), new Vector2(4, 4),
-                                              null, attackDirection, AttackPower, 10, 128, 6, MatchInfo);
+                                              null, attackDirection, AttackPower, 10, 128, 6, MatchInfo, unitOwner);
                 MatchInfo.GameInfo.MyPlayer.ProjectileList.Add( newBullet );
 
             }
