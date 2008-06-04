@@ -648,5 +648,10 @@ namespace WM
             get { return unitList; }
             set { unitList = value; }
         }
+
+        public Hud Hud
+        {
+            get { return hud; }
+        }
     }
 }
