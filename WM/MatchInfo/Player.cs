@@ -91,6 +91,7 @@ namespace WM.MatchInfo
                     Building building = new Building(newBuildingItem, productionUnitItem, matchInfo);
                     building.UpdateNetworkReader(reader);
                     unitBuildingList.Add(building);
+                    building.Load(matchInfo.GameInfo.Game.Content);
                 }
             }
         }
