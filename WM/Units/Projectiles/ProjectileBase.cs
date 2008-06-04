@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WM.MatchInfo;
 
 namespace WM.Units.Projectiles
 {
@@ -28,10 +29,11 @@ namespace WM.Units.Projectiles
         private float lifeTime; // LifeTime * Speed = Range
         
         MatchInfo.MatchInfo matchInfo;
+        public Player unitOwner;
 
         public ProjectileBase(Vector2 position, float rotation, Vector2 scale, Vector2 offset, Vector2 size,
                               Texture2D texture, Vector2 direction, float damage, float radius, float speed, 
-                              float lifeTime, MatchInfo.MatchInfo matchInfo)
+                              float lifeTime, MatchInfo.MatchInfo matchInfo, Player unitOwnerObj)
         {
             Position = position;
             Rotation = rotation;
@@ -45,6 +47,7 @@ namespace WM.Units.Projectiles
             Speed = speed;
             LifeTime = lifeTime;
             MatchInfo = matchInfo;
+            unitOwner = unitOwnerObj;
 
             currentLifeTime = 0;
 
@@ -60,7 +63,7 @@ namespace WM.Units.Projectiles
             {                
                 for (int i = 0; i< collisionList.Count; i++)
                 {
-                    //if (collisionList[i] != this)// not possible to hit itself, since bullets are not returned by that function.
+                    if (collisionList[i].unitOwner != unitOwner)// not possible to hit itself, since bullets are not returned by that function.
                     {
                         Explode();
                         ApplyDamageToTarget(collisionList[i]);
