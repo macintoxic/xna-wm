@@ -311,10 +311,7 @@ namespace WM.MatchInfo
             else if (CheckLose())
             {
                 Trace.WriteLine(this.NickName + " lost!");
-                // the player lost, be removed from game.
-                matchInfo.GameInfo.NetworkSession.EndGame();
             }
-
         }
 
         public void Draw(SpriteBatch batch, float time)
