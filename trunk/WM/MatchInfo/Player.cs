@@ -13,7 +13,6 @@ namespace WM.MatchInfo
 {
     public class Player
     {
-        private GameInfo gameInfo;
         private List<HumanOid> unitHumanOidList;
         private List<Vehicle> unitVehicleList;
         private List<Building> unitBuildingList;
@@ -83,11 +82,11 @@ namespace WM.MatchInfo
             {
                 string type = reader.ReadString();
 
-                BuildingItem newBuildingItem = (BuildingItem)gameInfo.UnitList.GetObjectDefinitionByName(type, 3);
+                BuildingItem newBuildingItem = (BuildingItem)matchInfo.GameInfo.UnitList.GetObjectDefinitionByName(type, 3);
 
                 if (newBuildingItem != null)
                 {
-                    UnitItem productionUnitItem = (UnitItem)gameInfo.UnitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
+                    UnitItem productionUnitItem = (UnitItem)matchInfo.GameInfo.UnitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
 
                     Building building = new Building(newBuildingItem, productionUnitItem, matchInfo);
                     building.UpdateNetworkReader(reader);
@@ -490,7 +489,7 @@ namespace WM.MatchInfo
 
         public bool CheckWin()
         {
-            if (gameInfo != null && gameInfo.MatchInfo.OnlySelfLeft() && PlayersEnterdValid)
+            if (matchInfo != null && matchInfo.GameInfo != null && matchInfo.GameInfo.MatchInfo.OnlySelfLeft() && PlayersEnterdValid)
             {
                 return true;
             }
