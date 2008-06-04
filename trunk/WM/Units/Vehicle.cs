@@ -8,6 +8,10 @@ namespace WM.Units
 {
     public class Vehicle : HumanOid
     {
+        public Vehicle()
+        {
+        }
+
         public Vehicle(UnitItem unitDefinition, MatchInfo.MatchInfo matchInfo)
             : base(unitDefinition.Name, unitDefinition.Position, unitDefinition.Rotation, unitDefinition.Scale, unitDefinition.AttackRadius, unitDefinition.Speed, unitDefinition.TextureAsset, unitDefinition.Offset, unitDefinition.Size, matchInfo, unitDefinition.AttackPower)
         {
