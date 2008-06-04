@@ -56,8 +56,6 @@ namespace WM.MatchInfo
             rank = reader.ReadInt32();
             nickName = reader.ReadString();
 
-            Trace.WriteLine("Reading from nickName: " + nickName + " creditAmount: " + creditAmount);
-
             int unitHumanOidCount = reader.ReadInt32();
             unitHumanOidList.Clear();
             for (int index = 0; index < unitHumanOidCount; index++)
@@ -106,8 +104,6 @@ namespace WM.MatchInfo
             writer.Write(creditAmount);
             writer.Write(rank);
             writer.Write(nickName);
-
-            Trace.WriteLine("Writing from nickName: " + nickName + " creditAmount: " + creditAmount);
 
             writer.Write(unitHumanOidList.Count);
             foreach (HumanOid item in unitHumanOidList)
@@ -308,17 +304,15 @@ namespace WM.MatchInfo
             if (CheckWin())
             {
                 // the player won, notify of win.
-                Trace.WriteLine(this + " won!");
-                matchInfo.GameInfo.NetworkSession.Dispose();
-                matchInfo.GameInfo.NetworkSession = null;
+                Trace.WriteLine(this.NickName + " won!");
+                matchInfo.GameInfo.NetworkSession.EndGame();
 
             }
             else if (CheckLose())
             {
-                Trace.WriteLine(this + " lost!");
+                Trace.WriteLine(this.NickName + " lost!");
                 // the player lost, be removed from game.
-                matchInfo.GameInfo.NetworkSession.Dispose();
-                matchInfo.GameInfo.NetworkSession = null;
+                matchInfo.GameInfo.NetworkSession.EndGame();
             }
 
         }

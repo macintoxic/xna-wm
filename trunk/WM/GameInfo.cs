@@ -143,7 +143,7 @@ namespace WM
         /// </summary>
         private void SessionEndedEventHandler(object sender, NetworkSessionEndedEventArgs e)
         {
-            //errorMessage = e.EndReason.ToString();
+            Trace.WriteLine(e.EndReason.ToString());
 
             NetworkSession.Dispose();
             NetworkSession = null;
