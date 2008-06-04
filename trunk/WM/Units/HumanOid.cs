@@ -423,7 +423,7 @@ namespace WM.Units
                 // todo check object type, humanoid or building.
 
                 // Remove it from the lists
-                 MatchInfo.GameInfo.MyPlayer.RemoveUnit(this);
+                MatchInfo.GameInfo.MyPlayer.RemoveHumanoidUnit(this);
             }
         }
     }
