@@ -56,6 +56,8 @@ namespace WM.MatchInfo
             rank = reader.ReadInt32();
             nickName = reader.ReadString();
 
+            Trace.WriteLine("Reading from nickName: " + nickName + " creditAmount: " + creditAmount);
+
             foreach (HumanOid item in unitHumanOidList)
                 item.UpdateNetworkReader(reader);
 
@@ -71,6 +73,8 @@ namespace WM.MatchInfo
             writer.Write(creditAmount);
             writer.Write(rank);
             writer.Write(nickName);
+
+            Trace.WriteLine("Writing from nickName: " + nickName + " creditAmount: " + creditAmount);
 
             foreach (HumanOid item in unitHumanOidList)
                 item.UpdateNetworkWriter(writer);
