@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Net;
 using XMLContentShared;
+using WM.MatchInfo;
 
 namespace WM.Units
 {
@@ -16,22 +17,22 @@ namespace WM.Units
         {
         }
 
-        public Building(BuildingItem buildingDefinition, UnitItem productionUnitItem, MatchInfo.MatchInfo matchInfo)
-            : base(buildingDefinition.Name, buildingDefinition.Position, buildingDefinition.Rotation, buildingDefinition.Scale, buildingDefinition.AttackRadius, buildingDefinition.Speed, buildingDefinition.TextureAsset, buildingDefinition.Offset, buildingDefinition.Size, matchInfo)
+        public Building(BuildingItem buildingDefinition, UnitItem productionUnitItem, MatchInfo.MatchInfo matchInfo, Player unitOwnerObj)
+            : base(buildingDefinition.Name, buildingDefinition.Position, buildingDefinition.Rotation, buildingDefinition.Scale, buildingDefinition.AttackRadius, buildingDefinition.Speed, buildingDefinition.TextureAsset, buildingDefinition.Offset, buildingDefinition.Size, matchInfo, unitOwnerObj)
         {
             // todo Need some enhancement so we do not need to check for strings.
             DetermineProductionUnitFromDefinition(productionUnitItem, buildingDefinition.ProductionUnit);
         }
 
-        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, string productionUnit, UnitItem productionUnitItem, MatchInfo.MatchInfo matchInfo)
-            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo)
+        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, string productionUnit, UnitItem productionUnitItem, MatchInfo.MatchInfo matchInfo, Player unitOwnerObj)
+            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo, unitOwnerObj)
         {
             // todo Need some enhancement so we do not need to check for strings.
             DetermineProductionUnitFromDefinition(productionUnitItem, productionUnit);
         }
 
-        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, UnitBase productionUnit, MatchInfo.MatchInfo matchInfo)
-            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo)
+        public Building(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, UnitBase productionUnit, MatchInfo.MatchInfo matchInfo, Player unitOwnerObj)
+            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo, unitOwnerObj)
         {
             ProductionUnit = productionUnit;
         }
@@ -41,11 +42,11 @@ namespace WM.Units
             // todo Need some enhancement so we do not need to check for strings.
             if (productionName == "Soldier")
             {
-                ProductionUnit = new HumanOid(productionUnitItem, MatchInfo);
+                ProductionUnit = new HumanOid(productionUnitItem, MatchInfo, unitOwner);
             }
             else if (productionName == "Tank")
             {
-                ProductionUnit = new Vehicle(productionUnitItem, MatchInfo);
+                ProductionUnit = new Vehicle(productionUnitItem, MatchInfo, unitOwner);
             }
         }
 

@@ -42,6 +42,17 @@ namespace WM.MatchInfo
             players.Remove(player);
         }
 
+        public Player GetPlayerByNickName(string nickname)
+        {
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (players[i].NickName == nickname)
+                    return players[i];
+            }
+
+            return null;
+        }
+
         public bool OnlySelfLeft()
         {
             if (players.Count == 1 && players[0] == gameInfo.MyPlayer)

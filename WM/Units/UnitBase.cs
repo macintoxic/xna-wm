@@ -31,7 +31,7 @@ namespace WM.Units
         public Vector2 screenCenter;
 
         MatchInfo.MatchInfo matchInfo;
-
+        public Player unitOwner;
 
         string name;    // used to identify type, not unique
 
@@ -39,7 +39,7 @@ namespace WM.Units
         {
         }
 
-        public UnitBase(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string TextureAsset, Vector2 offset, Vector2 size, MatchInfo.MatchInfo matchInfo)
+        public UnitBase(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string TextureAsset, Vector2 offset, Vector2 size, MatchInfo.MatchInfo matchInfo, Player unitOwnerObj)
         {
             Position = position;
             Rotation = rotation;
@@ -54,6 +54,7 @@ namespace WM.Units
             health = 40;
             Name = name;
             MatchInfo = matchInfo;
+            unitOwner = unitOwnerObj;
         }
 
         public Vector2 Position
@@ -265,6 +266,9 @@ namespace WM.Units
             health = reader.ReadSingle();
             textureAsset = reader.ReadString();
             name = reader.ReadString();
+
+            // search players from player list and set this unit to have that owner.
+            unitOwner = matchInfo.GetPlayerByNickName(reader.ReadString());            
         }
 
         public virtual void UpdateNetworkWriter(PacketWriter writer)
@@ -280,6 +284,7 @@ namespace WM.Units
             writer.Write(health);
             writer.Write(textureAsset);
             writer.Write(name);    
+            writer.Write(unitOwner.NickName);    
         }
 
         public virtual void SetMoveTargetPosition(Vector2 targetPosition){}
