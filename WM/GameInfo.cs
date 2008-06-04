@@ -409,9 +409,10 @@ namespace WM
 
             //matchInfo.UpdateUnitPositions();
             //matchInfo.UpdateBuildingPositions();
-            MyPlayer.UpdateUnitPositions();
-            MyPlayer.UpdateBuildingPositions();
-            MyPlayer.UpdateProjectilePositions();
+            //MyPlayer.UpdateUnitPositions();
+            //MyPlayer.UpdateBuildingPositions();
+            //MyPlayer.UpdateProjectilePositions();
+            MatchInfo.UpdateObjectPositions();
         }
 
         public void HandleInput(GameTime gameTime, InputState input)
