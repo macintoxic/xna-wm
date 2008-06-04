@@ -318,13 +318,13 @@ namespace WM
         /// </summary>
         private void UpdateLocalGamer(LocalNetworkGamer gamer)
         {
-            // Look up what player data is associated with this local player.
-            Player localPlayer = gamer.Tag as MatchInfo.Player;
-
             // Only send if we are not the server. There is no point sending packets
             // to ourselves, because we already know what they will contain!
             if (!NetworkSession.IsHost)
             {
+                // Look up what player data is associated with this local player.
+                Player localPlayer = gamer.Tag as MatchInfo.Player;
+
                 localPlayer.UpdateNetworkWriter(PacketWriter);
 
                 // Send our input data to the server.
