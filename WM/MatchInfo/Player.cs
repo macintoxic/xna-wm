@@ -20,6 +20,7 @@ namespace WM.MatchInfo
         private int creditAmount;
         private int rank;
         private string nickName;
+        public bool buildingsLoseConditionValid;
 
         private Building selectedBuildingOnMap;
         private Building selectedBuildingInHud;
@@ -37,6 +38,7 @@ namespace WM.MatchInfo
             creditAmount = 10000;
             rank = 0;
             nickName = "";
+            buildingsLoseConditionValid = false;
 
             selectedUnitList = new List<UnitBase>(); // selected on the map/in the world.
             selectedUnitInHud = null;
@@ -83,6 +85,8 @@ namespace WM.MatchInfo
             Building newBuilding = new Building(BuildingType.Name, Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset, BuildingType.Size, BuildingType.ProductionUnit, matchInfo);
             newBuilding.Load(matchInfo.GameInfo.Content);
             unitBuildingList.Add(newBuilding);
+            // set building lose condition valid to true, so the player cna lose the game.
+            buildingsLoseConditionValid = true;
         }
 
         public void CreateUnit(Vector2 Position, UnitBase UnitType)
@@ -254,6 +258,19 @@ namespace WM.MatchInfo
 
             for (int i = 0; i < projectileList.Count; i++)
                 projectileList[i].Update(gameTime);
+
+            // check for win or lose
+            if (CheckWin())
+            {
+                // the player won.
+
+            }
+            else if (CheckLose())
+            {
+                // the player lost.
+
+            }
+
         }
 
         public void Draw(SpriteBatch batch, float time)
@@ -431,8 +448,17 @@ namespace WM.MatchInfo
             return unitBuildingList.Remove((Building)obj);
         }
 
-        public bool CheckWinOrLose()
+        public bool CheckWin()
         {
+            return false;
+        }
+
+        public bool CheckLose()
+        {
+            //if all buildings are lost the player loses.
+            if (unitBuildingList.Count <= 0 && buildingsLoseConditionValid )
+                return true;
+
             return false;
         }
 
