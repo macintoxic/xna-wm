@@ -61,6 +61,22 @@ namespace WM
                 HudElementClick(this, type);
         }
 
+        public int Height
+        {
+            get
+            {
+                return 128;
+            }
+        }
+
+        public int Width
+        {
+            get
+            {
+                return 64 * Math.Max(hudElementsLine1.Count, hudElementsLine2.Count);
+            }
+        }
+
         public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("Textures\\HUD");
