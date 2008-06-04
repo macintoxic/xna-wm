@@ -144,24 +144,27 @@ namespace WM.Units
 
         public virtual void Draw(SpriteBatch batch, float time)
         {
-            Rectangle sourceRect = new Rectangle(
-              (int)offset.X,
-              (int)offset.Y,
-              (int)size.X,
-              (int)size.Y);            
-            
-            batch.Draw(texture, 
-                        screenCenter,
-                        sourceRect, 
-                        Color.White,
-                        Rotation, 
-                        DrawingPosition, 
-                        DrawingScale,
-                        SpriteEffects.None, 
-                        0.0f);
+            if (texture != null)
+            {
+                Rectangle sourceRect = new Rectangle(
+                  (int)offset.X,
+                  (int)offset.Y,
+                  (int)size.X,
+                  (int)size.Y);
 
-            DrawCenter(batch, screenCenter, DrawingPosition);
-            DrawBorder(batch, screenCenter, DrawingPosition);
+                batch.Draw(texture,
+                            screenCenter,
+                            sourceRect,
+                            Color.White,
+                            Rotation,
+                            DrawingPosition,
+                            DrawingScale,
+                            SpriteEffects.None,
+                            0.0f);
+
+                DrawCenter(batch, screenCenter, DrawingPosition);
+                DrawBorder(batch, screenCenter, DrawingPosition);
+            }
 
             /*
             batch.Draw(
