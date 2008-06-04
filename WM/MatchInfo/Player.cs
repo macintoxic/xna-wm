@@ -303,13 +303,10 @@ namespace WM.MatchInfo
             // check for win or lose
             if (CheckWin())
             {
-                // the player won, notify of win.
-                Trace.WriteLine(this.NickName + " won!");
-
             }
             else if (CheckLose())
             {
-                Trace.WriteLine(this.NickName + " lost!");
+                matchInfo.RemovePlayer(this);
             }
         }
 
