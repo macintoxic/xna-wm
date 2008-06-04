@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Net;
 using WM.Units.Projectiles;
+using XMLContentShared;
 
 namespace WM.MatchInfo
 {
@@ -80,9 +81,18 @@ namespace WM.MatchInfo
             unitBuildingList.Clear();
             for (int index = 0; index < unitBuildingCount; index++)
             {
-                Building building = new Building();
-                building.UpdateNetworkReader(reader);
-                unitBuildingList.Add(building);
+                string type = reader.ReadString();
+
+                BuildingItem newBuildingItem = (BuildingItem)gameInfo.UnitList.GetObjectDefinitionByName(type, 3);
+
+                if (newBuildingItem != null)
+                {
+                    UnitItem productionUnitItem = (UnitItem)gameInfo.UnitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
+
+                    Building building = new Building(newBuildingItem, productionUnitItem, matchInfo);
+                    building.UpdateNetworkReader(reader);
+                    unitBuildingList.Add(building);
+                }
             }
         }
 
@@ -104,7 +114,10 @@ namespace WM.MatchInfo
 
             writer.Write(unitBuildingList.Count);
             foreach (Building item in unitBuildingList)
+            {
+                writer.Write("Barrack");
                 item.UpdateNetworkWriter(writer);
+            }
         }
                 
         public void CreateBuilding(Vector2 Position, Building BuildingType)
