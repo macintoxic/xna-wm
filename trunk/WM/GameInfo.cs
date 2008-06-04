@@ -284,6 +284,19 @@ namespace WM
                     UpdateLocalGamer(gamer);
                 }
 
+                // Read any incoming network packets.
+                foreach (LocalNetworkGamer gamer in NetworkSession.LocalGamers)
+                {
+                    if (gamer.IsHost)
+                    {
+                        ServerReadInputFromClients(gamer);
+                    }
+                    else
+                    {
+                        ClientReadGameStateFromServer(gamer);
+                    }
+                }
+
                 // If we are the server, update all the units and transmit their latest positions back out over 
                 // the network.
                 if (NetworkSession.IsHost)
@@ -297,19 +310,6 @@ namespace WM
                 // Make sure the session has not ended.
                 if (NetworkSession == null)
                     return;
-
-                // Read any incoming network packets.
-                foreach (LocalNetworkGamer gamer in NetworkSession.LocalGamers)
-                {
-                    if (gamer.IsHost)
-                    {
-                        ServerReadInputFromClients(gamer);
-                    }
-                    else
-                    {
-                        ClientReadGameStateFromServer(gamer);
-                    }
-                }
             }
             else
                 JoinOrCreateNetworkSession();
