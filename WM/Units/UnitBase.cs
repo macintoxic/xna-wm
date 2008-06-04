@@ -32,6 +32,7 @@ namespace WM.Units
 
         MatchInfo.MatchInfo matchInfo;
 
+
         string name;    // used to identify type, not unique
 
         public UnitBase()
