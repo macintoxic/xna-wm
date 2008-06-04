@@ -272,15 +272,21 @@ namespace WM
         /// Updates the state of the network session, moving the tanks
         /// around and synchronizing their state over the network.
         /// </summary>
-        void UpdateNetworkSession()
+        private void UpdateNetworkSession()
         {
             if (NetworkSession != null)
             {
-                // Update our locally controlled tanks, and send their
-                // latest position data to everyone in the session.
+                // Read inputs for locally controlled units, and send them to the server.
                 foreach (LocalNetworkGamer gamer in NetworkSession.LocalGamers)
                 {
                     UpdateLocalGamer(gamer);
+                }
+
+                // If we are the server, update all the units and transmit their latest positions back out over 
+                // the network.
+                if (NetworkSession.IsHost)
+                {
+                    UpdateServer();
                 }
 
                 // Pump the underlying session object.
@@ -290,10 +296,17 @@ namespace WM
                 if (NetworkSession == null)
                     return;
 
-                // Read any packets telling us the positions of remotely controlled tanks.
+                // Read any incoming network packets.
                 foreach (LocalNetworkGamer gamer in NetworkSession.LocalGamers)
                 {
-                    ReadIncomingPackets(gamer);
+                    if (gamer.IsHost)
+                    {
+                        ServerReadInputFromClients(gamer);
+                    }
+                    else
+                    {
+                        ClientReadGameStateFromServer(gamer);
+                    }
                 }
             }
             else
@@ -303,15 +316,106 @@ namespace WM
         /// <summary>
         /// Helper for updating a locally controlled gamer.
         /// </summary>
-        void UpdateLocalGamer(LocalNetworkGamer gamer)
+        private void UpdateLocalGamer(LocalNetworkGamer gamer)
         {
-            // Look up what tank is associated with this local player.
+            // Look up what player data is associated with this local player.
             Player localPlayer = gamer.Tag as MatchInfo.Player;
 
-            localPlayer.UpdateNetworkWriter(PacketWriter);
+            // Only send if we are not the server. There is no point sending packets
+            // to ourselves, because we already know what they will contain!
+            if (!NetworkSession.IsHost)
+            {
+                localPlayer.UpdateNetworkWriter(PacketWriter);
 
-            // Send the data to everyone in the session.
-            gamer.SendData(PacketWriter, SendDataOptions.InOrder);
+                // Send our input data to the server.
+                gamer.SendData(PacketWriter, SendDataOptions.InOrder, NetworkSession.Host);
+            }
+        }
+
+
+        /// <summary>
+        /// This method only runs on the server. It calls Update on all the tank instances, both local and remote, 
+        /// using inputs that have been received over the network. It then sends the resulting tank position data 
+        /// to everyone in the session.
+        /// </summary>
+        private void UpdateServer()
+        {
+            // First off, our packet will indicate how many players it has data for.
+            PacketWriter.Write(NetworkSession.AllGamers.Count);
+
+            // Loop over all the players in the session, not just the local ones!
+            foreach (NetworkGamer gamer in NetworkSession.AllGamers)
+            {
+                // Look up what tank is associated with this player.
+                Player player = gamer.Tag as Player;
+
+                // Update the player.
+                //player.Update();
+
+                // Write the player state into the output network packet.
+                player.UpdateNetworkWriter(PacketWriter);
+            }
+
+            // Send the combined data for all tanks to everyone in the session.
+            LocalNetworkGamer server = (LocalNetworkGamer)NetworkSession.Host;
+
+            server.SendData(PacketWriter, SendDataOptions.InOrder);
+        }
+
+        /// <summary>
+        /// This method only runs on the server. It reads tank inputs that have been sent over the network by a 
+        /// client machine, storing them for later use by the UpdateServer method.
+        /// </summary>
+        private void ServerReadInputFromClients(LocalNetworkGamer gamer)
+        {
+            // Keep reading as long as incoming packets are available.
+            while (gamer.IsDataAvailable)
+            {
+                NetworkGamer sender;
+
+                // Read a single packet from the network.
+                gamer.ReceiveData(PacketReader, out sender);
+
+                if (!sender.IsLocal)
+                {
+                    // Look up the tank associated with whoever sent this packet.
+                    Player remotePlayer = sender.Tag as Player;
+
+                    // Read the latest inputs controlling this tank.
+                    remotePlayer.UpdateNetworkReader(PacketReader);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This method only runs on client machines. It reads the unit position data that has been computed by 
+        /// the server.
+        /// </summary>
+        private void ClientReadGameStateFromServer(LocalNetworkGamer gamer)
+        {
+            // Keep reading as long as incoming packets are available.
+            while (gamer.IsDataAvailable)
+            {
+                NetworkGamer sender;
+
+                // Read a single packet from the network.
+                gamer.ReceiveData(PacketReader, out sender);
+
+                // If a player has recently joined or left, it is possible the server might have sent information 
+                // about a different number of players than the client currently knows about. If so, we will be 
+                // unable to match up which data refers to which player. The solution is just to ignore the packet 
+                // for now: this situation will resolve itself as soon as the client gets the join/leave notification.
+                if (NetworkSession.AllGamers.Count != PacketReader.ReadInt32())
+                    continue;
+
+                // This packet contains data about all the players in the session.
+                foreach (NetworkGamer remoteGamer in NetworkSession.AllGamers)
+                {
+                    Player player = remoteGamer.Tag as Player;
+
+                    player.UpdateNetworkReader(PacketReader);
+                }
+            }
         }
         
         /// <summary>
