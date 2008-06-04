@@ -92,7 +92,7 @@ namespace WM.MatchInfo
                 {
                     UnitItem productionUnitItem = (UnitItem)matchInfo.GameInfo.UnitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
 
-                    Building building = new Building(newBuildingItem, productionUnitItem, matchInfo);
+                    Building building = new Building(newBuildingItem, productionUnitItem, matchInfo, this);
                     building.MatchInfo = matchInfo;
                     building.UpdateNetworkReader(reader);
                     building.Load(matchInfo.GameInfo.Game.Content);
@@ -127,7 +127,7 @@ namespace WM.MatchInfo
                 
         public void CreateBuilding(Vector2 Position, Building BuildingType)
         {
-            Building newBuilding = new Building(BuildingType.Name, Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset, BuildingType.Size, BuildingType.ProductionUnit, matchInfo);
+            Building newBuilding = new Building(BuildingType.Name, Position, BuildingType.Rotation, BuildingType.Scale, BuildingType.TargetRadius, BuildingType.Speed, BuildingType.TextureAsset, BuildingType.Offset, BuildingType.Size, BuildingType.ProductionUnit, matchInfo, this);
             newBuilding.Load(matchInfo.GameInfo.Content);
             unitBuildingList.Add(newBuilding);
             // set building lose condition valid to true, so the player cna lose the game.
@@ -138,13 +138,13 @@ namespace WM.MatchInfo
         {
             if (UnitType.GetType().Name == "HumanOid")
             {
-                HumanOid newUnit = new HumanOid(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo, ((HumanOid)UnitType).AttackPower);
+                HumanOid newUnit = new HumanOid(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo, ((HumanOid)UnitType).AttackPower, this);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitHumanOidList.Add(newUnit);                
             }
             else if (UnitType.GetType().Name == "Vehicle")
             {
-                Vehicle newUnit = new Vehicle(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo, ((Vehicle)UnitType).AttackPower);
+                Vehicle newUnit = new Vehicle(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo, ((Vehicle)UnitType).AttackPower, this);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitVehicleList.Add(newUnit);
             }

@@ -186,7 +186,7 @@ namespace WM
                         if (newBuildingItem != null)
                         {
                             UnitItem productionUnitItem = (UnitItem)unitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
-                            MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem, matchInfo);
+                            MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem, matchInfo, MyPlayer);
                         }
                         else
                         {
@@ -202,7 +202,7 @@ namespace WM
                         if (newBuildingItem != null)
                         {
                             UnitItem productionUnitItem = (UnitItem)unitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 1);
-                            MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem, matchInfo);
+                            MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem, matchInfo, MyPlayer);
                         }
                         else
                         {
@@ -217,7 +217,7 @@ namespace WM
                         if (newBuildingItem != null)
                         {
                             UnitItem productionUnitItem = (UnitItem)unitList.GetObjectDefinitionByName(newBuildingItem.ProductionUnit, 2);
-                            MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem, matchInfo);
+                            MyPlayer.SelectedBuildingInHud = new Building(newBuildingItem, productionUnitItem, matchInfo, MyPlayer);
                         }
                         else
                         {
@@ -231,7 +231,7 @@ namespace WM
                         UnitItem newUnitItem = (UnitItem)unitList.GetObjectDefinitionByName("Soldier", 1);
                         if (newUnitItem != null)
                         {
-                            MyPlayer.SelectedUnitInHud = new HumanOid(newUnitItem, matchInfo);
+                            MyPlayer.SelectedUnitInHud = new HumanOid(newUnitItem, matchInfo, MyPlayer);
                             mouseControl.TryUnitProduction(MyPlayer);
                         }
                         else
@@ -246,7 +246,7 @@ namespace WM
                         UnitItem newUnitItem = (UnitItem)unitList.GetObjectDefinitionByName("Tank", 2);
                         if (newUnitItem != null)
                         {
-                            MyPlayer.SelectedUnitInHud = new Vehicle(newUnitItem, matchInfo);
+                            MyPlayer.SelectedUnitInHud = new Vehicle(newUnitItem, matchInfo, MyPlayer);
                             mouseControl.TryUnitProduction(MyPlayer);
                         }
                         else

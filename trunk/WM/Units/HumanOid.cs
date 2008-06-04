@@ -6,6 +6,7 @@ using XMLContentShared;
 using System.Diagnostics;
 using System.Collections.Generic;
 using WM.Units.Projectiles;
+using WM.MatchInfo;
 
 namespace WM.Units
 {
@@ -26,15 +27,15 @@ namespace WM.Units
             initialize();
         }
 
-        public HumanOid(UnitItem unitDefinition, MatchInfo.MatchInfo matchInfo)
-            : base(unitDefinition.Name, unitDefinition.Position, unitDefinition.Rotation, unitDefinition.Scale, unitDefinition.AttackRadius, unitDefinition.Speed, unitDefinition.TextureAsset, unitDefinition.Offset, unitDefinition.Size, matchInfo)
+        public HumanOid(UnitItem unitDefinition, MatchInfo.MatchInfo matchInfo, Player unitOwnerObj)
+            : base(unitDefinition.Name, unitDefinition.Position, unitDefinition.Rotation, unitDefinition.Scale, unitDefinition.AttackRadius, unitDefinition.Speed, unitDefinition.TextureAsset, unitDefinition.Offset, unitDefinition.Size, matchInfo, unitOwnerObj)
         {
             AttackPower = unitDefinition.AttackPower;
             initialize();
         }
 
-        public HumanOid(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, MatchInfo.MatchInfo matchInfo, float attackPower)
-            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo)
+        public HumanOid(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, MatchInfo.MatchInfo matchInfo, float attackPower, Player unitOwnerObj)
+            : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo, unitOwnerObj)
         {
             AttackPower = attackPower;
             initialize();
