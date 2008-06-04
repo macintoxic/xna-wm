@@ -30,6 +30,11 @@ namespace WM.MatchInfo
         public void AddPlayer(Player player)
         {
             players.Add(player);
+            if (players.Count > 1)
+            {
+                for (int i = 0; i < players.Count; i++)
+                    players[i].PlayersEnterdValid = true;
+            }
         }
 
         public void RemovePlayer(Player player)
