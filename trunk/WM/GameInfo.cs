@@ -113,6 +113,8 @@ namespace WM
 
             MatchInfo.Player player = new MatchInfo.Player(matchInfo);
 
+            player.NickName = e.Gamer.Gamertag;
+
             matchInfo.AddPlayer(player);
 
             if (e.Gamer.Gamertag == Gamer.SignedInGamers[0].Gamertag)
