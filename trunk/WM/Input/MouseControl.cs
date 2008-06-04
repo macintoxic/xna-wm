@@ -49,6 +49,29 @@ namespace WM.Input
             int leftMouse = (int)currentMouseState.LeftButton;
             int rightMouse = (int)currentMouseState.RightButton;
 
+            int scrollOffsetLeft = 50;
+            int scrollOffsetRight = 50;
+            int scrollOffsetTop = 50;
+            int scrollOffsetBottom = 50;
+
+            Viewport viewport = gameInfo.Game.ScreenManager.GraphicsDevice.Viewport;
+
+            float dX = 0;
+            float dY = 0;
+
+            if (mouseLocation.X < scrollOffsetLeft)
+                dX = -1 * elapsed * GameInfo.MovementRate;
+            else if (mouseLocation.X > viewport.Width - scrollOffsetRight)
+                dX = 1 * elapsed * GameInfo.MovementRate;
+
+            if (mouseLocation.Y < scrollOffsetTop)
+                dY = 1 * elapsed * GameInfo.MovementRate;
+            else if (mouseLocation.Y > viewport.Height - scrollOffsetBottom)
+                dY = -1 * elapsed * GameInfo.MovementRate;
+
+            gameInfo.Camera.MoveRight(ref dX);
+            gameInfo.Camera.MoveUp(ref dY);
+
             // If RightMouse released see if we should process an action.
             if (prevMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
             {
