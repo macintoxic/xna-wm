@@ -24,9 +24,9 @@ namespace WM
         public PacketWriter PacketWriter = new PacketWriter();
         public PacketReader PacketReader = new PacketReader();
 
-        private const float MovementRate = 500f;
-        private const float RotationRate = 1.5f;
-        private const float ZoomRate = 0.5f;
+        public const float MovementRate = 500f;
+        public const float RotationRate = 1.5f;
+        public const float ZoomRate = 0.5f;
 
         private WMGame game;
         private ContentManager content;
