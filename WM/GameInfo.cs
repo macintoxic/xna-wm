@@ -53,10 +53,7 @@ namespace WM
             this.rand = new Random();
 
             mouseControl = new MouseControl(this);
-
             matchInfo = new MatchInfo.MatchInfo(this);
-            myPlayer = new MatchInfo.Player(matchInfo);
-            matchInfo.AddPlayer(myPlayer);
         }
 
         private void JoinOrCreateNetworkSession()
@@ -103,19 +100,41 @@ namespace WM
         private void HookSessionEvents()
         {
             NetworkSession.GamerJoined += GamerJoinedEventHandler;
+            NetworkSession.GamerLeft += GamerLeftEventHandler;
             NetworkSession.SessionEnded += SessionEndedEventHandler;
         }
 
         /// <summary>
         /// This event handler will be called whenever a new gamer joins the session.
-        /// We use it to allocate a Tank object, and associate it with the new gamer.
         /// </summary>
         private void GamerJoinedEventHandler(object sender, GamerJoinedEventArgs e)
         {
             int gamerIndex = NetworkSession.AllGamers.IndexOf(e.Gamer);
 
-            e.Gamer.Tag = new MatchInfo.Player(matchInfo);
+            MatchInfo.Player player = new MatchInfo.Player(matchInfo);
+
+            matchInfo.AddPlayer(player);
+
+            if (e.Gamer.IsHost)
+            {
+                // When we're the host, we should store our player object in the myPlayer var.
+                myPlayer = player;
+            }
+
+            e.Gamer.Tag = player;
         }
+
+        /// <summary>
+        /// This event handler will be called whenever an existing gamer left the session.
+        /// </summary>
+        private void GamerLeftEventHandler(object sender, GamerLeftEventArgs e)
+        {
+            int gamerIndex = NetworkSession.AllGamers.IndexOf(e.Gamer);
+
+            MatchInfo.Player player = (MatchInfo.Player)e.Gamer.Tag;
+
+            matchInfo.RemovePlayer(player);
+        }   
 
         /// <summary>
         /// Event handler notifies us when the network session has ended.
