@@ -131,7 +131,7 @@ namespace WM
         /// </summary>
         private void GamerLeftEventHandler(object sender, GamerLeftEventArgs e)
         {
-            int gamerIndex = NetworkSession.AllGamers.IndexOf(e.Gamer);
+            //int gamerIndex = NetworkSession.AllGamers.IndexOf(e.Gamer);
 
             MatchInfo.Player player = (MatchInfo.Player)e.Gamer.Tag;
 
