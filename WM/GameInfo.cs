@@ -558,7 +558,7 @@ namespace WM
             graphics.RenderState.DepthBufferEnable = false;
             graphics.Clear(Color.Black);
 
-            if (Gamer.SignedInGamers.Count > 0)
+            if (Gamer.SignedInGamers.Count > 0 && myPlayer != null)
             {
                 //SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
                 float time = (float)gameTime.TotalGameTime.TotalSeconds;
