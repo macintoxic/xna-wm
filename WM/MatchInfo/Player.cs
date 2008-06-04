@@ -89,13 +89,13 @@ namespace WM.MatchInfo
         {
             if (UnitType.GetType().Name == "HumanOid")
             {
-                HumanOid newUnit = new HumanOid(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo);
+                HumanOid newUnit = new HumanOid(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo, ((HumanOid)UnitType).AttackPower);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitHumanOidList.Add(newUnit);                
             }
             else if (UnitType.GetType().Name == "Vehicle")
             {
-                Vehicle newUnit = new Vehicle(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo);
+                Vehicle newUnit = new Vehicle(UnitType.Name, Position, UnitType.Rotation, UnitType.Scale, UnitType.TargetRadius, UnitType.Speed, UnitType.TextureAsset, UnitType.Offset, UnitType.Size, matchInfo, ((Vehicle)UnitType).AttackPower);
                 newUnit.Load(matchInfo.GameInfo.Content);
                 unitVehicleList.Add(newUnit);
             }
@@ -409,7 +409,32 @@ namespace WM.MatchInfo
                 projectileList[i].screenCenter = matchInfo.GameInfo.ScreenCenter;
             }        
         }
+        
+        public bool RemoveProjectile(ProjectileBase projectile)
+        {
+            Trace.WriteLine(projectile);
+            return projectileList.Remove(projectile);            
+        }
 
+        public bool RemoveUnit(UnitBase obj)
+        {
+            Trace.WriteLine(obj);
+            if (unitVehicleList.Remove((Vehicle)obj))
+                return true;
+
+            return unitHumanOidList.Remove((HumanOid)obj);            
+        }
+
+        public bool RemoveBuilding(UnitBase obj)
+        {
+            Trace.WriteLine(obj);
+            return unitBuildingList.Remove((Building)obj);
+        }
+
+        public bool CheckWinOrLose()
+        {
+            return false;
+        }
 
         public int CreditAmount
         {

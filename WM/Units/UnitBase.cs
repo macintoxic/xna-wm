@@ -20,6 +20,7 @@ namespace WM.Units
         float targetRadius;
         float speed;
         int creditsCost;
+        float health;
 
         string textureAsset;
         protected Texture2D texture;
@@ -45,6 +46,7 @@ namespace WM.Units
             speed = Speed;
             textureAsset = TextureAsset;
             creditsCost = 100;
+            health = 40;
             Name = name;
             MatchInfo = matchInfo;
         }
@@ -97,6 +99,12 @@ namespace WM.Units
             set { creditsCost = value; }
         }
 
+        public float Health
+        {
+            get { return health; }
+            set { health = value; }
+        }
+        
         public string TextureAsset
         {
             get { return textureAsset; }
@@ -262,12 +270,19 @@ namespace WM.Units
         public virtual void TakeHit(float damageAmount)
         {
             // todo ..import Health variable from ItemDefinition/UnitItem/BuildingItem (XML) so we can substract
-            // health -= damageAmount
-            // if (health <= 0 )
-            //{
+            health -= damageAmount;
+             if (health <= 0 )
+            {
                 // todo ..Destroy UntiBase from level
-                // todo ..Remove it frm playerList
-            //}
+                
+                // todo check object type, humanoid or building.
+
+                // Remove it from the lists
+                if ((Building)this != null)
+                    MatchInfo.GameInfo.MyPlayer.RemoveBuilding(this);
+                else if ((HumanOid)this != null)
+                    MatchInfo.GameInfo.MyPlayer.RemoveUnit(this);
+            }
         }
     }
 }
