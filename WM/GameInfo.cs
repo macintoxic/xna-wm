@@ -354,20 +354,23 @@ namespace WM
             }
             else
             {
-                UpdateNetworkSession();
+                if (matchInfo.Winner == null)
+                {
+                    UpdateNetworkSession();
 
-                if (camera.IsChanged)
-                    CameraChanged();
+                    if (camera.IsChanged)
+                        CameraChanged();
 
-                UpdateTiles();
+                    UpdateTiles();
 
-                GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
+                    GraphicsDevice graphics = game.ScreenManager.GraphicsDevice;
 
-                currentLevel.Update(gameTime);
+                    currentLevel.Update(gameTime);
 
-                hud.Update(gameTime, graphics);
+                    hud.Update(gameTime, graphics);
 
-                MatchInfo.Update(gameTime);
+                    MatchInfo.Update(gameTime);
+                }
             }
             
             mouseControl.Update();
@@ -461,20 +464,29 @@ namespace WM
             graphics.RenderState.DepthBufferEnable = false;
             graphics.Clear(Color.Black);
 
-            if (Gamer.SignedInGamers.Count > 0 && myPlayer != null)
+            if (matchInfo.Winner == null)
             {
-                //SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
-                float time = (float)gameTime.TotalGameTime.TotalSeconds;
-                //Draw level
-                currentLevel.Draw(gameTime, spriteBatch);
-                hud.Draw(gameTime, graphics, spriteBatch);
+                if (Gamer.SignedInGamers.Count > 0 && myPlayer != null)
+                {
+                    //SpriteBatch spriteBatch = game.ScreenManager.SpriteBatch;
+                    float time = (float)gameTime.TotalGameTime.TotalSeconds;
+                    //Draw level
+                    currentLevel.Draw(gameTime, spriteBatch);
+                    hud.Draw(gameTime, graphics, spriteBatch);
 
-                //Draw Units/Buildings on Map
-                matchInfo.Draw(spriteBatch, time);
-            }             
+                    //Draw Units/Buildings on Map
+                    matchInfo.Draw(spriteBatch, time);
+                }
 
-            // Draw anything the mouseControl wants us to draw.
-            mouseControl.Draw();
+                // Draw anything the mouseControl wants us to draw.
+                mouseControl.Draw();
+            }
+            else
+            {
+                spriteBatch.Begin();
+                spriteBatch.DrawString(Fonts.MoneyFont, matchInfo.Winner.NickName + " won!", new Vector2(100, 100), Fonts.MoneyFontColor);
+                spriteBatch.End();
+            }
         }
 
         /// <summary>

@@ -11,8 +11,10 @@ namespace WM.MatchInfo
 {
     public class MatchInfo
     {
+        public Player Winner;
         private GameInfo gameInfo;
         private List<Player> players;   // player playing the game
+        private List<Player> playerLosers;   // players who lost
         private string Map;             // the map we are playing
         private string startTime;       // The time the game started
         private int SyncTimeMs;         // used to determine after how many time we need to sync
@@ -20,11 +22,17 @@ namespace WM.MatchInfo
         public MatchInfo(GameInfo gameInfoObj)
         {
             players = new List<Player>();
+            playerLosers = new List<Player>();
             Map = "WvsM";       // or WvsM.xml depends on the loading style.
             startTime = "0";
             SyncTimeMs = 6000;
 
             gameInfo = gameInfoObj;
+        }
+
+        public List<Player> Players
+        {
+            get { return players; }
         }
 
         public void AddPlayer(Player player)
@@ -39,7 +47,13 @@ namespace WM.MatchInfo
 
         public void RemovePlayer(Player player)
         {
-            players.Remove(player);
+            if (players.Remove(player))
+            {
+                playerLosers.Add(player);
+
+                if (players.Count == 1)
+                    Winner = players[0];
+            }
         }
 
         public Player GetPlayerByNickName(string nickname)
