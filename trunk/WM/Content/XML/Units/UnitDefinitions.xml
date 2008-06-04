@@ -14,7 +14,7 @@
         <Speed>32</Speed>
         <Health>25</Health>
         <AttackPower>10</AttackPower>
-        <AttackRadius>35</AttackRadius>
+        <AttackRadius>100</AttackRadius>
         <DefenseRadius>20</DefenseRadius>
         <CreditsCost>25</CreditsCost>
       </Item>
@@ -31,7 +31,7 @@
         <Speed>128</Speed>
         <Health>100</Health>
         <AttackPower>40</AttackPower>
-        <AttackRadius>50</AttackRadius>
+        <AttackRadius>200</AttackRadius>
         <DefenseRadius>30</DefenseRadius>
         <CreditsCost>100</CreditsCost>
       </Item>      

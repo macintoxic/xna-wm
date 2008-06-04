@@ -56,14 +56,17 @@ namespace WM.Units.Projectiles
         public bool CheckForHit()
         {
             List<UnitBase> collisionList = matchInfo.IsPositionAvailable(position, size);
-            if ( collisionList.Count > 0 )
-                //!(collisionList.Count==1 && collisionList[0]==this) ) // not possible to hit itself, since bullets are not returned by that function.
-            {
-                Explode();
+            if ( collisionList.Count > 0 )                
+            {                
                 for (int i = 0; i< collisionList.Count; i++)
-                    ApplyDamageToTarget(collisionList[i]);
-
-                return true;
+                {
+                    //if (collisionList[i] != this)// not possible to hit itself, since bullets are not returned by that function.
+                    {
+                        Explode();
+                        ApplyDamageToTarget(collisionList[i]);
+                        return true;
+                    }
+                }
             }
 
             return false;
@@ -73,6 +76,14 @@ namespace WM.Units.Projectiles
         {        
             // todo... some explosion effect at the current bullet position.    
 
+            RemoveBulletFromWorld();
+        }
+
+        public void RemoveBulletFromWorld()
+        {
+            currentLifeTime = lifeTime;
+            texture = null;
+            MatchInfo.GameInfo.MyPlayer.RemoveProjectile(this);
         }
 
         public void ApplyDamageToTarget(UnitBase HitTarget)

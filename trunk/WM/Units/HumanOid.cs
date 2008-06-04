@@ -17,19 +17,21 @@ namespace WM.Units
         Vector2 targetPositionMoveOffset;
         
         UnitBase attackTarget;
-        float AttackPower;
+        float attackPower;
         float FiringTime;
         float FireDelay;
 
         public HumanOid(UnitItem unitDefinition, MatchInfo.MatchInfo matchInfo)
             : base(unitDefinition.Name, unitDefinition.Position, unitDefinition.Rotation, unitDefinition.Scale, unitDefinition.AttackRadius, unitDefinition.Speed, unitDefinition.TextureAsset, unitDefinition.Offset, unitDefinition.Size, matchInfo)
         {
+            AttackPower = unitDefinition.AttackPower;
             initialize();
         }
 
-        public HumanOid(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, MatchInfo.MatchInfo matchInfo)
+        public HumanOid(string name, Vector2 position, float rotation, Vector2 scale, float targetRadius, float speed, string textureAsset, Vector2 offset, Vector2 size, MatchInfo.MatchInfo matchInfo, float attackPower)
             : base(name, position, rotation, scale, targetRadius, speed, textureAsset, offset, size, matchInfo)
         {
+            AttackPower = attackPower;
             initialize();
         }
 
@@ -294,7 +296,7 @@ namespace WM.Units
             {
                 // Check if current target is still in range else find another
                 Vector2 distance = attackTarget.Position - Position;
-                float  distanceLength = Math.Abs(distance.Length());
+                float  distanceLength = Math.Abs(distance.Length())-5;
                 if (distanceLength > TargetRadius)
                 {
                     attackTarget = null;
@@ -336,7 +338,9 @@ namespace WM.Units
                 // todo .. Spawn a projectile
                 Vector2 attackDirection = AttackTarget.Position - Position;
                 attackDirection.Normalize();
-                Bullet newBullet = new Bullet(Position, Rotation, new Vector2(1, 1), new Vector2(0, 0), new Vector2(4, 4),
+                // add the units size so it wont collide with the units itself.
+                Vector2 startPositon = Position + (attackDirection*64);
+                Bullet newBullet = new Bullet(startPositon, Rotation, new Vector2(1, 1), new Vector2(0, 0), new Vector2(4, 4),
                                               null, attackDirection, AttackPower, 10, 128, 6, MatchInfo);
                 MatchInfo.GameInfo.MyPlayer.ProjectileList.Add( newBullet );
 
@@ -382,5 +386,11 @@ namespace WM.Units
             set { attackTarget = value; }
         }
         
+        public float AttackPower
+        {
+            get { return attackPower; }
+            set { attackPower = value; }
+        }
+
     }
 }
