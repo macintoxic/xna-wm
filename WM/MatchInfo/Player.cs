@@ -478,13 +478,16 @@ namespace WM.MatchInfo
             return projectileList.Remove(projectile);            
         }
 
-        public bool RemoveUnit(UnitBase obj)
+        public bool RemoveHumanoidUnit(UnitBase obj)
         {
             Trace.WriteLine(obj);
-            if (unitVehicleList.Remove((Vehicle)obj))
-                return true;
+            return unitHumanOidList.Remove((HumanOid)obj);
+        }
 
-            return unitHumanOidList.Remove((HumanOid)obj);            
+        public bool RemoveVehicleUnit(UnitBase obj)
+        {
+            Trace.WriteLine(obj);
+            return unitVehicleList.Remove((Vehicle)obj);
         }
 
         public bool RemoveBuilding(UnitBase obj)
