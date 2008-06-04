@@ -355,11 +355,27 @@ namespace WM.Units
         public override void UpdateNetworkReader(PacketReader reader)
         {
             base.UpdateNetworkReader(reader);
+
+            bMoveTowardtarget = reader.ReadBoolean();
+            targetPosition = reader.ReadVector2();
+            targetPositionMoveOffset = reader.ReadVector2();
+            //UnitBase attackTarget;
+            attackPower = reader.ReadSingle();
+            FiringTime = reader.ReadSingle();
+            FireDelay = reader.ReadSingle();
         }
 
         public override void UpdateNetworkWriter(PacketWriter writer)
         {
             base.UpdateNetworkWriter(writer);
+
+            writer.Write(bMoveTowardtarget);
+            writer.Write(targetPosition);
+            writer.Write(targetPositionMoveOffset);
+            //UnitBase attackTarget;
+            writer.Write(attackPower);
+            writer.Write(FiringTime);
+            writer.Write(FireDelay);
         }
 
         public override void SetMoveTargetPosition(Vector2 targetPosition) 

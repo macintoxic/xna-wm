@@ -256,9 +256,14 @@ namespace WM.Units
             position = reader.ReadVector2();
             rotation = reader.ReadSingle();
             scale = reader.ReadVector2();
+            offset = reader.ReadVector2();
+            size = reader.ReadVector2();
             targetRadius = reader.ReadSingle();
             speed = reader.ReadSingle();
             creditsCost = reader.ReadInt32();
+            health = reader.ReadSingle();
+            textureAsset = reader.ReadString();
+            name = reader.ReadString();
         }
 
         public virtual void UpdateNetworkWriter(PacketWriter writer)
@@ -266,9 +271,14 @@ namespace WM.Units
             writer.Write(position);
             writer.Write(rotation);
             writer.Write(scale);
+            writer.Write(offset);
+            writer.Write(size);
             writer.Write(targetRadius);
             writer.Write(speed);
             writer.Write(creditsCost);
+            writer.Write(health);
+            writer.Write(textureAsset);
+            writer.Write(name);    
         }
 
         public virtual void SetMoveTargetPosition(Vector2 targetPosition){}
