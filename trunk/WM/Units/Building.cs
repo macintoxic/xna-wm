@@ -89,12 +89,12 @@ namespace WM.Units
 
         public override void UpdateNetworkReader(PacketReader reader)
         {
-            base.UpdateNetworkReader(reader);
+            base.UpdateNetworkReader(reader);            
         }
 
         public override void UpdateNetworkWriter(PacketWriter writer)
         {
-            base.UpdateNetworkWriter(writer);
+            base.UpdateNetworkWriter(writer);            
         }
     }
 }
