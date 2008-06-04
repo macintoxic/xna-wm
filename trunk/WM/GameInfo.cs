@@ -115,9 +115,9 @@ namespace WM
 
             matchInfo.AddPlayer(player);
 
-            if (e.Gamer.IsHost)
+            if (e.Gamer.Gamertag == Gamer.SignedInGamers[0].Gamertag)
             {
-                // When we're the host, we should store our player object in the myPlayer var.
+                // F*cking dirty hack which will be redone when needed.
                 myPlayer = player;
             }
 
