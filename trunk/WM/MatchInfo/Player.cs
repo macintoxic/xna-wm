@@ -452,7 +452,7 @@ namespace WM.MatchInfo
 
         public bool CheckWin()
         {
-            if (gameInfo.MatchInfo.OnlySelfLeft() && PlayersEnterdValid)
+            if (gameInfo != null && gameInfo.MatchInfo.OnlySelfLeft() && PlayersEnterdValid)
             {
                 return true;
             }
