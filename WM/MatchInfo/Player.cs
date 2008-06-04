@@ -308,12 +308,17 @@ namespace WM.MatchInfo
             if (CheckWin())
             {
                 // the player won, notify of win.
+                Trace.WriteLine(this + " won!");
+                matchInfo.GameInfo.NetworkSession.Dispose();
+                matchInfo.GameInfo.NetworkSession = null;
 
             }
             else if (CheckLose())
             {
+                Trace.WriteLine(this + " lost!");
                 // the player lost, be removed from game.
-
+                matchInfo.GameInfo.NetworkSession.Dispose();
+                matchInfo.GameInfo.NetworkSession = null;
             }
 
         }
