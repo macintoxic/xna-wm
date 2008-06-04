@@ -146,7 +146,7 @@ namespace WM.MatchInfo
             for (int k = 0; k < players.Count; k++)
             {
                 // Skip own units. For now no reason to also find own units.
-                if (players[k] != gameInfo.MyPlayer) 
+                //if (players[k] != gameInfo.MyPlayer) 
                 {
                     List<UnitBase> unitFound = players[k].ObjectsWithinRadius(tryPosition, radius);
                     for (int i = 0; i < unitFound.Count; i++)
