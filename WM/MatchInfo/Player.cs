@@ -305,7 +305,6 @@ namespace WM.MatchInfo
             {
                 // the player won, notify of win.
                 Trace.WriteLine(this.NickName + " won!");
-                matchInfo.GameInfo.NetworkSession.EndGame();
 
             }
             else if (CheckLose())
