@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
   <Asset Type="XMLContentShared.Level">
     <Name>Our First Level</Name>
@@ -15,17 +15,248 @@
         <TextureAsset>Textures\\terrain\\ground</TextureAsset>
         <TileList>
           <Item>
-            <Position>50 50</Position>
+            <Position>0 0</Position>
             <Rotation>0</Rotation>
             <Scale>1 1</Scale>
             <Offset>0 0</Offset>
             <Size>100 100</Size>
           </Item>
           <Item>
-            <Position>200 200</Position>
+            <Position>100 0</Position>
             <Rotation>0</Rotation>
             <Scale>1 1</Scale>
             <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 0</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 0</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>300 0</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>400 0</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>500 0</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>0 100</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>100 100</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 100</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 100</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>300 100</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>400 100</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>500 100</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>0 200</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>100 200</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 200</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 200</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>300 200</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>400 200</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>500 200</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>0 300</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>100 300</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 300</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 300</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>300 300</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>400 300</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>500 300</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>0 400</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>100 400</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 400</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 400</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>300 400</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>400 400</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>500 400</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 100</Offset>
             <Size>100 100</Size>
           </Item>
         </TileList>
@@ -41,17 +272,59 @@
         <TextureAsset>Textures\\terrain\\water</TextureAsset>
         <TileList>
           <Item>
-            <Position>50 50</Position>
+            <Position>100 200</Position>
             <Rotation>0</Rotation>
             <Scale>1 1</Scale>
             <Offset>0 0</Offset>
             <Size>100 100</Size>
           </Item>
           <Item>
-            <Position>200 200</Position>
+            <Position>100 0</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>200 0</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>200 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>300 300</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>300 400</Position>
             <Rotation>0</Rotation>
             <Scale>1 1</Scale>
             <Offset>0 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>400 300</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>100 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>400 0</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>200 0</Offset>
+            <Size>100 100</Size>
+          </Item>
+          <Item>
+            <Position>400 100</Position>
+            <Rotation>0</Rotation>
+            <Scale>1 1</Scale>
+            <Offset>0 100</Offset>
             <Size>100 100</Size>
           </Item>
         </TileList>
